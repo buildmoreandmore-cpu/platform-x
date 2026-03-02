@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
@@ -44,6 +45,17 @@ export function MV({ projectId }: { projectId?: string }) {
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
+              <ExportButton
+                variant="compact"
+                filename={`mv-report-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
+                data={projectMvData.map(d => ({
+                  'Year': d.year,
+                  'Guaranteed Savings': d.guaranteed,
+                  'Calculated Savings': d.calculated,
+                  'Achievement %': d.guaranteed > 0 ? Number(((d.calculated / d.guaranteed) * 100).toFixed(1)) : 0,
+                  'Drift Detected': d.driftDetected ? 'Yes' : 'No',
+                }))}
+              />
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <FileText className="w-4 h-4" />
                 Generate M&V Report

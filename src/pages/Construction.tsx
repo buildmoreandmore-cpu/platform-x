@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { HardHat, AlertTriangle, CheckCircle2, Search, Filter, Plus, ClipboardList, Hammer } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
@@ -34,6 +35,14 @@ export function Construction({ projectId }: { projectId?: string }) {
               <p className="text-sm text-[#7A8BA8] mt-1">Track installation progress, inspections, and scope deviations.</p>
             </div>
             <div className="flex items-center gap-3">
+              <ExportButton
+                variant="compact"
+                filename={`construction-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
+                sheets={[
+                  { name: 'Installation', data: projectEcms.map((e, idx) => ({ 'ECM': e.number, 'Description': e.description, 'Category': e.category, 'Cost': e.cost, 'Progress': idx === 0 ? '100%' : idx === 1 ? '45%' : '0%', 'Status': idx === 0 ? 'Complete' : idx === 1 ? 'In Progress' : 'Not Started' })) },
+                  { name: 'Inspection Findings', data: projectFindings.map(f => ({ 'Date': f.date, 'ECM': f.ecm, 'Type': f.type, 'Severity': f.severity, 'Description': f.description, 'Status': f.status })) },
+                ]}
+              />
               <select 
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}

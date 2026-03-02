@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { ShieldCheck, Calendar, FileText, AlertTriangle, GitPullRequest, FileCheck, Plus, Filter, CalendarPlus } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -33,6 +34,17 @@ export function Governance({ projectId }: { projectId?: string }) {
               <p className="text-sm text-[#7A8BA8] mt-1">Track project phases, milestones, documents, and risks.</p>
             </div>
             <div className="flex items-center gap-3">
+              <ExportButton
+                variant="compact"
+                filename={`governance-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
+                sheets={[
+                  { name: 'Milestones', data: milestones.filter(m => m.projectId === selectedProjectId).map(m => ({ 'Phase': (m as any).phase || '', 'Milestone': m.name, 'Due Date': m.dueDate, 'Status': m.status, 'Owner': m.assignedTo })) },
+                  { name: 'Risks', data: risks.filter(r => r.projectId === selectedProjectId).map(r => ({ 'Risk': r.description, 'Category': r.category, 'Severity': r.severity, 'Likelihood': (r as any).likelihood || '', 'Impact': (r as any).impact || '', 'Status': r.status, 'Owner': r.owner })) },
+                  { name: 'Change Orders', data: changeOrders.filter(c => c.projectId === selectedProjectId).map(c => ({ 'Description': (c as any).description || '', 'Amount': (c as any).amount || '', 'Status': (c as any).status || '', 'Date': (c as any).date || '' })) },
+                  { name: 'Submittals', data: submittals.filter(s => s.projectId === selectedProjectId).map(s => ({ 'Description': (s as any).description || '', 'Status': (s as any).status || '', 'Date': (s as any).date || '' })) },
+                  { name: 'Contract Obligations', data: contractObligations.filter(o => o.projectId === selectedProjectId).map(o => ({ 'Description': o.description, 'Category': o.category, 'Responsible': o.responsibleParty, 'Due Date': o.dueDate || 'Ongoing', 'Status': o.status })) },
+                ]}
+              />
               <select 
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}

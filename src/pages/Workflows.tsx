@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { CheckCircle2, Clock, AlertCircle, Plus, Filter, Calendar } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
@@ -26,10 +27,24 @@ export function Workflows() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Productivity & Workflow</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage tasks, approvals, and automated reminders.</p>
           </div>
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
-            <Plus className="w-4 h-4" />
-            New Task
-          </button>
+          <div className="flex items-center gap-3">
+            <ExportButton
+              variant="compact"
+              filename="tasks"
+              data={filteredTasks.map(t => ({
+                'Task': t.title,
+                'Project': projects.find(p => p.id === t.projectId)?.name || 'General',
+                'Assignee': t.assignedTo,
+                'Priority': t.priority,
+                'Due Date': t.dueDate,
+                'Status': t.status,
+              }))}
+            />
+            <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+              <Plus className="w-4 h-4" />
+              New Task
+            </button>
+          </div>
         </div>
 
         <div className="flex space-x-6 border-b border-[#1E2A45]">

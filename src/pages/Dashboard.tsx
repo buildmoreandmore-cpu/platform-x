@@ -8,6 +8,7 @@ import {
   ChevronRight, Zap, ShieldAlert, CircleDot, Database
 } from 'lucide-react';
 import { getFreshnessStatus, daysSinceUpdate } from '@/lib/freshness';
+import { ExportButton } from '@/components/ExportButton';
 
 const PHASE_ORDER = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'] as const;
 
@@ -166,6 +167,15 @@ export function Dashboard() {
              'Construction management overview'}
           </p>
         </div>
+        <ExportButton
+          variant="compact"
+          filename="portfolio-summary"
+          sheets={[
+            { name: 'Projects', data: projects.map(p => ({ 'Name': p.name, 'Phase': p.phase, 'ESCO': p.esco, 'Value': p.value, 'Risk Score': p.riskScore, 'Engineer': p.engineer })) },
+            { name: 'Risks', data: risks.map(r => ({ 'Risk': r.description, 'Category': r.category, 'Severity': r.severity, 'Status': r.status, 'Owner': r.owner })) },
+            { name: 'Recent Tasks', data: tasks.slice(0, 20).map(t => ({ 'Task': t.title, 'Project': projects.find(p => p.id === t.projectId)?.name || '', 'Assignee': t.assignedTo, 'Priority': t.priority, 'Due Date': t.dueDate, 'Status': t.status })) },
+          ]}
+        />
       </div>
 
       {/* Row 1: Primary KPIs — compact, dense */}

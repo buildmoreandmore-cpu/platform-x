@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { Calculator, TrendingUp, AlertTriangle, CheckCircle2, DollarSign, Leaf, Search, Filter, Plus } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -65,6 +66,18 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
               <p className="text-sm text-[#7A8BA8] mt-1">Build ECM bundles, model cash flows, and analyze guarantee risk.</p>
             </div>
             <div className="flex items-center gap-3">
+              <ExportButton
+                variant="compact"
+                filename={`financial-model-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
+                data={projectEcms.map(e => ({
+                  'ECM Name': e.number,
+                  'Category': e.category,
+                  'Cost': e.cost,
+                  'Annual Savings': e.savings,
+                  'Simple Payback': e.savings > 0 ? Number((e.cost / e.savings).toFixed(1)) : 0,
+                  'SIR': e.savings > 0 ? Number((e.savings * term / e.cost).toFixed(2)) : 0,
+                }))}
+              />
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <Calculator className="w-4 h-4" />
                 Compare Scenarios

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { BookOpen, Search, Filter, Lightbulb, TrendingDown, DollarSign, FileText } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
@@ -20,6 +21,14 @@ export function KnowledgeBase() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Knowledge Capture & Institutional Memory</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Store historical data, benchmark costs/savings, prevent repeating mistakes.</p>
           </div>
+          <ExportButton
+            variant="compact"
+            filename="knowledge-base"
+            sheets={[
+              { name: 'Benchmarks', data: benchmarks.map(b => ({ 'Category': b.category, 'Building Type': b.buildingType, 'Unit Cost (Mid)': b.unitCostMid, 'Unit': b.unit, 'Savings (Mid %)': b.savingsMid, 'Source': b.source })) },
+              { name: 'Lessons Learned', data: lessonsLearned.map(l => ({ 'Title': l.title, 'Category': l.category, 'Description': l.description, 'Recommendation': l.recommendation })) },
+            ]}
+          />
         </div>
 
         <div className="flex space-x-6 border-b border-[#1E2A45]">

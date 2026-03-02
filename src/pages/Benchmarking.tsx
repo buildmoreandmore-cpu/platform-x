@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { BarChart3, DollarSign, Plus, Calendar, TrendingUp, AlertTriangle, Zap, Download, FileText, ChevronRight, HardDrive, Leaf, CheckCircle2, X } from 'lucide-react';
+import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
@@ -99,6 +100,33 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               <p className="text-sm text-[#7A8BA8] mt-1">Ingest utility data, normalize for weather, calculate EUI and capital exposure.</p>
             </div>
             <div className="flex items-center gap-3">
+              <ExportButton
+                variant="compact"
+                filename={`benchmarking-${(selectedBuilding?.name || 'building').toLowerCase().replace(/\s+/g, '-')}`}
+                sheets={[
+                  {
+                    name: 'Utility Bills',
+                    data: buildingBills.map(b => ({
+                      'Month': b.month,
+                      'Electric kWh': b.electricKwh,
+                      'Electric Cost': b.electricCost,
+                      'Gas Therms': b.gasTherms,
+                      'Gas Cost': b.gasCost,
+                      'Peak kW': b.peakKw,
+                    })),
+                  },
+                  {
+                    name: 'Building Summary',
+                    data: selectedBuilding ? [{
+                      'Building': selectedBuilding.name,
+                      'Square Footage': selectedBuilding.sqft,
+                      'EUI (kBtu/sqft/yr)': eui,
+                      'Annual Cost': totalCost,
+                      'Cost per SqFt': costPerSqft,
+                    }] : [],
+                  },
+                ]}
+              />
               <button
                 onClick={() => { setImportModal('drive'); setImportStatus('idle'); }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150"
