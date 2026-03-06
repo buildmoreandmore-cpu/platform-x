@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { useStore } from '@/store';
-import { BarChart3, DollarSign, Plus, Calendar, TrendingUp, AlertTriangle, Zap, Download, FileText, ChevronRight, HardDrive, Leaf, CheckCircle2, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useStore, type CustomColumnDef } from '@/store';
+import { BarChart3, DollarSign, Plus, Calendar, TrendingUp, AlertTriangle, Zap, Download, FileText, ChevronRight, HardDrive, Leaf, CheckCircle2, X, FileSpreadsheet, Trash2 } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { FreshnessBadge } from '@/components/FreshnessBadge';
 import { LockIndicator } from '@/components/LockIndicator';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function Benchmarking({ projectId }: { projectId?: string }) {
   const buildings = useStore(state => state.buildings);
@@ -16,11 +17,20 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   const lockRecords = useStore(state => state.lockRecords);
 
   const addImportRecord = useStore(state => state.addImportRecord);
+  const customColumns = useStore(state => state.customColumns);
+  const addUtilityBillsBatch = useStore(state => state.addUtilityBillsBatch);
+  const deleteImportBatch = useStore(state => state.deleteImportBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const updateImportRecordStatus = useStore(state => state.updateImportRecordStatus);
+  const importHistory = useStore(state => state.importHistory);
 
   const [activeTab, setActiveTab] = useState<'energy' | 'capital'>('energy');
   const [selectedBuildingId, setSelectedBuildingId] = useState(buildings[0].id);
-  const [importModal, setImportModal] = useState<'drive' | 'energystar' | null>(null);
+  const [importModal, setImportModal] = useState<'drive' | 'energystar' | 'sharepoint' | null>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [deletingBatchId, setDeletingBatchId] = useState<string | null>(null);
+
+  const addBatch = useStore(state => state.addBatch);
 
   let displayBuildings = buildings;
   if (projectId) {
@@ -90,8 +100,8 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight inline-flex items-center gap-3">
                 Facility Assessment & Benchmarking
@@ -99,7 +109,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               </h1>
               <p className="text-sm text-[#7A8BA8] mt-1">Ingest utility data, normalize for weather, calculate EUI and capital exposure.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
                 variant="compact"
                 filename={`benchmarking-${(selectedBuilding?.name || 'building').toLowerCase().replace(/\s+/g, '-')}`}
@@ -141,7 +151,14 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 <Leaf className="w-4 h-4" />
                 Import from ENERGY STAR
               </button>
-              <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700">
+              <button
+                onClick={() => setImportModal('sharepoint')}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Import from SharePoint
+              </button>
+              <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
                 <Plus className="w-4 h-4" />
                 Add Manual Entry
               </button>
@@ -171,7 +188,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8 animate-page-enter">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8 animate-page-enter">
         {/* Building Selector */}
         <div className="flex items-center gap-4">
           <select
@@ -305,14 +322,30 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                       <th className="px-6 py-4 font-medium text-right">Gas (Therms)</th>
                       <th className="px-6 py-4 font-medium text-right">Gas Cost</th>
                       <th className="px-6 py-4 font-medium text-right">Total Cost</th>
+                      {customColumns.map(col => (
+                        <th key={col.key} className="px-6 py-4 font-medium text-right">
+                          <span className="inline-flex items-center gap-1.5">
+                            {col.label}
+                            <span className="text-[9px] font-normal bg-blue-500/10 text-blue-400 px-1 py-0.5 rounded border border-blue-500/20 normal-case">Custom</span>
+                          </span>
+                        </th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#1E2A45] stagger-rows">
-                    {buildingBills.map((bill) => {
+                    {buildingBills.map((bill: any) => {
                       const lock = lockRecords.find(l => l.entityType === 'utilityBill' && l.entityId === bill.id);
+                      const isImported = !!bill.importBatchId;
                       return (
                         <tr key={bill.id} className="hover:bg-[#1A2544] transition-colors duration-100">
-                          <td className="px-6 py-4 font-medium text-white">{bill.month}</td>
+                          <td className="px-6 py-4 font-medium text-white">
+                            <span className="inline-flex items-center gap-2">
+                              {bill.month}
+                              {isImported && (
+                                <span className="text-[9px] font-semibold bg-[#0D918C]/10 text-[#0D918C] px-1.5 py-0.5 rounded border border-[#0D918C]/20">SP</span>
+                              )}
+                            </span>
+                          </td>
                           <td className="px-6 py-4 text-right text-[#9AA5B8] font-mono">
                             {lock ? (
                               <span className="inline-flex items-center gap-1.5 justify-end">
@@ -364,6 +397,11 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             )}
                           </td>
                           <td className="px-6 py-4 text-right text-white font-mono font-semibold">${(bill.electricCost + bill.gasCost).toLocaleString()}</td>
+                          {customColumns.map(col => (
+                            <td key={col.key} className="px-6 py-4 text-right text-[#9AA5B8] font-mono">
+                              {bill.customFields?.[col.key] != null ? String(bill.customFields[col.key]) : '—'}
+                            </td>
+                          ))}
                         </tr>
                       );
                     })}
@@ -371,6 +409,75 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 </table>
               </div>
             </div>
+
+            {/* SharePoint Import History */}
+            {(() => {
+              const spImports = importHistory.filter((r: any) => r.source === 'SharePoint');
+              if (spImports.length === 0) return null;
+              return (
+                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
+                  <div className="p-6 border-b border-[#1E2A45]">
+                    <h3 className="text-sm font-semibold text-white">SharePoint Import History</h3>
+                  </div>
+                  <div className="divide-y divide-[#1E2A45]">
+                    {spImports.map((imp: any) => (
+                      <div key={imp.id} className="px-6 py-4 flex items-center justify-between hover:bg-[#1A2544] transition-colors">
+                        <div className="flex items-center gap-4">
+                          <FileSpreadsheet className="w-4 h-4 text-[#0D918C]" />
+                          <div>
+                            <p className="text-sm text-white font-medium">{imp.fileName || imp.type}</p>
+                            <p className="text-xs text-[#7A8BA8]">
+                              {new Date(imp.date).toLocaleDateString()} — {imp.records} records — {imp.user}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={cn(
+                            "text-[10px] font-semibold px-2 py-0.5 rounded border",
+                            imp.status === 'Success' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
+                            imp.status === 'Rolled Back' ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                            "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
+                          )}>
+                            {imp.status}
+                          </span>
+                          {imp.status === 'Success' && imp.batchId && (
+                            deletingBatchId === imp.batchId ? (
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] text-red-400">Delete all imported rows?</span>
+                                <button
+                                  onClick={() => {
+                                    deleteImportBatch(imp.batchId);
+                                    updateImportRecordStatus(imp.id, 'Rolled Back');
+                                    setDeletingBatchId(null);
+                                  }}
+                                  className="text-[10px] text-red-400 font-semibold hover:text-red-300"
+                                >
+                                  Confirm
+                                </button>
+                                <button
+                                  onClick={() => setDeletingBatchId(null)}
+                                  className="text-[10px] text-[#7A8BA8] hover:text-white"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setDeletingBatchId(imp.batchId)}
+                                className="p-1.5 text-[#5A6B88] hover:text-red-400 transition-colors rounded hover:bg-red-500/10"
+                                title="Delete imported data"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </>
         )}
 
@@ -381,7 +488,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-semibold text-white">5-Year Capital Outlook</h2>
-                <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">
+                <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">
                   <FileText className="w-4 h-4" />
                   Generate Capital Plan Report
                 </button>
@@ -467,7 +574,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                               ? "bg-red-500/15 text-red-600 border border-red-500/25 hover:bg-red-500/25"
                               : a.condition === 'Poor'
                               ? "bg-amber-500/15 text-amber-600 border border-amber-500/25 hover:bg-amber-500/25"
-                              : "bg-emerald-500/15 text-emerald-600 border border-emerald-500/25 hover:bg-emerald-500/25"
+                              : "bg-emerald-500/15 text-emerald-600 border border-emerald-500/25 hover:bg-[#0D918C]/25"
                           )}
                         >
                           {a.type}
@@ -572,8 +679,8 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
         )}
       </div>
 
-      {/* Import Simulation Modal */}
-      {importModal && (
+      {/* Import Simulation Modal (Drive / ENERGY STAR) */}
+      {(importModal === 'drive' || importModal === 'energystar') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop" onClick={() => setImportModal(null)}>
           <div className="modal-panel bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
@@ -637,7 +744,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                         });
                       }, 1500);
                     }}
-                    className="w-full px-4 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors"
+                    className="w-full px-4 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66] transition-colors"
                   >
                     {importModal === 'drive' ? 'Import Selected Files' : 'Sync Building Data'}
                   </button>
@@ -669,6 +776,30 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* SharePoint Import Modal */}
+      {importModal === 'sharepoint' && selectedBuilding && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.utilityBills}
+          contextFields={{ buildingId: selectedBuilding.id }}
+          contextLabel={selectedBuilding.name}
+          onClose={() => setImportModal(null)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('utilityBills', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({
+              type: 'Utility Bills',
+              source: 'SharePoint',
+              date: new Date().toISOString(),
+              records: count,
+              status: 'Success',
+              user: 'Martin',
+              fileName: fName,
+              batchId,
+            });
+          }}
+        />
       )}
     </div>
   );

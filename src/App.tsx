@@ -6,7 +6,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ClientLayout } from './components/ClientLayout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { Landing } from './pages/Landing';
+import { Login } from './pages/Login';
 import { ClientPortal } from './pages/ClientPortal';
 import { Dashboard } from './pages/Dashboard';
 import { Projects } from './pages/Projects';
@@ -29,9 +31,10 @@ export default function App() {
       <Routes>
         {/* Landing — portal selector */}
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
 
-        {/* Internal team platform */}
-        <Route path="/app" element={<Layout />}>
+        {/* Internal team platform (protected) */}
+        <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:id" element={<ProjectDetail />} />
@@ -49,8 +52,8 @@ export default function App() {
           <Route path="*" element={<div className="p-8 text-gray-500">Module under construction</div>} />
         </Route>
 
-        {/* Client-facing portal */}
-        <Route path="/client" element={<ClientLayout />}>
+        {/* Client-facing portal (protected) */}
+        <Route path="/client" element={<ProtectedRoute><ClientLayout /></ProtectedRoute>}>
           <Route index element={<ClientPortal />} />
         </Route>
 

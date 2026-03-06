@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Camera, Upload, Mic, AlertTriangle, Search, Filter } from 'lucide-react';
+import { Camera, Upload, Mic, AlertTriangle, Search, Filter, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { FreshnessBadge } from '@/components/FreshnessBadge';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 const ASSET_IMAGES: Record<string, string> = {
   'Chiller': '/assets/chiller.jpg',
@@ -28,10 +29,14 @@ const ASSET_IMAGES: Record<string, string> = {
 export function FieldAudit({ projectId }: { projectId?: string }) {
   const [activeTab, setActiveTab] = useState<'capture' | 'assets'>('assets');
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [showImportModal, setShowImportModal] = useState(false);
+
   const allAssets = useStore(state => state.assets);
   const projects = useStore(state => state.projects);
   const buildings = useStore(state => state.buildings);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   let displayAssets = allAssets;
   
@@ -51,8 +56,8 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-white tracking-tight">Field Audit & Asset Intelligence</h1>
@@ -60,12 +65,19 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               </div>
               <p className="text-sm text-[#7A8BA8] mt-1">Capture equipment data, transcribe notes, and flag deficiencies.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Import from SharePoint
+              </button>
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <Upload className="w-4 h-4" />
                 Batch Upload
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+              <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
                 <Camera className="w-4 h-4" />
                 New Capture
               </button>
@@ -78,7 +90,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'assets' 
-                  ? "border-emerald-500 text-emerald-600"
+                  ? "border-[#0D918C] text-[#37BB26]"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
@@ -89,7 +101,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'capture' 
-                  ? "border-emerald-500 text-emerald-600"
+                  ? "border-[#0D918C] text-[#37BB26]"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
@@ -99,7 +111,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full">
         {activeTab === 'assets' ? (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -110,7 +122,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   placeholder="Search assets by type or manufacturer..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm"
+                  className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent shadow-sm"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -140,7 +152,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAssets.map((asset) => (
-                <div key={asset.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden hover:border-emerald-500/50 transition-colors group cursor-pointer">
+                <div key={asset.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden hover:border-[#0D918C]/50 transition-colors group cursor-pointer">
                   <div className="h-48 relative bg-[#0F1829]">
                     <img
                       src={ASSET_IMAGES[asset.type] || '/assets/industrial.jpg'}
@@ -159,7 +171,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   <div className="p-5">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="text-lg font-semibold text-white group-hover:text-emerald-600 transition-colors">{asset.type}</h3>
+                        <h3 className="text-lg font-semibold text-white group-hover:text-[#37BB26] transition-colors">{asset.type}</h3>
                         <p className="text-sm text-[#7A8BA8]">{buildings.find(b => b.id === asset.buildingId)?.name}</p>
                       </div>
                       <EditableField
@@ -231,8 +243,8 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               </div>
               
               <div className="p-8">
-                <div className="border-2 border-dashed border-[#2A3A5C] rounded-xl p-12 flex flex-col items-center justify-center text-center hover:bg-[#1A2544] hover:border-emerald-500/50 transition-colors cursor-pointer group">
-                  <div className="w-16 h-16 bg-[#1E2A45] text-emerald-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="border-2 border-dashed border-[#2A3A5C] rounded-xl p-12 flex flex-col items-center justify-center text-center hover:bg-[#1A2544] hover:border-[#0D918C]/50 transition-colors cursor-pointer group">
+                  <div className="w-16 h-16 bg-[#1E2A45] text-[#37BB26] rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Camera className="w-8 h-8" />
                   </div>
                   <h4 className="text-lg font-medium text-white mb-1">Upload Equipment Photos</h4>
@@ -246,7 +258,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 </div>
 
                 <div className="mt-8 text-center">
-                  <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E2A45] border border-[#2A3A5C] rounded-full text-[#9AA5B8] font-medium hover:border-emerald-500 hover:text-emerald-600 transition-colors shadow-sm">
+                  <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E2A45] border border-[#2A3A5C] rounded-full text-[#9AA5B8] font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm">
                     <Mic className="w-5 h-5" />
                     Record Voice Audit Note
                   </button>
@@ -257,6 +269,28 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
           </div>
         )}
       </div>
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.assets}
+          contextFields={{ projectId: projectId || '' }}
+          contextLabel={projectId ? (projects.find(p => p.id === projectId)?.name || projectId) : 'All Projects'}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('assets', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({
+              type: 'Assets',
+              source: 'SharePoint',
+              date: new Date().toISOString(),
+              records: count,
+              status: 'Success',
+              user: 'Martin',
+              fileName: fName,
+              batchId,
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

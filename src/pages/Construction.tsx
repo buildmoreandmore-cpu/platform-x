@@ -1,18 +1,23 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { HardHat, AlertTriangle, CheckCircle2, Search, Filter, Plus, ClipboardList, Hammer } from 'lucide-react';
+import { HardHat, AlertTriangle, CheckCircle2, Search, Filter, Plus, ClipboardList, Hammer, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { FreshnessBadge } from '@/components/FreshnessBadge';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function Construction({ projectId }: { projectId?: string }) {
   const projects = useStore(state => state.projects);
   const ecms = useStore(state => state.ecms);
   const inspectionFindings = useStore(state => state.inspectionFindings);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   const [activeTab, setActiveTab] = useState<'tracker' | 'inspections'>('tracker');
+  const [showImportModal, setShowImportModal] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[2].id); // Default to construction project
 
   const projectEcms = ecms.filter(e => e.projectId === selectedProjectId);
@@ -25,8 +30,8 @@ export function Construction({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-white tracking-tight">Construction Oversight</h1>
@@ -34,7 +39,7 @@ export function Construction({ projectId }: { projectId?: string }) {
               </div>
               <p className="text-sm text-[#7A8BA8] mt-1">Track installation progress, inspections, and scope deviations.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
                 variant="compact"
                 filename={`construction-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
@@ -43,15 +48,22 @@ export function Construction({ projectId }: { projectId?: string }) {
                   { name: 'Inspection Findings', data: projectFindings.map(f => ({ 'Date': f.date, 'ECM': f.ecm, 'Type': f.type, 'Severity': f.severity, 'Description': f.description, 'Status': f.status })) },
                 ]}
               />
-              <select 
+              <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5"
+                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5"
               >
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Import from SharePoint
+              </button>
             </div>
           </div>
 
@@ -61,7 +73,7 @@ export function Construction({ projectId }: { projectId?: string }) {
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                 activeTab === 'tracker' 
-                  ? "border-emerald-500 text-emerald-600"
+                  ? "border-[#0D918C] text-[#37BB26]"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
           >
@@ -73,7 +85,7 @@ export function Construction({ projectId }: { projectId?: string }) {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'inspections'
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -84,7 +96,7 @@ export function Construction({ projectId }: { projectId?: string }) {
       </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Total ECMs</h3>
@@ -103,7 +115,7 @@ export function Construction({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Scope Deviations</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-4xl font-bold ${scopeDeviations > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+              <span className={`text-4xl font-bold ${scopeDeviations > 0 ? 'text-red-500' : 'text-[#37BB26]'}`}>
                 {scopeDeviations}
               </span>
             </div>
@@ -144,7 +156,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                           <div className="flex items-center gap-3">
                             <div className="w-32 h-2 bg-[#1E2A45] rounded-full overflow-hidden">
                               <div 
-                                className={`h-full rounded-full ${progress === 100 ? 'bg-emerald-500' : progress > 0 ? 'bg-blue-500' : 'bg-transparent'}`}
+                                className={`h-full rounded-full ${progress === 100 ? 'bg-[#0D918C]' : progress > 0 ? 'bg-blue-500' : 'bg-transparent'}`}
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
@@ -154,7 +166,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                         <td className="px-6 py-4">
                           <span className={cn(
                             "px-2.5 py-1 rounded text-xs font-medium border",
-                            status === 'Complete' ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                            status === 'Complete' ? "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20" :
                             status === 'In Progress' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
                             "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
                           )}>
@@ -179,7 +191,7 @@ export function Construction({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Inspection Log</h3>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors">
                 <Plus className="w-3.5 h-3.5" />
                 Log Finding
               </button>
@@ -246,6 +258,28 @@ export function Construction({ projectId }: { projectId?: string }) {
           </div>
         )}
       </div>
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.inspectionFindings}
+          contextFields={{ projectId: selectedProjectId }}
+          contextLabel={projects.find(p => p.id === selectedProjectId)?.name || selectedProjectId}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('inspectionFindings', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({
+              type: 'Inspection Findings',
+              source: 'SharePoint',
+              date: new Date().toISOString(),
+              records: count,
+              status: 'Success',
+              user: 'Martin',
+              fileName: fName,
+              batchId,
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

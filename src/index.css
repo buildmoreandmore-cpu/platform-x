@@ -11,7 +11,7 @@
   --color-text-muted: #7A8BA8;
   --color-text-heading: #FFFFFF;
   --color-accent: #2563EB;
-  --color-green: #10B981;
+  --color-green: #37BB26;
   --color-amber: #F59E0B;
   --color-red: #EF4444;
   --color-purple: #8B5CF6;
@@ -217,7 +217,7 @@ body {
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 12px rgba(13, 145, 140, 0.25);
 }
 .btn-primary:active {
   transform: translateY(0px) scale(0.98);
@@ -253,7 +253,7 @@ body {
   bottom: -1px;
   left: 0; right: 0;
   height: 2px;
-  background: #10B981;
+  background: #0D918C;
   border-radius: 2px 2px 0 0;
   transform: scaleX(0);
   transition: transform 0.2s var(--ease-out-expo);
@@ -305,9 +305,9 @@ body {
   animation: barGrow 0.5s var(--ease-out-expo) both;
 }
 
-/* Focus ring — emerald, fast */
+/* Focus ring — brand teal, fast */
 *:focus-visible {
-  outline: 2px solid #10B981;
+  outline: 2px solid #0D918C;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -315,15 +315,15 @@ body {
 /* =============================================
    LANDING PAGE — Hero Background Motion System
    Energy-themed: flowing thermal gradients,
-   organic emerald blobs, subtle grid overlay
+   organic brand blobs, subtle grid overlay
    ============================================= */
 
 /* Hero background gradient */
 .hero-gradient-bg {
-  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(20, 184, 166, 0.12) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(20, 184, 166, 0.06) 0%, transparent 40%),
-              #060E09;
+  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(13, 145, 140, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(13, 145, 140, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(13, 145, 140, 0.06) 0%, transparent 40%),
+              #041E1D;
 }
 
 /* Energy blobs — slow floating organic shapes */
@@ -340,7 +340,7 @@ body {
   height: 600px;
   top: -15%;
   left: -5%;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.18) 0%, rgba(20, 184, 166, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(13, 145, 140, 0.18) 0%, rgba(13, 145, 140, 0.04) 50%, transparent 70%);
   animation: blobFloat1 18s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -349,7 +349,7 @@ body {
   height: 500px;
   bottom: 5%;
   right: -8%;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(6, 182, 212, 0.03) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(13, 145, 140, 0.14) 0%, rgba(13, 145, 140, 0.03) 50%, transparent 70%);
   animation: blobFloat2 22s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -358,7 +358,7 @@ body {
   height: 400px;
   top: 40%;
   left: 35%;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.04) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(13, 145, 140, 0.04) 0%, transparent 60%);
   animation: blobFloat3 15s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -409,7 +409,60 @@ body {
   100% { opacity: 0; transform: scale(2.2); }
 }
 
+/* =============================================
+   SHAREPOINT IMPORT — Row Stream & Drop Zone
+   ============================================= */
+
+/* Row streams in from below with teal left-border glow */
+@keyframes rowStreamIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0);
+  }
+}
+
+/* Drop zone dashed border pulse on drag-over */
+@keyframes dropZonePulse {
+  0%, 100% {
+    border-color: rgba(13, 145, 140, 0.4);
+    box-shadow: 0 0 0 0 rgba(13, 145, 140, 0);
+  }
+  50% {
+    border-color: rgba(13, 145, 140, 0.8);
+    box-shadow: 0 0 16px 2px rgba(13, 145, 140, 0.15);
+  }
+}
+
+.animate-row-stream {
+  animation: rowStreamIn 0.5s var(--ease-out-expo) both;
+}
+
+.drop-zone-active {
+  animation: dropZonePulse 1.2s ease-in-out infinite;
+}
+
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* =============================================
+   MOBILE RESPONSIVE OVERRIDES
+   ============================================= */
+
+@media (max-width: 768px) {
+  /* Tables scroll horizontally */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  thead, tbody, tr { display: table; width: 100%; table-layout: auto; }
 }

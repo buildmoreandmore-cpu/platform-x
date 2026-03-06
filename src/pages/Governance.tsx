@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { ShieldCheck, Calendar, FileText, AlertTriangle, GitPullRequest, FileCheck, Plus, Filter, CalendarPlus } from 'lucide-react';
+import { ShieldCheck, Calendar, FileText, AlertTriangle, GitPullRequest, FileCheck, Plus, Filter, CalendarPlus, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
@@ -8,6 +8,7 @@ import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { LockIndicator } from '@/components/LockIndicator';
 import { downloadICS } from '@/lib/ics';
+import { SharePointImportModal, SECTION_CONFIGS, type SectionImportConfig } from '@/components/SharePointImportModal';
 
 export function Governance({ projectId }: { projectId?: string }) {
   const projects = useStore(state => state.projects);
@@ -17,23 +18,28 @@ export function Governance({ projectId }: { projectId?: string }) {
   const submittals = useStore(state => state.submittals);
   const contractObligations = useStore(state => state.contractObligations);
   const lockRecords = useStore(state => state.lockRecords);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   const [activeTab, setActiveTab] = useState<'pipeline' | 'milestones' | 'risks' | 'co' | 'submittals' | 'obligations'>('pipeline');
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0].id);
   const [catFilter, setCatFilter] = useState<string>('All');
+  const [importSection, setImportSection] = useState<string | null>(null);
 
   const phases = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'];
+  const project = projects.find(p => p.id === selectedProjectId);
 
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight">Owner's Rep Governance</h1>
               <p className="text-sm text-[#7A8BA8] mt-1">Track project phases, milestones, documents, and risks.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
                 variant="compact"
                 filename={`governance-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
@@ -57,7 +63,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="flex space-x-6 border-b border-[#1E2A45]">
+          <div className="flex space-x-6 border-b border-[#1E2A45] overflow-x-auto">
             {[
               { id: 'pipeline', label: 'Pipeline', icon: GitPullRequest },
               { id: 'milestones', label: 'Milestones', icon: Calendar },
@@ -84,7 +90,7 @@ export function Governance({ projectId }: { projectId?: string }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full">
         {activeTab === 'pipeline' && (
           <div className="space-y-8">
             <div className="flex gap-4 overflow-x-auto pb-4">
@@ -130,10 +136,16 @@ export function Governance({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Project Milestones</h3>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
-                <Plus className="w-3.5 h-3.5" />
-                Add Milestone
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setImportSection('milestones')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  Import
+                </button>
+                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Milestone
+                </button>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
@@ -186,10 +198,16 @@ export function Governance({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Risk Log</h3>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
-                <Plus className="w-3.5 h-3.5" />
-                Log Risk
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setImportSection('risks')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  Import
+                </button>
+                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                  Log Risk
+                </button>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
@@ -234,10 +252,16 @@ export function Governance({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Change Orders</h3>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
-                <Plus className="w-3.5 h-3.5" />
-                Add Change Order
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setImportSection('changeOrders')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  Import
+                </button>
+                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Change Order
+                </button>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
@@ -394,6 +418,10 @@ export function Governance({ projectId }: { projectId?: string }) {
                 <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-white">All Obligations</h3>
                   <div className="flex items-center gap-2">
+                    <button onClick={() => setImportSection('contractObligations')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                      <FileSpreadsheet className="w-3.5 h-3.5" />
+                      Import
+                    </button>
                     {categories.map(c => (
                       <button
                         key={c}
@@ -449,6 +477,20 @@ export function Governance({ projectId }: { projectId?: string }) {
           );
         })()}
       </div>
+
+      {importSection && SECTION_CONFIGS[importSection] && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS[importSection]}
+          contextFields={{ projectId: project?.id || '' }}
+          contextLabel={project?.name || 'Governance'}
+          onClose={() => setImportSection(null)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch(SECTION_CONFIGS[importSection].storeKey, items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({ type: SECTION_CONFIGS[importSection].sectionName, source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId });
+          }}
+        />
+      )}
     </div>
   );
 }

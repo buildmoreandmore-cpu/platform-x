@@ -35,7 +35,7 @@ export function Projects() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Projects</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage ESPC projects across all phases.</p>
           </div>
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+          <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
             <Plus className="w-4 h-4" />
             New Project
           </button>
@@ -49,7 +49,7 @@ export function Projects() {
               placeholder="Search projects..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm"
+              className="w-full pl-10 pr-4 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent shadow-sm"
             />
           </div>
           <button className="inline-flex items-center gap-2 px-3 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors shadow-sm">
@@ -67,23 +67,23 @@ export function Projects() {
               <div 
                 key={project.id} 
                 onClick={() => navigate(`/app/projects/${project.id}`)}
-                className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 hover:border-emerald-500/50 transition-colors cursor-pointer group flex flex-col"
+                className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 hover:border-[#0D918C]/50 transition-colors cursor-pointer group flex flex-col"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                    <FolderOpen className="w-5 h-5 text-neutral-400 group-hover:text-emerald-500 transition-colors" />
+                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center group-hover:bg-[#0D918C]/20 transition-colors">
+                    <FolderOpen className="w-5 h-5 text-neutral-400 group-hover:text-[#37BB26] transition-colors" />
                   </div>
                   <span className={cn(
                     "px-2.5 py-1 rounded text-xs font-medium border",
                     project.phase === 'Construction' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
                     project.phase === 'M&V' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
-                    "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                    "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20"
                   )}>
                     {project.phase.toUpperCase()}
                   </span>
                 </div>
                 
-                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-emerald-600 transition-colors">{project.name}</h3>
+                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#37BB26] transition-colors">{project.name}</h3>
                 <p className="text-sm text-[#7A8BA8] mb-6">{org?.name}</p>
                 
                 <div className="mt-auto pt-4 border-t border-[#1E2A45] space-y-3">

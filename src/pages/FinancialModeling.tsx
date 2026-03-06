@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Calculator, TrendingUp, AlertTriangle, CheckCircle2, DollarSign, Leaf, Search, Filter, Plus } from 'lucide-react';
+import { Calculator, TrendingUp, AlertTriangle, CheckCircle2, DollarSign, Leaf, Search, Filter, Plus, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
@@ -8,19 +8,25 @@ import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { FreshnessBadge } from '@/components/FreshnessBadge';
 import { LockIndicator } from '@/components/LockIndicator';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function FinancialModeling({ projectId }: { projectId?: string }) {
   const projects = useStore(state => state.projects);
   const ecms = useStore(state => state.ecms);
   const pricingReview = useStore(state => state.pricingReview);
   const lockRecords = useStore(state => state.lockRecords);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[1].id); // Default to project with ECMs
   const [term, setTerm] = useState(15);
   const [interestRate, setInterestRate] = useState(4.5);
   const [elecEscalation, setElecEscalation] = useState(3.0);
   const [subTab, setSubTab] = useState<'ecm' | 'pricing'>('ecm');
+  const [showImportModal, setShowImportModal] = useState(false);
   
+  const selectedProject = projects.find(p => p.id === selectedProjectId);
   const projectEcms = ecms.filter(e => e.projectId === selectedProjectId);
   
   const totalCost = projectEcms.reduce((sum, e) => sum + e.cost, 0);
@@ -56,8 +62,8 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight inline-flex items-center gap-3">
                 Financial Modeling & ESPC Structuring
@@ -65,7 +71,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
               </h1>
               <p className="text-sm text-[#7A8BA8] mt-1">Build ECM bundles, model cash flows, and analyze guarantee risk.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
                 variant="compact"
                 filename={`financial-model-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
@@ -78,6 +84,10 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                   'SIR': e.savings > 0 ? Number((e.savings * term / e.cost).toFixed(2)) : 0,
                 }))}
               />
+              <button onClick={() => setShowImportModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                <FileSpreadsheet className="w-4 h-4" />
+                Import from SharePoint
+              </button>
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <Calculator className="w-4 h-4" />
                 Compare Scenarios
@@ -109,7 +119,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         {subTab === 'ecm' && (<>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
@@ -375,6 +385,30 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
           );
         })()}
       </div>
+
+      {/* SharePoint Import Modal */}
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.ecms}
+          contextFields={{ projectId: selectedProjectId }}
+          contextLabel={selectedProject?.name || 'Financial Modeling'}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('ecms', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({
+              type: 'ECMs',
+              source: 'SharePoint',
+              date: new Date().toISOString(),
+              records: count,
+              status: 'Success',
+              user: 'Martin',
+              fileName: fName,
+              batchId,
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -40,11 +40,11 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
             <div key={ph} className="flex items-center gap-1.5">
               <div
                 className={`w-2.5 h-2.5 rounded-full ${
-                  i < phaseIndex ? 'bg-emerald-500' : i === phaseIndex ? 'bg-emerald-400 ring-2 ring-emerald-200' : 'bg-gray-200'
+                  i < phaseIndex ? 'bg-[#0D918C]' : i === phaseIndex ? 'bg-[#0D918C] ring-2 ring-[#0D918C]/30' : 'bg-gray-200'
                 }`}
                 title={ph}
               />
-              {i < PHASES.length - 1 && <div className={`w-4 h-px ${i < phaseIndex ? 'bg-emerald-400' : 'bg-gray-200'}`} />}
+              {i < PHASES.length - 1 && <div className={`w-4 h-px ${i < phaseIndex ? 'bg-[#0D918C]' : 'bg-gray-200'}`} />}
             </div>
           ))}
         </div>
@@ -76,7 +76,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
       <div
         className={`rounded-lg px-4 py-2.5 text-sm font-medium flex items-center gap-2 ${
           aboveCount === 0
-            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+            ? 'bg-[#0D918C]/10 text-[#228B17] border border-[#0D918C]/30'
             : belowCount === 0
               ? 'bg-red-50 text-red-800 border border-red-200'
               : 'bg-amber-50 text-amber-800 border border-amber-200'
@@ -117,7 +117,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
                         <p className="font-semibold mb-0.5">{b.buildingName}</p>
                         <p>Baseline: {b.baselineAnnualKwh.toLocaleString()} kWh</p>
                         <p>Current: {b.currentAnnualKwh.toLocaleString()} kWh</p>
-                        <p className={saving ? 'text-emerald-300' : 'text-red-300'}>
+                        <p className={saving ? 'text-[#37BB26]' : 'text-red-300'}>
                           {saving ? 'Savings' : 'Over'}: {Math.abs(diff).toLocaleString()} kWh ({Math.abs(pct).toFixed(1)}%)
                         </p>
                       </div>
@@ -130,7 +130,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
                         <p className="font-semibold mb-0.5">{b.buildingName}</p>
                         <p>Baseline: {b.baselineAnnualKwh.toLocaleString()} kWh</p>
                         <p>Current: {b.currentAnnualKwh.toLocaleString()} kWh</p>
-                        <p className={saving ? 'text-emerald-300' : 'text-red-300'}>
+                        <p className={saving ? 'text-[#37BB26]' : 'text-red-300'}>
                           {saving ? 'Savings' : 'Over'}: {Math.abs(diff).toLocaleString()} kWh ({Math.abs(pct).toFixed(1)}%)
                         </p>
                       </div>
@@ -212,13 +212,13 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
             </div>
             <div className="border-t border-gray-200 pt-2 flex justify-between text-xs">
               <span className="text-gray-500">Difference</span>
-              <span className={`font-semibold ${totalDiff >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              <span className={`font-semibold ${totalDiff >= 0 ? 'text-[#37BB26]' : 'text-red-600'}`}>
                 {totalDiff >= 0 ? '-' : '+'}{Math.abs(totalDiff).toLocaleString()} kWh ({Math.abs(totalPct).toFixed(1)}%)
               </span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-gray-500">CO&#8322; Avoided</span>
-              <span className={`font-semibold ${totalCO2 >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              <span className={`font-semibold ${totalCO2 >= 0 ? 'text-[#37BB26]' : 'text-red-600'}`}>
                 {Math.abs(totalCO2).toFixed(1)} tCO&#8322;
               </span>
             </div>
@@ -245,13 +245,13 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
                 </div>
                 <div className="border-t border-gray-200 pt-2 flex justify-between text-xs">
                   <span className="text-gray-500">Difference</span>
-                  <span className={`font-semibold ${saving ? 'text-emerald-600' : 'text-red-600'}`}>
+                  <span className={`font-semibold ${saving ? 'text-[#37BB26]' : 'text-red-600'}`}>
                     {saving ? '-' : '+'}{Math.abs(diff).toLocaleString()} kWh ({Math.abs(pct).toFixed(1)}%)
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
                   <span className="text-gray-500">CO&#8322; Impact</span>
-                  <span className={`font-semibold ${saving ? 'text-emerald-600' : 'text-red-600'}`}>
+                  <span className={`font-semibold ${saving ? 'text-[#37BB26]' : 'text-red-600'}`}>
                     {saving ? '-' : '+'}{Math.abs(co2).toFixed(1)} tCO&#8322;
                   </span>
                 </div>

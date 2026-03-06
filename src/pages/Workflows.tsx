@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { CheckCircle2, Clock, AlertCircle, Plus, Filter, Calendar } from 'lucide-react';
+import { CheckCircle2, Clock, AlertCircle, Plus, Filter, Calendar, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function Workflows() {
   const tasks = useStore(state => state.tasks);
   const projects = useStore(state => state.projects);
   const updateTaskStatus = useStore(state => state.updateTaskStatus);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   const [filter, setFilter] = useState<'all' | 'my' | 'overdue'>('my');
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'my') return task.assignedTo === 'Martin';
@@ -21,13 +26,13 @@ export function Workflows() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Productivity & Workflow</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage tasks, approvals, and automated reminders.</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <ExportButton
               variant="compact"
               filename="tasks"
@@ -40,7 +45,14 @@ export function Workflows() {
                 'Status': t.status,
               }))}
             />
-            <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+            >
+              <FileSpreadsheet className="w-4 h-4" />
+              Import from SharePoint
+            </button>
+            <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
               <Plus className="w-4 h-4" />
               New Task
             </button>
@@ -53,7 +65,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'my' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -65,7 +77,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'all' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -77,7 +89,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'overdue' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -87,7 +99,7 @@ export function Workflows() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
           <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
             <h3 className="text-sm font-semibold text-white">Task List</h3>
@@ -125,8 +137,8 @@ export function Workflows() {
                           className={cn(
                             "w-5 h-5 rounded border flex items-center justify-center transition-colors",
                             task.status === 'Completed' 
-                              ? "bg-emerald-500 border-emerald-500 text-white" 
-                              : "border-[#2A3A5C] hover:border-emerald-500 group-hover:bg-[#1E2A45]"
+                              ? "bg-[#0D918C] border-[#0D918C] text-white" 
+                              : "border-[#2A3A5C] hover:border-[#0D918C] group-hover:bg-[#1E2A45]"
                           )}
                         >
                           {task.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
@@ -204,6 +216,19 @@ export function Workflows() {
           </div>
         </div>
       </div>
+
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.tasks}
+          contextFields={{}}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('tasks', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({ type: 'Tasks', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId });
+          }}
+        />
+      )}
     </div>
   );
 }

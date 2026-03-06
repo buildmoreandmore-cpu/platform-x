@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText } from 'lucide-react';
+import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
 import { FreshnessBadge } from '@/components/FreshnessBadge';
 import { LockIndicator } from '@/components/LockIndicator';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function MV({ projectId }: { projectId?: string }) {
   const projects = useStore(state => state.projects);
   const mvData = useStore(state => state.mvData);
   const lockRecords = useStore(state => state.lockRecords);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
+
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[2].id); // Default to construction/M&V project
   const projectMvData = mvData.filter(d => d.projectId === selectedProjectId);
@@ -26,8 +32,8 @@ export function MV({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-white tracking-tight">Measurement & Verification</h1>
@@ -35,11 +41,11 @@ export function MV({ projectId }: { projectId?: string }) {
               </div>
               <p className="text-sm text-[#7A8BA8] mt-1">Track post-retrofit savings vs guarantee and detect performance drift.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <select 
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5"
+                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5"
               >
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
@@ -56,6 +62,13 @@ export function MV({ projectId }: { projectId?: string }) {
                   'Drift Detected': d.driftDetected ? 'Yes' : 'No',
                 }))}
               />
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Import from SharePoint
+              </button>
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <FileText className="w-4 h-4" />
                 Generate M&V Report
@@ -65,7 +78,7 @@ export function MV({ projectId }: { projectId?: string }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         {hasDrift && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6 flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-1">
@@ -100,7 +113,7 @@ export function MV({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Total Achieved</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-4xl font-bold ${totalCalculated >= totalGuaranteed ? 'text-emerald-500' : 'text-amber-500'}`}>
+              <span className={`text-4xl font-bold ${totalCalculated >= totalGuaranteed ? 'text-[#37BB26]' : 'text-amber-500'}`}>
                 ${totalCalculated.toLocaleString()}
               </span>
             </div>
@@ -109,7 +122,7 @@ export function MV({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Achievement Rate</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-4xl font-bold ${achievementRate >= 100 ? 'text-emerald-500' : 'text-amber-500'}`}>
+              <span className={`text-4xl font-bold ${achievementRate >= 100 ? 'text-[#37BB26]' : 'text-amber-500'}`}>
                 {achievementRate.toFixed(1)}%
               </span>
             </div>
@@ -138,7 +151,7 @@ export function MV({ projectId }: { projectId?: string }) {
                         </div>
                       </div>
                       <div 
-                        className={`w-1/3 rounded-t-sm relative group ${isShortfall ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                        className={`w-1/3 rounded-t-sm relative group ${isShortfall ? 'bg-amber-500' : 'bg-[#0D918C]'}`}
                         style={{ height: `${calculatedHeight}%` }}
                       >
                         <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10 pointer-events-none">
@@ -157,7 +170,7 @@ export function MV({ projectId }: { projectId?: string }) {
                 <span>Guaranteed</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-emerald-500 rounded-sm"></div>
+                <div className="w-3 h-3 bg-[#0D918C] rounded-sm"></div>
                 <span>Achieved (Surplus)</span>
               </div>
               <div className="flex items-center gap-2">
@@ -218,13 +231,13 @@ export function MV({ projectId }: { projectId?: string }) {
                             type="number"
                           />
                         </td>
-                        <td className={`px-6 py-4 text-right font-mono ${isShortfall ? 'text-amber-500' : 'text-emerald-500'}`}>
+                        <td className={`px-6 py-4 text-right font-mono ${isShortfall ? 'text-amber-500' : 'text-[#37BB26]'}`}>
                           {isShortfall ? '' : '+'}${variance.toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
                           <span className={cn(
                             "px-2.5 py-1 rounded text-xs font-medium border",
-                            !isShortfall ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                            !isShortfall ? "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20" :
                             "bg-amber-500/10 text-amber-500 border-amber-500/20"
                           )}>
                             {!isShortfall ? 'SURPLUS' : 'SHORTFALL'}
@@ -244,6 +257,28 @@ export function MV({ projectId }: { projectId?: string }) {
           </div>
         </div>
       </div>
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.mvData}
+          contextFields={{ projectId: selectedProjectId }}
+          contextLabel={projects.find(p => p.id === selectedProjectId)?.name || selectedProjectId}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('mvData', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({
+              type: 'M&V Data',
+              source: 'SharePoint',
+              date: new Date().toISOString(),
+              records: count,
+              status: 'Success',
+              user: 'Martin',
+              fileName: fName,
+              batchId,
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

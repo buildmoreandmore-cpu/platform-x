@@ -1,34 +1,48 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { BookOpen, Search, Filter, Lightbulb, TrendingDown, DollarSign, FileText } from 'lucide-react';
+import { BookOpen, Search, Filter, Lightbulb, TrendingDown, DollarSign, FileText, FileSpreadsheet } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
 import { AuditTrailPanel } from '@/components/AuditTrailPanel';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 export function KnowledgeBase() {
   const benchmarks = useStore(state => state.benchmarks);
   const lessonsLearned = useStore(state => state.lessonsLearned);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
 
   const [activeTab, setActiveTab] = useState<'benchmarks' | 'lessons' | 'templates'>('benchmarks');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showImportModal, setShowImportModal] = useState(false);
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Knowledge Capture & Institutional Memory</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Store historical data, benchmark costs/savings, prevent repeating mistakes.</p>
           </div>
-          <ExportButton
-            variant="compact"
-            filename="knowledge-base"
-            sheets={[
-              { name: 'Benchmarks', data: benchmarks.map(b => ({ 'Category': b.category, 'Building Type': b.buildingType, 'Unit Cost (Mid)': b.unitCostMid, 'Unit': b.unit, 'Savings (Mid %)': b.savingsMid, 'Source': b.source })) },
-              { name: 'Lessons Learned', data: lessonsLearned.map(l => ({ 'Title': l.title, 'Category': l.category, 'Description': l.description, 'Recommendation': l.recommendation })) },
-            ]}
-          />
+          <div className="flex items-center gap-3">
+            <ExportButton
+              variant="compact"
+              filename="knowledge-base"
+              sheets={[
+                { name: 'Benchmarks', data: benchmarks.map(b => ({ 'Category': b.category, 'Building Type': b.buildingType, 'Unit Cost (Mid)': b.unitCostMid, 'Unit': b.unit, 'Savings (Mid %)': b.savingsMid, 'Source': b.source })) },
+                { name: 'Lessons Learned', data: lessonsLearned.map(l => ({ 'Title': l.title, 'Category': l.category, 'Description': l.description, 'Recommendation': l.recommendation })) },
+              ]}
+            />
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+            >
+              <FileSpreadsheet className="w-4 h-4" />
+              Import from SharePoint
+            </button>
+          </div>
         </div>
 
         <div className="flex space-x-6 border-b border-[#1E2A45]">
@@ -37,7 +51,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'benchmarks' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -49,7 +63,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'lessons' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -61,7 +75,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'templates' 
-                ? "border-emerald-500 text-emerald-600"
+                ? "border-[#0D918C] text-[#37BB26]"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -71,7 +85,7 @@ export function KnowledgeBase() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full space-y-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         <div className="flex items-center justify-between">
           <div className="relative w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -80,7 +94,7 @@ export function KnowledgeBase() {
               placeholder="Search knowledge base..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-sm"
+              className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent shadow-sm"
             />
           </div>
           <button className="inline-flex items-center gap-2 px-3 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors shadow-sm">
@@ -122,7 +136,7 @@ export function KnowledgeBase() {
                         />
                       </td>
                       <td className="px-6 py-4 text-[#9AA5B8]">{benchmark.unit}</td>
-                      <td className="px-6 py-4 text-right text-emerald-500 font-mono">
+                      <td className="px-6 py-4 text-right text-[#37BB26] font-mono">
                         <EditableField
                           value={benchmark.savingsMid}
                           entityType="benchmark"
@@ -154,10 +168,10 @@ export function KnowledgeBase() {
         {activeTab === 'lessons' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {lessonsLearned.filter(l => l.title.toLowerCase().includes(searchQuery.toLowerCase())).map((lesson) => (
-              <div key={lesson.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-emerald-500/50 transition-colors group">
+              <div key={lesson.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-[#0D918C]/50 transition-colors group">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-white group-hover:text-emerald-600 transition-colors">{lesson.title}</h3>
+                    <h3 className="text-lg font-semibold text-white group-hover:text-[#37BB26] transition-colors">{lesson.title}</h3>
                     <p className="text-sm text-[#7A8BA8] mt-1">Project: {useStore.getState().projects.find(p => p.id === lesson.projectId)?.name}</p>
                   </div>
                   <span className="px-2.5 py-1 rounded bg-[#1E2A45] text-xs font-medium text-[#9AA5B8] border border-[#2A3A5C]">
@@ -179,7 +193,7 @@ export function KnowledgeBase() {
                   </div>
                   <div>
                     <h4 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1">Recommendation</h4>
-                    <p className="text-sm text-emerald-600 leading-relaxed bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
+                    <p className="text-sm text-[#37BB26] leading-relaxed bg-[#0D918C]/10 p-3 rounded-lg border border-[#0D918C]/20">
                       <EditableField
                         value={lesson.recommendation}
                         entityType="lesson"
@@ -204,23 +218,36 @@ export function KnowledgeBase() {
               { id: 't3', title: 'M&V Plan Outline', desc: 'IPMVP Option C compliant M&V plan template.', updated: '2023-11-20' },
               { id: 't4', title: 'Commissioning Checklist', desc: 'Pre-functional and functional testing forms.', updated: '2024-03-05' }
             ].filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase())).map((template) => (
-              <div key={template.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-emerald-500/50 transition-colors group">
+              <div key={template.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-[#0D918C]/50 transition-colors group">
                 <div className="flex-1">
-                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                    <FileText className="w-5 h-5 text-[#7A8BA8] group-hover:text-emerald-500 transition-colors" />
+                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center mb-4 group-hover:bg-[#0D918C]/20 transition-colors">
+                    <FileText className="w-5 h-5 text-[#7A8BA8] group-hover:text-[#37BB26] transition-colors" />
                   </div>
                   <h3 className="text-base font-semibold text-white mb-2">{template.title}</h3>
                   <p className="text-sm text-[#7A8BA8] leading-relaxed">{template.desc}</p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-[#1E2A45] flex items-center justify-between">
                   <span className="text-xs text-[#7A8BA8] font-mono">Updated: {template.updated}</span>
-                  <button className="text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors">Download</button>
+                  <button className="text-sm font-medium text-[#37BB26] hover:text-[#2A9A1E] transition-colors">Download</button>
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.benchmarks}
+          contextFields={{}}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('benchmarks', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({ type: 'Benchmarks', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId });
+          }}
+        />
+      )}
     </div>
   );
 }

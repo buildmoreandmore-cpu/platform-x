@@ -95,7 +95,7 @@ export function ClientPortal() {
         <select
           value={selectedProjectId}
           onChange={e => { setSelectedProjectId(e.target.value); setActiveTab('overview'); }}
-          className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 p-2.5 shadow-sm"
+          className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] p-2.5 shadow-sm"
         >
           {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
@@ -110,7 +110,7 @@ export function ClientPortal() {
             className={cn(
               'flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all',
               activeTab === tab.id
-                ? 'bg-emerald-50 text-emerald-700 shadow-sm'
+                ? 'bg-[#0D918C]/10 text-[#2A9A1E] shadow-sm'
                 : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
             )}
           >
@@ -127,23 +127,23 @@ export function ClientPortal() {
           <div className="bg-white border border-gray-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-900">Project Phase</h3>
-              <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200">
+              <span className="px-3 py-1 bg-[#0D918C]/10 text-[#2A9A1E] text-xs font-semibold rounded-full border border-[#0D918C]/30">
                 {project.phase}
               </span>
             </div>
             <div className="relative">
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-3">
-                <div className="h-full bg-emerald-500 rounded-full transition-all duration-700" style={{ width: `${((phaseIndex + 1) / PHASES.length) * 100}%` }} />
+                <div className="h-full bg-[#0D918C] rounded-full transition-all duration-700" style={{ width: `${((phaseIndex + 1) / PHASES.length) * 100}%` }} />
               </div>
               <div className="flex justify-between">
                 {PHASES.map((phase, i) => (
                   <div key={phase} className="flex flex-col items-center gap-1">
                     <div className={cn('w-2.5 h-2.5 rounded-full border-2 -mt-[22px]',
-                      i < phaseIndex ? 'bg-emerald-500 border-emerald-500' :
-                      i === phaseIndex ? 'bg-white border-emerald-500 shadow-sm shadow-emerald-300' :
+                      i < phaseIndex ? 'bg-[#0D918C] border-[#0D918C]' :
+                      i === phaseIndex ? 'bg-white border-[#0D918C] shadow-sm shadow-[#0D918C]' :
                       'bg-white border-gray-300'
                     )} />
-                    <span className={cn('text-[9px] font-medium uppercase tracking-wide hidden sm:block', i <= phaseIndex ? 'text-emerald-600' : 'text-gray-400')}>{phase}</span>
+                    <span className={cn('text-[9px] font-medium uppercase tracking-wide hidden sm:block', i <= phaseIndex ? 'text-[#37BB26]' : 'text-gray-400')}>{phase}</span>
                   </div>
                 ))}
               </div>
@@ -173,7 +173,7 @@ export function ClientPortal() {
             <div className="bg-white border border-gray-200 rounded-xl p-5">
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">M&V Achievement</p>
               {mvAchievement !== null ? (
-                <p className={cn('text-2xl md:text-3xl font-bold', mvAchievement >= 100 ? 'text-emerald-600' : 'text-amber-600')}>{mvAchievement.toFixed(1)}%</p>
+                <p className={cn('text-2xl md:text-3xl font-bold', mvAchievement >= 100 ? 'text-[#37BB26]' : 'text-amber-600')}>{mvAchievement.toFixed(1)}%</p>
               ) : (
                 <div className="flex items-center gap-2">
                   <Icon icon="solar:lock-bold-duotone" className="w-4 h-4 text-gray-300" />
@@ -187,7 +187,7 @@ export function ClientPortal() {
             <div className="bg-white border border-gray-200 rounded-xl p-5">
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Carbon Reduced</p>
               {carbonReduction !== null ? (
-                <p className="text-2xl md:text-3xl font-bold text-emerald-600">{carbonReduction} tCO&#8322;e</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#37BB26]">{carbonReduction} tCO&#8322;e</p>
               ) : (
                 <div>
                   <p className="text-sm font-bold text-gray-300">Estimated after energy analysis</p>
@@ -202,12 +202,12 @@ export function ClientPortal() {
                 <p className="text-2xl md:text-3xl font-bold text-amber-600">{pFindings.length}</p>
               ) : phaseIndex <= 1 ? (
                 <div>
-                  <p className="text-2xl font-bold text-emerald-600">0</p>
+                  <p className="text-2xl font-bold text-[#37BB26]">0</p>
                   <p className="text-[10px] text-gray-400 mt-1">Audit in progress — findings will appear as equipment is assessed</p>
                 </div>
               ) : (
                 <div>
-                  <p className="text-2xl font-bold text-emerald-600">0</p>
+                  <p className="text-2xl font-bold text-[#37BB26]">0</p>
                   <p className="text-[10px] text-gray-400 mt-1">No open findings</p>
                 </div>
               )}
@@ -219,8 +219,8 @@ export function ClientPortal() {
             <div className="bg-white border border-gray-200 rounded-xl p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
-                    <Icon icon="solar:tag-price-bold-duotone" className="w-5 h-5 text-emerald-600" />
+                  <div className="w-10 h-10 bg-[#0D918C]/10 rounded-lg flex items-center justify-center">
+                    <Icon icon="solar:tag-price-bold-duotone" className="w-5 h-5 text-[#37BB26]" />
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900">Pricing Review</h3>
@@ -229,7 +229,7 @@ export function ClientPortal() {
                 </div>
                 <span className={cn('px-3 py-1 text-xs font-semibold rounded-full border',
                   pricingReviewed === pPricing.length
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30'
                     : 'bg-amber-50 text-amber-700 border-amber-200'
                 )}>
                   {pricingReviewed === pPricing.length ? 'All Pricing Verified' : `${pPricing.length - pricingReviewed} Under Review`}
@@ -248,17 +248,17 @@ export function ClientPortal() {
                 {pNotifications.slice(0, 5).map(n => (
                   <div key={n.id} className="px-5 py-4 flex items-start gap-3">
                     <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5',
-                      n.type === 'alert' ? 'bg-amber-50' : n.type === 'report' ? 'bg-blue-50' : n.type === 'milestone' ? 'bg-emerald-50' : 'bg-gray-50'
+                      n.type === 'alert' ? 'bg-amber-50' : n.type === 'report' ? 'bg-blue-50' : n.type === 'milestone' ? 'bg-[#0D918C]/10' : 'bg-gray-50'
                     )}>
                       <Icon
                         icon={n.type === 'alert' ? 'solar:danger-triangle-bold-duotone' : n.type === 'report' ? 'solar:document-bold-duotone' : n.type === 'milestone' ? 'solar:flag-bold-duotone' : 'solar:folder-bold-duotone'}
-                        className={cn('w-4 h-4', n.type === 'alert' ? 'text-amber-500' : n.type === 'report' ? 'text-blue-500' : n.type === 'milestone' ? 'text-emerald-500' : 'text-gray-400')}
+                        className={cn('w-4 h-4', n.type === 'alert' ? 'text-amber-500' : n.type === 'report' ? 'text-blue-500' : n.type === 'milestone' ? 'text-[#37BB26]' : 'text-gray-400')}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-gray-900">{n.title}</p>
-                        {!n.read && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
+                        {!n.read && <div className="w-1.5 h-1.5 rounded-full bg-[#0D918C] flex-shrink-0" />}
                       </div>
                       <p className="text-xs text-gray-500 mt-0.5">{n.description}</p>
                       <p className="text-[10px] text-gray-400 mt-1 font-mono">{n.date}</p>
@@ -282,7 +282,7 @@ export function ClientPortal() {
                   const activities: { id: string; text: string; date: string; icon: string; color: string }[] = [];
                   const completedTimeline = pTimeline.filter(t => t.status === 'completed');
                   completedTimeline.slice(-2).forEach(t => {
-                    activities.push({ id: `tl-${t.id}`, text: `${t.name} completed`, date: t.endDate, icon: 'solar:check-circle-bold-duotone', color: 'text-emerald-500' });
+                    activities.push({ id: `tl-${t.id}`, text: `${t.name} completed`, date: t.endDate, icon: 'solar:check-circle-bold-duotone', color: 'text-[#37BB26]' });
                   });
                   const inProgressTimeline = pTimeline.filter(t => t.status === 'in progress');
                   inProgressTimeline.forEach(t => {
@@ -290,7 +290,7 @@ export function ClientPortal() {
                   });
                   if (activities.length === 0) {
                     activities.push(
-                      { id: 'gen1', text: '2KB team conducting site surveys', date: new Date().toISOString().split('T')[0], icon: 'solar:camera-bold-duotone', color: 'text-emerald-500' },
+                      { id: 'gen1', text: '2KB team conducting site surveys', date: new Date().toISOString().split('T')[0], icon: 'solar:camera-bold-duotone', color: 'text-[#37BB26]' },
                       { id: 'gen2', text: 'Energy data collection underway', date: new Date().toISOString().split('T')[0], icon: 'solar:graph-bold-duotone', color: 'text-blue-500' },
                     );
                   }
@@ -354,7 +354,7 @@ export function ClientPortal() {
                             <p className="text-[10px] text-gray-400">{r.version} &middot; {r.date}</p>
                           </div>
                         </div>
-                        <button className="text-[10px] text-emerald-600 font-medium">View</button>
+                        <button className="text-[10px] text-[#37BB26] font-medium">View</button>
                       </div>
                     ))}
                   </div>
@@ -381,15 +381,15 @@ export function ClientPortal() {
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Total Achieved</p>
-                <p className={cn('text-2xl font-bold', totalCalculated >= totalGuaranteed ? 'text-emerald-600' : 'text-amber-600')}>{totalCalculated > 0 ? `$${totalCalculated.toLocaleString()}` : '\u2014'}</p>
+                <p className={cn('text-2xl font-bold', totalCalculated >= totalGuaranteed ? 'text-[#37BB26]' : 'text-amber-600')}>{totalCalculated > 0 ? `$${totalCalculated.toLocaleString()}` : '\u2014'}</p>
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Achievement Rate</p>
-                <p className={cn('text-2xl font-bold', mvAchievement !== null && mvAchievement >= 100 ? 'text-emerald-600' : 'text-amber-600')}>
+                <p className={cn('text-2xl font-bold', mvAchievement !== null && mvAchievement >= 100 ? 'text-[#37BB26]' : 'text-amber-600')}>
                   {mvAchievement !== null ? `${mvAchievement.toFixed(1)}%` : '\u2014'}
                 </p>
                 {pMvData.length >= 2 && (
-                  <p className={cn('text-xs mt-1', pMvData[pMvData.length - 1].calculated >= pMvData[pMvData.length - 2].calculated ? 'text-emerald-600' : 'text-red-500')}>
+                  <p className={cn('text-xs mt-1', pMvData[pMvData.length - 1].calculated >= pMvData[pMvData.length - 2].calculated ? 'text-[#37BB26]' : 'text-red-500')}>
                     {pMvData[pMvData.length - 1].calculated >= pMvData[pMvData.length - 2].calculated ? '\u2191 Trending up' : '\u2193 Trending down'}
                   </p>
                 )}
@@ -416,7 +416,7 @@ export function ClientPortal() {
                             Guaranteed: ${d.guaranteed.toLocaleString()}
                           </div>
                         </div>
-                        <div className={cn('w-2/5 rounded-t relative group', surplus ? 'bg-emerald-500' : 'bg-amber-400')} style={{ height: `${cH}%` }}>
+                        <div className={cn('w-2/5 rounded-t relative group', surplus ? 'bg-[#0D918C]' : 'bg-amber-400')} style={{ height: `${cH}%` }}>
                           <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] py-1 px-2 rounded whitespace-nowrap z-10 pointer-events-none">
                             Achieved: ${d.calculated.toLocaleString()}
                           </div>
@@ -429,7 +429,7 @@ export function ClientPortal() {
               </div>
               <div className="mt-4 flex items-center justify-center gap-5 text-xs text-gray-500">
                 <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-gray-100 rounded-sm inline-block" />Guaranteed</span>
-                <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-emerald-500 rounded-sm inline-block" />Achieved</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-[#0D918C] rounded-sm inline-block" />Achieved</span>
               </div>
             </div>
           ) : (
@@ -443,27 +443,27 @@ export function ClientPortal() {
                 {pEcms.map(ecm => (
                   <div key={ecm.id} className="px-5 py-4 flex items-center justify-between">
                     <div><p className="text-sm font-medium text-gray-900">{ecm.description}</p><p className="text-xs text-gray-500">{ecm.category} &middot; {ecm.number}</p></div>
-                    <p className="text-sm font-semibold text-emerald-600">${ecm.savings.toLocaleString()}/yr</p>
+                    <p className="text-sm font-semibold text-[#37BB26]">${ecm.savings.toLocaleString()}/yr</p>
                   </div>
                 ))}
                 <div className="px-5 py-4 flex items-center justify-between bg-gray-50">
                   <span className="text-sm font-semibold text-gray-700">Total Annual Savings</span>
-                  <span className="text-lg font-bold text-emerald-600">${pEcms.reduce((s, e) => s + e.savings, 0).toLocaleString()}</span>
+                  <span className="text-lg font-bold text-[#37BB26]">${pEcms.reduce((s, e) => s + e.savings, 0).toLocaleString()}</span>
                 </div>
               </div>
             </div>
           )}
 
           {carbonReduction !== null && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+            <div className="bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
-                <Icon icon="solar:leaf-bold-duotone" className="w-5 h-5 text-emerald-600" />
-                <h3 className="text-sm font-semibold text-emerald-800">Carbon Impact</h3>
+                <Icon icon="solar:leaf-bold-duotone" className="w-5 h-5 text-[#37BB26]" />
+                <h3 className="text-sm font-semibold text-[#228B17]">Carbon Impact</h3>
               </div>
               <div className="grid grid-cols-3 gap-4">
-                <div><p className="text-2xl font-bold text-emerald-700">{carbonReduction}</p><p className="text-xs text-emerald-600">tCO&#8322;e reduced</p></div>
-                <div><p className="text-2xl font-bold text-emerald-700">{Math.round(carbonReduction * 0.22)}</p><p className="text-xs text-emerald-600">cars off road equivalent</p></div>
-                <div><p className="text-2xl font-bold text-emerald-700">{Math.round(carbonReduction * 16.5)}</p><p className="text-xs text-emerald-600">trees planted equivalent</p></div>
+                <div><p className="text-2xl font-bold text-[#2A9A1E]">{carbonReduction}</p><p className="text-xs text-[#37BB26]">tCO&#8322;e reduced</p></div>
+                <div><p className="text-2xl font-bold text-[#2A9A1E]">{Math.round(carbonReduction * 0.22)}</p><p className="text-xs text-[#37BB26]">cars off road equivalent</p></div>
+                <div><p className="text-2xl font-bold text-[#2A9A1E]">{Math.round(carbonReduction * 16.5)}</p><p className="text-xs text-[#37BB26]">trees planted equivalent</p></div>
               </div>
             </div>
           )}
@@ -477,7 +477,7 @@ export function ClientPortal() {
             <h3 className="text-sm font-semibold text-gray-900 mb-4">Guarantee Summary</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div><p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Annual Guarantee</p><p className="text-xl font-bold text-gray-900">{pMvData.length > 0 ? `$${pMvData[pMvData.length - 1].guaranteed.toLocaleString()}` : '\u2014'}</p></div>
-              <div><p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Achievement</p><p className={cn('text-xl font-bold', mvAchievement !== null && mvAchievement >= 100 ? 'text-emerald-600' : 'text-amber-600')}>{mvAchievement !== null ? `${mvAchievement.toFixed(1)}%` : '\u2014'}</p></div>
+              <div><p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Achievement</p><p className={cn('text-xl font-bold', mvAchievement !== null && mvAchievement >= 100 ? 'text-[#37BB26]' : 'text-amber-600')}>{mvAchievement !== null ? `${mvAchievement.toFixed(1)}%` : '\u2014'}</p></div>
               <div><p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Years Remaining</p><p className="text-xl font-bold text-gray-900">17</p></div>
               <div><p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Next Verification</p><p className="text-xl font-bold text-gray-900">Dec 2025</p></div>
             </div>
@@ -496,7 +496,7 @@ export function ClientPortal() {
                         <span className="text-xs text-gray-500 font-mono">{w.dueDate || 'Ongoing'}</span>
                         <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
                           w.status === 'Coming Due' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                          w.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                          w.status === 'Completed' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' :
                           'bg-blue-50 text-blue-600 border-blue-200'
                         )}>{w.status === 'Not Yet Due' ? 'Active' : w.status}</span>
                       </div>
@@ -522,7 +522,7 @@ export function ClientPortal() {
                       <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border flex-shrink-0',
                         o.status === 'Overdue' ? 'bg-red-50 text-red-600 border-red-200' :
                         o.status === 'Coming Due' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                        o.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                        o.status === 'Completed' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' :
                         'bg-gray-50 text-gray-500 border-gray-200'
                       )}>{o.status}</span>
                     </div>
@@ -537,7 +537,7 @@ export function ClientPortal() {
             <div className="flex items-center gap-4">
               <div className="flex-1">
                 <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 rounded-full transition-all duration-500" style={{ width: `${totalObligationsCount > 0 ? (completedObligations / totalObligationsCount) * 100 : 0}%` }} />
+                  <div className="h-full bg-[#0D918C] rounded-full transition-all duration-500" style={{ width: `${totalObligationsCount > 0 ? (completedObligations / totalObligationsCount) * 100 : 0}%` }} />
                 </div>
               </div>
               <span className="text-sm font-semibold text-gray-900">{completedObligations} of {totalObligationsCount} completed</span>
@@ -554,7 +554,7 @@ export function ClientPortal() {
                     <div key={p.id} className="px-5 py-4 flex items-center justify-between">
                       <div><p className="text-sm font-medium text-gray-900">{p.description}</p><p className="text-xs text-gray-400 mt-0.5 italic">{p.clientSummary}</p></div>
                       <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
-                        p.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                        p.status === 'Completed' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' :
                         p.status === 'Coming Due' ? 'bg-amber-50 text-amber-700 border-amber-200' :
                         'bg-gray-50 text-gray-500 border-gray-200'
                       )}>{p.status === 'Completed' ? 'Paid' : p.status}</span>
@@ -580,7 +580,7 @@ export function ClientPortal() {
                       <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center"><Icon icon="solar:document-bold-duotone" className="w-4 h-4 text-blue-500" /></div>
                       <div><p className="text-sm font-medium text-gray-900">{r.type}</p><p className="text-xs text-gray-500">{r.version} &middot; {r.date}</p></div>
                     </div>
-                    <button className="text-xs text-emerald-600 font-medium hover:text-emerald-700 flex items-center gap-1">
+                    <button className="text-xs text-[#37BB26] font-medium hover:text-[#2A9A1E] flex items-center gap-1">
                       <Icon icon="solar:download-minimalistic-bold-duotone" className="w-4 h-4" />Download
                     </button>
                   </div>
@@ -597,7 +597,7 @@ export function ClientPortal() {
                   <div key={s.id} className="px-5 py-4 flex items-center justify-between">
                     <div><p className="text-sm font-medium text-gray-900">{s.description}</p><p className="text-xs text-gray-500">{s.number} &middot; {s.ecm} &middot; Submitted {s.submitted}</p></div>
                     <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
-                      s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+                      s.status === 'Approved' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' : 'bg-amber-50 text-amber-700 border-amber-200'
                     )}>{s.status}</span>
                   </div>
                 ))}
@@ -613,7 +613,7 @@ export function ClientPortal() {
                   <div key={c.id} className="px-5 py-4 flex items-center justify-between">
                     <div><p className="text-sm font-medium text-gray-900">{c.description}</p><p className="text-xs text-gray-500">{c.number} &middot; Requested by {c.requestedBy} &middot; ${c.cost.toLocaleString()} &middot; +{c.days} days</p></div>
                     <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
-                      c.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                      c.status === 'Approved' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' :
                       c.status === 'Rejected' ? 'bg-red-50 text-red-600 border-red-200' :
                       'bg-amber-50 text-amber-700 border-amber-200'
                     )}>{c.status}</span>
@@ -637,7 +637,7 @@ export function ClientPortal() {
                         <p className="text-xs text-gray-400 mt-0.5 italic">{p.clientSummary}</p>
                       </div>
                       <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
-                        isVerified ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+                        isVerified ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' : 'bg-amber-50 text-amber-700 border-amber-200'
                       )}>{isVerified ? 'Verified' : 'Under Review'}</span>
                     </div>
                   );
@@ -660,21 +660,21 @@ export function ClientPortal() {
               {PHASES.map((phase, i) => (
                 <div key={phase} className="flex items-center gap-4">
                   <div className={cn('w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border-2',
-                    i < phaseIndex ? 'bg-emerald-500 border-emerald-500' :
-                    i === phaseIndex ? 'bg-white border-emerald-500' :
+                    i < phaseIndex ? 'bg-[#0D918C] border-[#0D918C]' :
+                    i === phaseIndex ? 'bg-white border-[#0D918C]' :
                     'bg-white border-gray-200'
                   )}>
                     {i < phaseIndex ? (
                       <Icon icon="solar:check-read-bold-duotone" className="w-4 h-4 text-white" />
                     ) : i === phaseIndex ? (
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#0D918C]" />
                     ) : (
                       <span className="text-[10px] text-gray-400 font-mono">{i + 1}</span>
                     )}
                   </div>
                   <div className="flex-1"><p className={cn('text-sm font-medium', i <= phaseIndex ? 'text-gray-900' : 'text-gray-400')}>{phase}</p></div>
-                  {i < phaseIndex && <span className="text-[10px] text-emerald-600 font-semibold uppercase">Complete</span>}
-                  {i === phaseIndex && <span className="text-[10px] text-emerald-600 font-semibold uppercase">Current</span>}
+                  {i < phaseIndex && <span className="text-[10px] text-[#37BB26] font-semibold uppercase">Complete</span>}
+                  {i === phaseIndex && <span className="text-[10px] text-[#37BB26] font-semibold uppercase">Current</span>}
                 </div>
               ))}
             </div>
@@ -688,17 +688,17 @@ export function ClientPortal() {
                   <div key={m.id} className="px-5 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={cn('w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                        m.status === 'completed' ? 'bg-emerald-50' : m.status === 'overdue' ? 'bg-red-50' : m.status === 'in progress' ? 'bg-blue-50' : 'bg-gray-50'
+                        m.status === 'completed' ? 'bg-[#0D918C]/10' : m.status === 'overdue' ? 'bg-red-50' : m.status === 'in progress' ? 'bg-blue-50' : 'bg-gray-50'
                       )}>
                         <Icon
                           icon={m.status === 'completed' ? 'solar:check-circle-bold-duotone' : m.status === 'overdue' ? 'solar:danger-circle-bold-duotone' : 'solar:clock-circle-bold-duotone'}
-                          className={cn('w-4 h-4', m.status === 'completed' ? 'text-emerald-500' : m.status === 'overdue' ? 'text-red-500' : m.status === 'in progress' ? 'text-blue-500' : 'text-gray-400')}
+                          className={cn('w-4 h-4', m.status === 'completed' ? 'text-[#37BB26]' : m.status === 'overdue' ? 'text-red-500' : m.status === 'in progress' ? 'text-blue-500' : 'text-gray-400')}
                         />
                       </div>
                       <div><p className="text-sm font-medium text-gray-900">{m.name}</p><p className="text-xs text-gray-500 font-mono">{m.dueDate}</p></div>
                     </div>
                     <span className={cn('px-2 py-0.5 rounded text-[10px] font-semibold uppercase border',
-                      m.status === 'completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                      m.status === 'completed' ? 'bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/30' :
                       m.status === 'overdue' ? 'bg-red-50 text-red-600 border-red-200' :
                       m.status === 'in progress' ? 'bg-blue-50 text-blue-600 border-blue-200' :
                       'bg-gray-50 text-gray-500 border-gray-200'
@@ -739,16 +739,16 @@ export function ClientPortal() {
               {pTeam.map(t => (
                 <div key={t.id} className="px-5 py-5 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <span className="text-sm font-semibold text-emerald-700">{t.name.split(' ').map(n => n[0]).join('')}</span>
+                    <div className="w-11 h-11 rounded-full bg-[#0D918C]/15 flex items-center justify-center">
+                      <span className="text-sm font-semibold text-[#2A9A1E]">{t.name.split(' ').map(n => n[0]).join('')}</span>
                     </div>
                     <div><p className="text-sm font-semibold text-gray-900">{t.name}</p><p className="text-xs text-gray-500">{t.role}</p></div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <a href={`mailto:${t.email}`} className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center hover:bg-emerald-50 hover:border-emerald-200 transition-colors">
+                    <a href={`mailto:${t.email}`} className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center hover:bg-[#0D918C]/10 hover:border-[#0D918C]/30 transition-colors">
                       <Icon icon="solar:letter-bold-duotone" className="w-4 h-4 text-gray-500" />
                     </a>
-                    <a href={`tel:${t.phone}`} className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center hover:bg-emerald-50 hover:border-emerald-200 transition-colors">
+                    <a href={`tel:${t.phone}`} className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center hover:bg-[#0D918C]/10 hover:border-[#0D918C]/30 transition-colors">
                       <Icon icon="solar:phone-bold-duotone" className="w-4 h-4 text-gray-500" />
                     </a>
                   </div>
@@ -775,7 +775,7 @@ export function ClientPortal() {
                         <ul className="space-y-1.5">
                           {mn.actionItems.map((ai, i) => (
                             <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                              <Icon icon={ai.completed ? 'solar:check-circle-bold-duotone' : 'solar:clock-circle-bold-duotone'} className={cn('w-3.5 h-3.5 flex-shrink-0 mt-0.5', ai.completed ? 'text-emerald-500' : 'text-gray-400')} />
+                              <Icon icon={ai.completed ? 'solar:check-circle-bold-duotone' : 'solar:clock-circle-bold-duotone'} className={cn('w-3.5 h-3.5 flex-shrink-0 mt-0.5', ai.completed ? 'text-[#37BB26]' : 'text-gray-400')} />
                               <span className={ai.completed ? 'line-through text-gray-400' : ''}>{ai.text} <span className="text-gray-400">({ai.owner}, due {ai.dueDate})</span></span>
                             </li>
                           ))}
@@ -783,7 +783,7 @@ export function ClientPortal() {
                       </div>
                     )}
                     {!mn.acknowledged && (
-                      <button className="mt-3 text-xs text-emerald-600 font-medium hover:text-emerald-700 flex items-center gap-1">
+                      <button className="mt-3 text-xs text-[#37BB26] font-medium hover:text-[#2A9A1E] flex items-center gap-1">
                         <Icon icon="solar:check-read-bold-duotone" className="w-3.5 h-3.5" />
                         Acknowledge Notes
                       </button>
@@ -805,12 +805,12 @@ export function ClientPortal() {
 }
 
 /* ── Helper Components ── */
-function KPICard({ label, value, color }: { label: string; value: string; color?: 'emerald' | 'amber' }) {
+function KPICard({ label, value, color }: { label: string; value: string; color?: 'green' | 'amber' }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5">
       <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">{label}</p>
       <p className={cn('text-2xl md:text-3xl font-bold',
-        color === 'emerald' ? 'text-emerald-600' : color === 'amber' ? 'text-amber-600' : 'text-gray-900'
+        color === 'green' ? 'text-[#37BB26]' : color === 'amber' ? 'text-amber-600' : 'text-gray-900'
       )}>{value}</p>
     </div>
   );

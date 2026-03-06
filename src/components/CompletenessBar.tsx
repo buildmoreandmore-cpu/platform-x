@@ -75,8 +75,8 @@ export function CompletenessBar({ projectId, onClick }: CompletenessBarProps) {
   }
 
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
-  const color = percentage >= 80 ? 'bg-emerald-500' : percentage >= 50 ? 'bg-amber-500' : 'bg-red-500';
-  const textColor = percentage >= 80 ? 'text-emerald-500' : percentage >= 50 ? 'text-amber-500' : 'text-red-500';
+  const color = percentage >= 80 ? 'bg-[#0D918C]' : percentage >= 50 ? 'bg-amber-500' : 'bg-red-500';
+  const textColor = percentage >= 80 ? 'text-[#37BB26]' : percentage >= 50 ? 'text-amber-500' : 'text-red-500';
 
   return (
     <div className="relative">

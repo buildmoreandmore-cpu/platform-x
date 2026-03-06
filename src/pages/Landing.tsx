@@ -5,7 +5,7 @@ export function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen bg-[#060E09] text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 hero-gradient-bg">
         <div className="energy-blob energy-blob-1" />
@@ -18,12 +18,12 @@ export function Landing() {
       {/* Center content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <div className="relative mb-6">
-          <div className="absolute inset-0 m-auto w-32 h-32 rounded-full bg-teal-500/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
+          <div className="absolute inset-0 m-auto w-32 h-32 rounded-full bg-[#0D918C]/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
           <img src="/logo.webp" alt="2KB Energy" className="relative w-32 h-32 object-contain" />
         </div>
         <h1 className="text-4xl md:text-5xl tracking-tight mb-2" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
           <span className="text-white font-extrabold">2KB</span>{' '}
-          <span className="text-teal-400 font-light tracking-[0.2em]">Intelligence</span>
+          <span className="text-[#37BB26] font-light tracking-[0.2em]">Intelligence</span>
         </h1>
 
         <p className="text-base text-white/50 max-w-md mb-10 leading-relaxed">
@@ -33,17 +33,17 @@ export function Landing() {
         {/* Dual CTA */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <button
-            onClick={() => navigate('/app')}
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#060E09] text-sm font-semibold rounded-full hover:bg-teal-50 transition-colors duration-200 min-w-[200px] justify-center"
+            onClick={() => navigate('/login?redirect=/app')}
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#060E09] text-sm font-semibold rounded-full hover:bg-[#0D918C]/5 transition-colors duration-200 min-w-[200px] justify-center"
           >
             <Icon icon="solar:login-3-bold-duotone" className="w-5 h-5" />
             Engineer Login
           </button>
           <button
-            onClick={() => navigate('/client')}
+            onClick={() => navigate('/login?redirect=/client')}
             className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent text-white text-sm font-semibold rounded-full border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200 min-w-[200px] justify-center"
           >
-            <Icon icon="solar:monitor-bold-duotone" className="w-5 h-5 text-teal-400" />
+            <Icon icon="solar:monitor-bold-duotone" className="w-5 h-5 text-[#37BB26]" />
             Client Dashboard
           </button>
         </div>

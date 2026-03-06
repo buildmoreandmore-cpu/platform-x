@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useStore } from '@/store';
 import { cn } from '@/lib/utils';
-import { Calendar, Diamond, ChevronDown, CalendarPlus } from 'lucide-react';
+import { Calendar, Diamond, ChevronDown, CalendarPlus, FileSpreadsheet } from 'lucide-react';
 import { downloadICS } from '@/lib/ics';
+import { SharePointImportModal, SECTION_CONFIGS } from '@/components/SharePointImportModal';
 
 const STATUS_COLORS: Record<string, { bar: string; text: string; dot: string }> = {
   completed:     { bar: 'bg-emerald-500', text: 'text-emerald-700', dot: 'bg-emerald-500' },
@@ -35,7 +36,11 @@ function dayOffset(date: Date, rangeStart: Date, totalDays: number) {
 export function Timeline({ projectId }: { projectId?: string }) {
   const projects = useStore(s => s.projects);
   const allItems = useStore(s => s.timelineItems);
+  const addBatch = useStore(s => s.addBatch);
+  const addCustomColumns = useStore(s => s.addCustomColumns);
+  const addImportRecord = useStore(s => s.addImportRecord);
   const [selectedProject, setSelectedProject] = useState(projectId || 'p3');
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const items = useMemo(
     () => allItems.filter(i => i.projectId === selectedProject),
@@ -66,9 +71,9 @@ export function Timeline({ projectId }: { projectId?: string }) {
   const todayInRange = today >= rangeStart && today <= rangeEnd;
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-3 md:p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
             <Calendar className="w-6 h-6 text-emerald-600" />
@@ -76,6 +81,15 @@ export function Timeline({ projectId }: { projectId?: string }) {
           </h1>
           <p className="text-sm text-[#7A8BA8] mt-1">Phase-based project scheduling and milestone tracking</p>
         </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            Import from SharePoint
+          </button>
 
         {/* Project selector (hidden when embedded in ProjectDetail) */}
         {!projectId && (
@@ -92,6 +106,7 @@ export function Timeline({ projectId }: { projectId?: string }) {
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5A6B88] pointer-events-none" />
           </div>
         )}
+        </div>
       </div>
 
       {/* Legend */}
@@ -109,9 +124,9 @@ export function Timeline({ projectId }: { projectId?: string }) {
       </div>
 
       {/* Gantt Chart */}
-      <div className="bg-[#121C35] rounded-xl border border-[#1E2A45] overflow-hidden">
+      <div className="bg-[#121C35] rounded-xl border border-[#1E2A45] overflow-x-auto">
         {/* Month Headers */}
-        <div className="flex border-b border-[#1E2A45]">
+        <div className="flex border-b border-[#1E2A45] min-w-[600px]">
           {/* Label column */}
           <div className="w-64 flex-shrink-0 border-r border-[#1E2A45] px-4 py-3 bg-[#0F1829]">
             <span className="text-xs font-semibold text-[#7A8BA8] uppercase tracking-wider">Task / Phase</span>
@@ -238,6 +253,19 @@ export function Timeline({ projectId }: { projectId?: string }) {
             </div>
           ))}
         </div>
+      )}
+
+      {showImportModal && (
+        <SharePointImportModal
+          sectionConfig={SECTION_CONFIGS.timelineItems}
+          contextFields={projectId ? { projectId } : { projectId: selectedProject }}
+          onClose={() => setShowImportModal(false)}
+          onComplete={(batchId, count, fName, customCols, items) => {
+            addBatch('timelineItems', items, batchId);
+            if (customCols.length > 0) addCustomColumns(customCols);
+            addImportRecord({ type: 'Timeline', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId });
+          }}
+        />
       )}
     </div>
   );

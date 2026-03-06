@@ -24,7 +24,7 @@ export function ClientLayout() {
 
         <button
           onClick={() => document.getElementById('team-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] text-white text-xs font-semibold rounded-lg hover:bg-[#096A66] transition-colors"
         >
           <Icon icon="solar:phone-calling-bold-duotone" className="w-4 h-4" />
           <span className="hidden sm:inline">Contact Your Team</span>

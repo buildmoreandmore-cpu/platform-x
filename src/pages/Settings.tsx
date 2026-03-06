@@ -54,15 +54,15 @@ export function Settings() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Settings</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage your account, users, data, and integrations.</p>
           </div>
         </div>
 
-        <div className="flex space-x-6 border-b border-[#1E2A45]">
+        <div className="flex space-x-6 border-b border-[#1E2A45] overflow-x-auto">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -70,7 +70,7 @@ export function Settings() {
               className={cn(
                 'flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors -mb-px',
                 activeTab === tab.id
-                  ? 'border-emerald-500 text-white'
+                  ? 'border-[#0D918C] text-white'
                   : 'border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]'
               )}
             >
@@ -82,7 +82,7 @@ export function Settings() {
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-auto p-8">
+      <div className="flex-1 overflow-y-auto p-3 md:p-8">
         {activeTab === 'profile' && (
           <ProfileTab
             currentUser={currentUser!}
@@ -134,8 +134,8 @@ function ProfileTab({
       <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Your Profile</h2>
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center flex-shrink-0">
-            <span className="text-lg font-semibold text-emerald-400">{currentUser.initials}</span>
+          <div className="w-14 h-14 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center flex-shrink-0">
+            <span className="text-lg font-semibold text-[#37BB26]">{currentUser.initials}</span>
           </div>
           <div className="flex-1">
             <p className="text-lg font-medium text-white">{currentUser.name}</p>
@@ -174,19 +174,19 @@ function ProfileTab({
               className={cn(
                 'w-full flex items-center gap-3 px-4 py-3 rounded-lg border text-left transition-colors',
                 user.id === currentUser.id
-                  ? 'bg-emerald-500/10 border-emerald-500/25'
+                  ? 'bg-[#0D918C]/10 border-[#0D918C]/25'
                   : 'bg-[#0F1829] border-[#1E2A45] hover:bg-[#1E2A45]'
               )}
             >
               <div className={cn(
                 'w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 border',
                 user.id === currentUser.id
-                  ? 'bg-emerald-500/15 border-emerald-500/25'
+                  ? 'bg-[#0D918C]/15 border-[#0D918C]/25'
                   : 'bg-[#1E2A45] border-[#2A3A5C]'
               )}>
                 <span className={cn(
                   'text-xs font-semibold',
-                  user.id === currentUser.id ? 'text-emerald-400' : 'text-[#7A8BA8]'
+                  user.id === currentUser.id ? 'text-[#37BB26]' : 'text-[#7A8BA8]'
                 )}>
                   {user.initials}
                 </span>
@@ -199,7 +199,7 @@ function ProfileTab({
               </div>
               <UserRoleBadge role={user.defaultRole} />
               {user.id === currentUser.id && (
-                <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#0D918C] flex-shrink-0" />
               )}
             </button>
           ))}
@@ -238,6 +238,7 @@ function UserManagementTab({
         <div className="px-6 py-4 border-b border-[#1E2A45]">
           <h2 className="text-base font-semibold text-white">Team Members</h2>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#1E2A45]">
@@ -251,8 +252,8 @@ function UserManagementTab({
               <tr key={user.id} className="border-b border-[#1E2A45]/50 hover:bg-[#0F1829] transition-colors">
                 <td className="px-6 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center">
-                      <span className="text-xs font-semibold text-emerald-400">{user.initials}</span>
+                    <div className="w-8 h-8 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center">
+                      <span className="text-xs font-semibold text-[#37BB26]">{user.initials}</span>
                     </div>
                     <span className="text-sm font-medium text-white">{user.name}</span>
                   </div>
@@ -263,6 +264,7 @@ function UserManagementTab({
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Project Assignment Matrix */}
@@ -330,9 +332,10 @@ function DataManagementTab({
       {/* Import History */}
       <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
         <div className="px-6 py-4 border-b border-[#1E2A45] flex items-center gap-2">
-          <Download className="w-4 h-4 text-emerald-400" />
+          <Download className="w-4 h-4 text-[#37BB26]" />
           <h2 className="text-base font-semibold text-white">Import History</h2>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#1E2A45]">
@@ -354,7 +357,7 @@ function DataManagementTab({
                 </td>
                 <td className="px-6 py-3 text-sm text-[#9AA5B8] font-mono">{imp.records}</td>
                 <td className="px-6 py-3">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-[#0D918C]/10 text-[#37BB26] border border-[#0D918C]/20">
                     {imp.status}
                   </span>
                 </td>
@@ -363,6 +366,7 @@ function DataManagementTab({
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Export History */}
@@ -371,6 +375,7 @@ function DataManagementTab({
           <Upload className="w-4 h-4 text-blue-400" />
           <h2 className="text-base font-semibold text-white">Export History</h2>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#1E2A45]">
@@ -397,6 +402,7 @@ function DataManagementTab({
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Global Audit Log */}
@@ -417,13 +423,13 @@ function DataManagementTab({
                   value={auditFilter}
                   onChange={e => setAuditFilter(e.target.value)}
                   placeholder="Search..."
-                  className="bg-[#0F1829] border border-[#1E2A45] text-white text-xs rounded-lg pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-[#5A6B88]"
+                  className="bg-[#0F1829] border border-[#1E2A45] text-white text-xs rounded-lg pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent placeholder-[#5A6B88]"
                 />
               </div>
               <select
                 value={entityFilter}
                 onChange={e => setEntityFilter(e.target.value)}
-                className="bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-emerald-500 focus:border-emerald-500"
+                className="bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-[#0D918C] focus:border-[#0D918C]"
               >
                 {entityTypes.map(t => (
                   <option key={t} value={t}>{t}</option>
@@ -459,7 +465,7 @@ function DataManagementTab({
                 <p className="text-xs text-[#9AA5B8]">
                   Changed <span className="font-medium text-[#CBD2DF]">{entry.field}</span>{' '}
                   from <span className="font-mono text-red-400">{entry.oldValue || '(empty)'}</span>{' '}
-                  to <span className="font-mono text-emerald-400">{entry.newValue || '(empty)'}</span>
+                  to <span className="font-mono text-[#37BB26]">{entry.newValue || '(empty)'}</span>
                 </p>
                 {entry.reason && (
                   <p className="text-[10px] text-[#5A6B88] italic mt-1">"{entry.reason}"</p>
@@ -561,7 +567,7 @@ function NotificationsTab({
             onClick={() => onToggle(ch.key)}
             className={cn(
               'relative w-11 h-6 rounded-full transition-colors flex-shrink-0',
-              preferences[ch.key] ? 'bg-emerald-500' : 'bg-[#1E2A45]'
+              preferences[ch.key] ? 'bg-[#0D918C]' : 'bg-[#1E2A45]'
             )}
           >
             <span

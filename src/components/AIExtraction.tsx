@@ -104,19 +104,19 @@ export function AIExtraction({ onAssetExtracted }: { onAssetExtracted: (asset: E
             onClick={() => !isProcessing && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center text-center transition-colors cursor-pointer group ${
               isProcessing 
-                ? 'border-emerald-300 bg-emerald-50' 
-                : 'border-neutral-300 hover:bg-neutral-50 hover:border-emerald-500'
+                ? 'border-[#0D918C]/40 bg-[#0D918C]/10' 
+                : 'border-neutral-300 hover:bg-neutral-50 hover:border-[#0D918C]'
             }`}
           >
             {isProcessing ? (
               <>
-                <Loader2 className="w-12 h-12 text-emerald-600 animate-spin mb-4" />
+                <Loader2 className="w-12 h-12 text-[#37BB26] animate-spin mb-4" />
                 <h4 className="text-lg font-medium text-neutral-900 mb-1">Processing Image...</h4>
                 <p className="text-sm text-neutral-500 max-w-sm">Extracting structured data and identifying deficiencies.</p>
               </>
             ) : (
               <>
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-[#0D918C]/15 text-[#37BB26] rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Camera className="w-8 h-8" />
                 </div>
                 <h4 className="text-lg font-medium text-neutral-900 mb-1">Upload Equipment Photos</h4>
@@ -141,7 +141,7 @@ export function AIExtraction({ onAssetExtracted }: { onAssetExtracted: (asset: E
           <div className="mt-8 text-center">
             <button 
               disabled={isProcessing}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-neutral-200 rounded-full text-neutral-700 font-medium hover:border-emerald-500 hover:text-emerald-600 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-neutral-200 rounded-full text-neutral-700 font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Mic className="w-5 h-5" />
               Record Voice Audit Note

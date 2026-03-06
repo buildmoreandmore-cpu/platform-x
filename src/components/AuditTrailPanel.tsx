@@ -46,7 +46,7 @@ export function AuditTrailPanel({ entityType, entityId, defaultOpen = false }: A
               <p className="text-[#9AA5B8]">
                 Changed <span className="font-medium text-[#CBD2DF]">{entry.field}</span>{' '}
                 from <span className="font-mono text-red-400">{entry.oldValue || '(empty)'}</span>{' '}
-                to <span className="font-mono text-emerald-400">{entry.newValue || '(empty)'}</span>
+                to <span className="font-mono text-[#37BB26]">{entry.newValue || '(empty)'}</span>
               </p>
               {entry.reason && (
                 <p className="text-[#5A6B88] italic mt-1">"{entry.reason}"</p>

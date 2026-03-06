@@ -66,7 +66,7 @@ export function EditableField({
             <select
               value={editValue}
               onChange={e => setEditValue(e.target.value)}
-              className="bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent"
             >
               {options.map(opt => (
                 <option key={opt} value={opt}>{opt}</option>
@@ -82,10 +82,10 @@ export function EditableField({
                 if (e.key === 'Enter') handleSave();
                 if (e.key === 'Escape') handleCancel();
               }}
-              className="bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent"
             />
           )}
-          <button onClick={handleSave} className="p-0.5 text-emerald-500 hover:text-emerald-400">
+          <button onClick={handleSave} className="p-0.5 text-[#37BB26] hover:text-[#37BB26]">
             <Check className="w-3.5 h-3.5" />
           </button>
           <button onClick={handleCancel} className="p-0.5 text-[#5A6B88] hover:text-red-400">
@@ -121,7 +121,7 @@ export function EditableField({
           className="opacity-0 group-hover/edit:opacity-100 transition-opacity p-0.5"
           title="Edit"
         >
-          <Pencil className="w-3 h-3 text-[#5A6B88] hover:text-emerald-400" />
+          <Pencil className="w-3 h-3 text-[#5A6B88] hover:text-[#37BB26]" />
         </button>
       )}
     </span>
