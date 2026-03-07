@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { getFreshnessStatus, daysSinceUpdate } from '@/lib/freshness';
 import { ExportButton } from '@/components/ExportButton';
+import { OnboardingGuide } from '@/components/OnboardingGuide';
 
 const PHASE_ORDER = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'] as const;
 
@@ -29,6 +30,15 @@ export function Dashboard() {
   const ecms = useStore(s => s.ecms);
   const moduleLastUpdated = useStore(s => s.moduleLastUpdated);
   const freshnessConfig = useStore(s => s.freshnessConfig);
+
+  // Empty state → show onboarding guide
+  if (projects.length === 0) {
+    return (
+      <div className="p-3 md:p-6 max-w-[1400px] mx-auto animate-in fade-in duration-500">
+        <OnboardingGuide />
+      </div>
+    );
+  }
 
   // Computed KPIs
   const totalValue = projects.reduce((sum, p) => sum + p.value, 0);

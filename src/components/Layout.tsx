@@ -54,7 +54,8 @@ export function Layout() {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showProjectImport, setShowProjectImport] = useState(false);
+  const showProjectImport = useStore(state => state.showProjectImport);
+  const setShowProjectImport = useStore(state => state.setShowProjectImport);
   const mode = useStore(state => state.serviceLineMode);
   const logout = useStore(state => state.logout);
   const setMode = useStore(state => state.setServiceLineMode);

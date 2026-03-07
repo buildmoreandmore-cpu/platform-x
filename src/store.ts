@@ -93,6 +93,7 @@ export const seedData = {
   customColumns: [] as CustomColumnDef[],
   importHistory: [] as any[],
   exportHistory: [] as any[],
+  showProjectImport: false,
 };
 
 type StoreType = typeof seedData & {
@@ -132,6 +133,8 @@ type StoreType = typeof seedData & {
   deleteBatch: (storeKey: string, importBatchId: string) => void;
   deleteItem: (storeKey: string, itemId: string) => void;
   replaceBatch: (storeKey: string, oldBatchId: string, newItems: any[], newBatchId: string) => void;
+  // Project Import Modal
+  setShowProjectImport: (show: boolean) => void;
   // Auth
   login: (email: string, password: string) => boolean;
   logout: () => void;
@@ -283,6 +286,8 @@ export const useStore = create<StoreType>((set) => ({
     const tagged = newItems.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId: newBatchId }));
     return { [storeKey]: [...filtered, ...tagged] };
   }),
+  // ─── Project Import Modal ───
+  setShowProjectImport: (show) => set({ showProjectImport: show }),
   // ─── Auth ───
   login: (email, password) => {
     const cred = AUTH_CREDENTIALS.find(c => c.email === email && c.password === password);
