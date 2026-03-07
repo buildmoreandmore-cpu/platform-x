@@ -44,6 +44,17 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   const [dragOver, setDragOver] = useState(false);
   const captureInputRef = useRef<HTMLInputElement>(null);
 
+  const allAssets = useStore(state => state.assets);
+  const projects = useStore(state => state.projects);
+  const buildings = useStore(state => state.buildings);
+  const addBatch = useStore(state => state.addBatch);
+  const addCustomColumns = useStore(state => state.addCustomColumns);
+  const addImportRecord = useStore(state => state.addImportRecord);
+  const deleteItem = useStore(state => state.deleteItem);
+  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
+  const addToast = useToastStore(s => s.addToast);
+  const confirm = useConfirmStore(s => s.confirm);
+
   const handlePhotoFiles = useCallback((files: FileList | File[]) => {
     const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
     if (imageFiles.length === 0) return;
@@ -68,17 +79,6 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
       return prev.filter(p => p.id !== id);
     });
   }, []);
-
-  const allAssets = useStore(state => state.assets);
-  const projects = useStore(state => state.projects);
-  const buildings = useStore(state => state.buildings);
-  const addBatch = useStore(state => state.addBatch);
-  const addCustomColumns = useStore(state => state.addCustomColumns);
-  const addImportRecord = useStore(state => state.addImportRecord);
-  const deleteItem = useStore(state => state.deleteItem);
-  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
-  const addToast = useToastStore(s => s.addToast);
-  const confirm = useConfirmStore(s => s.confirm);
 
   let displayAssets = allAssets;
   
