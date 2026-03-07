@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useStore } from '@/store';
-import { Camera, Upload, AlertTriangle, Search, Filter, FileSpreadsheet, X, Layers } from 'lucide-react';
+import { Camera, Upload, AlertTriangle, Search, Filter, FileSpreadsheet, X, Layers, Trash2, ImageIcon } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -39,6 +39,29 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   const [typeFilter, setTypeFilter] = useState<string>('All');
   const [buildingFilter, setBuildingFilter] = useState<string>('All');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [uploadedPhotos, setUploadedPhotos] = useState<Array<{ id: string; file: File; preview: string; name: string }>>([]);
+  const [dragOver, setDragOver] = useState(false);
+  const captureInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePhotoFiles = useCallback((files: FileList | File[]) => {
+    const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (imageFiles.length === 0) return;
+    const newPhotos = imageFiles.map(file => ({
+      id: `photo_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      file,
+      preview: URL.createObjectURL(file),
+      name: file.name,
+    }));
+    setUploadedPhotos(prev => [...prev, ...newPhotos]);
+  }, []);
+
+  const removePhoto = useCallback((id: string) => {
+    setUploadedPhotos(prev => {
+      const photo = prev.find(p => p.id === id);
+      if (photo) URL.revokeObjectURL(photo.preview);
+      return prev.filter(p => p.id !== id);
+    });
+  }, []);
 
   const allAssets = useStore(state => state.assets);
   const projects = useStore(state => state.projects);
@@ -322,24 +345,74 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
             </div>
           </div>
         ) : (
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto space-y-6">
             <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
               <div className="p-6 border-b border-[#1E2A45] bg-[#0F1829]">
                 <h3 className="text-lg font-medium text-white mb-2">AI Extraction Queue</h3>
-                <p className="text-sm text-[#7A8BA8]">Upload nameplate photos or record voice notes. Claude will extract structured data and flag deficiencies automatically.</p>
+                <p className="text-sm text-[#7A8BA8]">Upload nameplate photos, wide shots, or inspection documents. Claude Vision will extract structured data and flag deficiencies automatically.</p>
               </div>
-              
+
               <div className="p-8">
-                <div className="border-2 border-dashed border-[#2A3A5C] rounded-xl p-12 flex flex-col items-center justify-center text-center hover:bg-[#1A2544] hover:border-[#0D918C]/50 transition-colors cursor-pointer group">
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={(e) => { e.preventDefault(); setDragOver(false); handlePhotoFiles(e.dataTransfer.files); }}
+                  onClick={() => captureInputRef.current?.click()}
+                  className={cn(
+                    "border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center text-center transition-all duration-200 cursor-pointer group",
+                    dragOver
+                      ? "border-[#0D918C] bg-[#0D918C]/5"
+                      : "border-[#2A3A5C] hover:bg-[#1A2544] hover:border-[#0D918C]/50"
+                  )}
+                >
                   <div className="w-16 h-16 bg-[#1E2A45] text-[#37BB26] rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Camera className="w-8 h-8" />
                   </div>
-                  <h4 className="text-lg font-medium text-white mb-1">Upload Equipment Photos</h4>
+                  <h4 className="text-lg font-medium text-white mb-1">
+                    {dragOver ? 'Drop photos here' : 'Upload Equipment Photos'}
+                  </h4>
                   <p className="text-sm text-[#7A8BA8] max-w-sm">Drag and drop nameplate photos, wide shots, or inspection documents here.</p>
+                  <p className="text-[10px] text-[#5A6B88] mt-2">JPG, PNG, WEBP — multiple files supported</p>
+                  <input
+                    ref={captureInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => { if (e.target.files) handlePhotoFiles(e.target.files); e.target.value = ''; }}
+                  />
                 </div>
-
               </div>
             </div>
+
+            {uploadedPhotos.length > 0 && (
+              <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-[#1E2A45] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4 text-[#0D918C]" />
+                    <span className="text-sm font-medium text-white">{uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''} queued</span>
+                  </div>
+                  <span className="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">AI extraction pending — Claude Vision not yet connected</span>
+                </div>
+                <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {uploadedPhotos.map(photo => (
+                    <div key={photo.id} className="relative group rounded-lg overflow-hidden border border-[#1E2A45]">
+                      <img src={photo.preview} alt={photo.name} className="w-full h-40 object-cover" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
+                      <button
+                        onClick={() => removePhoto(photo.id)}
+                        className="absolute top-2 right-2 p-1.5 bg-[#121C35]/80 backdrop-blur-sm rounded-lg text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/70 to-transparent">
+                        <p className="text-[10px] text-white truncate">{photo.name}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
