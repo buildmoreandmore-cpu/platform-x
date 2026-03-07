@@ -39,7 +39,8 @@ export function Timeline({ projectId }: { projectId?: string }) {
   const addBatch = useStore(s => s.addBatch);
   const addCustomColumns = useStore(s => s.addCustomColumns);
   const addImportRecord = useStore(s => s.addImportRecord);
-  const [selectedProject, setSelectedProject] = useState(projectId || 'p3');
+  const currentUser = useStore(s => s.users).find(u => u.id === useStore.getState().currentUserId);
+  const [selectedProject, setSelectedProject] = useState(projectId || projects[0]?.id || '');
   const [showImportModal, setShowImportModal] = useState(false);
 
   const items = useMemo(
@@ -263,7 +264,7 @@ export function Timeline({ projectId }: { projectId?: string }) {
           onComplete={(batchId, count, fName, customCols, items) => {
             addBatch('timelineItems', items, batchId);
             if (customCols.length > 0) addCustomColumns(customCols);
-            addImportRecord({ type: 'Timeline', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId });
+            addImportRecord({ type: 'Timeline', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: currentUser?.name || 'System', fileName: fName, batchId });
           }}
         />
       )}

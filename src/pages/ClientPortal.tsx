@@ -7,11 +7,11 @@ import { BuildingSavingsChart } from '@/components/BuildingSavingsChart';
 const PHASES = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'];
 const PHASE_DESCRIPTIONS: Record<string, { next: string; est: string }> = {
   Prospect: { next: 'Energy Audit', est: 'Pending kickoff' },
-  Audit: { next: 'IGEA Development', est: 'Estimated completion: April 2024' },
-  IGEA: { next: 'RFP & Procurement', est: 'Estimated completion: June 2024' },
-  RFP: { next: 'Contract Negotiation', est: 'Estimated completion: August 2024' },
-  Contract: { next: 'Construction', est: 'Estimated completion: October 2024' },
-  Construction: { next: 'M&V Verification', est: 'Estimated completion: September 2024' },
+  Audit: { next: 'IGEA Development', est: 'In progress' },
+  IGEA: { next: 'RFP & Procurement', est: 'In progress' },
+  RFP: { next: 'Contract Negotiation', est: 'In progress' },
+  Contract: { next: 'Construction', est: 'In progress' },
+  Construction: { next: 'M&V Verification', est: 'In progress' },
   'M&V': { next: 'Closeout', est: 'Ongoing — annual verification' },
   Closeout: { next: 'Complete', est: 'Project closed' },
 };
@@ -46,7 +46,19 @@ export function ClientPortal() {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id || '');
 
-  const project = projects.find(p => p.id === selectedProjectId)!;
+  const project = projects.find(p => p.id === selectedProjectId);
+
+  if (!project) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#0B1120] text-white">
+        <div className="text-center">
+          <h2 className="text-xl font-bold mb-2">No Projects Available</h2>
+          <p className="text-[#7A8BA8] text-sm">No ESPC projects have been set up yet. Please contact your project administrator.</p>
+        </div>
+      </div>
+    );
+  }
+
   const pMilestones = milestones.filter(m => m.projectId === selectedProjectId);
   const pMvData = mvData.filter(d => d.projectId === selectedProjectId);
   const pFindings = inspectionFindings.filter(f => f.projectId === selectedProjectId && f.status === 'Open');

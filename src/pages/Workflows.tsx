@@ -27,7 +27,7 @@ export function Workflows() {
   const [newTask, setNewTask] = useState({ title: '', projectId: '', priority: 'Medium', dueDate: '', assignedTo: currentUser?.name || '' });
 
   const filteredTasks = tasks.filter(task => {
-    if (filter === 'my') return task.assignedTo === 'Martin';
+    if (filter === 'my') return task.assignedTo === (currentUser?.name || '');
     if (filter === 'overdue') return new Date(task.dueDate) < new Date() && task.status !== 'Completed';
     return true;
   });
@@ -247,7 +247,7 @@ export function Workflows() {
           onComplete={(batchId, count, fName, customCols, items) => {
             addBatch('tasks', items, batchId);
             if (customCols.length > 0) addCustomColumns(customCols);
-            addImportRecord({ type: 'Tasks', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId, storeKey: 'tasks' });
+            addImportRecord({ type: 'Tasks', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: currentUser?.name || 'System', fileName: fName, batchId, storeKey: 'tasks' });
           }}
         />
       )}

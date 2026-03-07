@@ -59,6 +59,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
   const addBatch = useStore(state => state.addBatch);
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
+  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
   const [step, setStep] = useState<Step>('upload');
   const [dragOver, setDragOver] = useState(false);
@@ -229,7 +230,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
         date: new Date().toISOString(),
         records: items.length,
         status: 'Success',
-        user: 'Martin',
+        user: currentUser?.name || 'System',
         fileName,
         batchId,
         storeKey: config.storeKey,

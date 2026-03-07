@@ -17,6 +17,7 @@ export function MV({ projectId }: { projectId?: string }) {
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
   const deleteItem = useStore(state => state.deleteItem);
+  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
   const [showImportModal, setShowImportModal] = useState(false);
 
@@ -284,7 +285,7 @@ export function MV({ projectId }: { projectId?: string }) {
               date: new Date().toISOString(),
               records: count,
               status: 'Success',
-              user: 'Martin',
+              user: currentUser?.name || 'System',
               fileName: fName,
               batchId,
               storeKey: 'mvData',

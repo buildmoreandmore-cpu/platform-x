@@ -22,6 +22,7 @@ export function Governance({ projectId }: { projectId?: string }) {
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
   const deleteItem = useStore(state => state.deleteItem);
+  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
   const [activeTab, setActiveTab] = useState<'pipeline' | 'milestones' | 'risks' | 'co' | 'submittals' | 'obligations'>('pipeline');
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
@@ -523,7 +524,7 @@ export function Governance({ projectId }: { projectId?: string }) {
           onComplete={(batchId, count, fName, customCols, items) => {
             addBatch(SECTION_CONFIGS[importSection].storeKey, items, batchId);
             if (customCols.length > 0) addCustomColumns(customCols);
-            addImportRecord({ type: SECTION_CONFIGS[importSection].sectionName, source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId, storeKey: SECTION_CONFIGS[importSection].storeKey });
+            addImportRecord({ type: SECTION_CONFIGS[importSection].sectionName, source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: currentUser?.name || 'System', fileName: fName, batchId, storeKey: SECTION_CONFIGS[importSection].storeKey });
           }}
         />
       )}

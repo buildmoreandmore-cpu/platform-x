@@ -440,7 +440,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
   const handleAddComment = (reportId: string) => {
     const text = commentInputs[reportId]?.trim();
     if (!text) return;
-    addQAComment(reportId, { author: 'Martin', text });
+    addQAComment(reportId, { author: currentUser?.name || 'System', text });
     setCommentInputs(prev => ({ ...prev, [reportId]: '' }));
   };
 
@@ -890,7 +890,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                         </button>
                         <button
                           disabled={progress < 100}
-                          onClick={() => approveReport(report.id, 'Martin')}
+                          onClick={() => approveReport(report.id, currentUser?.name || 'System')}
                           className={cn(
                             "btn-primary px-4 py-2 text-sm font-medium rounded-lg border border-transparent transition-all duration-150",
                             progress === 100

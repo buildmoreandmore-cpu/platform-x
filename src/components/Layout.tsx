@@ -17,7 +17,6 @@ import {
   UserCog,
   Menu,
   X,
-  Layers,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useStore, ServiceLineMode } from '@/store';

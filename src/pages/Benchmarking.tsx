@@ -19,6 +19,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   const addImportRecord = useStore(state => state.addImportRecord);
   const customColumns = useStore(state => state.customColumns);
   const addUtilityBillsBatch = useStore(state => state.addUtilityBillsBatch);
+  const addUtilityBill = useStore(state => state.addUtilityBill);
   const deleteBatchGeneric = useStore(state => state.deleteBatch);
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const updateImportRecordStatus = useStore(state => state.updateImportRecordStatus);
@@ -30,6 +31,11 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   const [selectedBuildingId, setSelectedBuildingId] = useState(buildings[0]?.id || '');
   const [importModal, setImportModal] = useState<'drive' | 'energystar' | 'sharepoint' | null>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [showManualEntry, setShowManualEntry] = useState(false);
+  const [manualBill, setManualBill] = useState({ month: '', year: new Date().getFullYear().toString(), electricKwh: '', electricCost: '', gasTherms: '', gasCost: '', peakKw: '' });
+  const currentUserId = useStore(state => state.currentUserId);
+  const users = useStore(state => state.users);
+  const currentUser = users.find(u => u.id === currentUserId);
   const [deletingBatchId, setDeletingBatchId] = useState<string | null>(null);
   const [replacingBatchId, setReplacingBatchId] = useState<string | null>(null);
 
@@ -161,7 +167,10 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
               </button>
-              <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
+              <button
+                onClick={() => setShowManualEntry(true)}
+                className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66]"
+              >
                 <Plus className="w-4 h-4" />
                 Add Manual Entry
               </button>
@@ -702,7 +711,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
         )}
       </div>
 
-      {/* Import Simulation Modal (Drive / ENERGY STAR) */}
+      {/* Import Info Modal (Drive / ENERGY STAR) */}
       {(importModal === 'drive' || importModal === 'energystar') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop" onClick={() => setImportModal(null)}>
           <div className="modal-panel bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
@@ -717,80 +726,103 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="p-6">
-              {importStatus === 'idle' && (
-                <div className="space-y-4">
-                  <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-4">
-                    <p className="text-sm text-[#9AA5B8]">
-                      {importModal === 'drive'
-                        ? 'Select utility bill files from your connected Google Drive folder.'
-                        : 'Pull building benchmark data from your ENERGY STAR Portfolio Manager account.'}
-                    </p>
-                    <div className="mt-3 space-y-2">
-                      {importModal === 'drive' ? (
-                        <>
-                          <div className="flex items-center gap-2 text-xs text-[#7A8BA8]">
-                            <FileText className="w-3.5 h-3.5" />
-                            <span>2024_Utility_Bills_Lincoln_Elementary.xlsx</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-[#7A8BA8]">
-                            <FileText className="w-3.5 h-3.5" />
-                            <span>CityHall_Energy_Data_2024.csv</span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex items-center gap-2 text-xs text-[#7A8BA8]">
-                            <span>No buildings connected yet. Import utility data to see ENERGY STAR scores.</span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setImportStatus('loading');
-                      setTimeout(() => {
-                        setImportStatus('success');
-                        addImportRecord({
-                          type: importModal === 'drive' ? 'Utility Bills' : 'Benchmarks',
-                          source: importModal === 'drive' ? 'Google Drive' : 'ENERGY STAR',
-                          date: new Date().toISOString(),
-                          records: importModal === 'drive' ? 24 : 4,
-                          status: 'Success',
-                          user: 'Martin',
-                        });
-                      }, 1500);
-                    }}
-                    className="w-full px-4 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66] transition-colors"
-                  >
-                    {importModal === 'drive' ? 'Import Selected Files' : 'Sync Building Data'}
-                  </button>
+            <div className="p-6 space-y-4">
+              <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-4">
+                <p className="text-sm text-[#9AA5B8]">
+                  {importModal === 'drive'
+                    ? 'Google Drive integration is not yet configured. To import utility data, use the SharePoint Import or Add Manual Entry options.'
+                    : 'ENERGY STAR Portfolio Manager integration is not yet configured. Connect your account in Settings > Integrations to sync building benchmarks.'}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setImportModal(null); if (importModal === 'drive') setImportModal('sharepoint'); }}
+                  className="flex-1 px-4 py-2.5 bg-[#0D918C]/10 border border-[#0D918C]/30 text-[#0D918C] text-sm font-medium rounded-lg hover:bg-[#0D918C]/20 transition-colors"
+                >
+                  {importModal === 'drive' ? 'Use SharePoint Instead' : 'Go to Settings'}
+                </button>
+                <button
+                  onClick={() => setImportModal(null)}
+                  className="px-4 py-2.5 bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manual Entry Modal */}
+      {showManualEntry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setShowManualEntry(false)}>
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+              <h2 className="text-lg font-bold text-white">Add Utility Bill</h2>
+              <button onClick={() => setShowManualEntry(false)} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Month</label>
+                  <select value={manualBill.month} onChange={e => setManualBill(prev => ({ ...prev, month: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                    <option value="">Select</option>
+                    {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m, i) => <option key={m} value={String(i + 1)}>{m}</option>)}
+                  </select>
                 </div>
-              )}
-              {importStatus === 'loading' && (
-                <div className="flex flex-col items-center py-8">
-                  <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4" />
-                  <p className="text-sm text-[#9AA5B8]">
-                    {importModal === 'drive' ? 'Importing files...' : 'Syncing with ENERGY STAR...'}
-                  </p>
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Year</label>
+                  <input type="number" value={manualBill.year} onChange={e => setManualBill(prev => ({ ...prev, year: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
                 </div>
-              )}
-              {importStatus === 'success' && (
-                <div className="flex flex-col items-center py-8">
-                  <CheckCircle2 className="w-10 h-10 text-emerald-500 mb-3" />
-                  <p className="text-sm font-medium text-white mb-1">Import Successful</p>
-                  <p className="text-xs text-[#7A8BA8]">
-                    {importModal === 'drive' ? '24 records imported from Google Drive' : '4 building benchmarks synced'}
-                  </p>
-                  <button
-                    onClick={() => setImportModal(null)}
-                    className="mt-4 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
-                  >
-                    Close
-                  </button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric (kWh)</label>
+                  <input type="number" value={manualBill.electricKwh} onChange={e => setManualBill(prev => ({ ...prev, electricKwh: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
                 </div>
-              )}
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric Cost ($)</label>
+                  <input type="number" value={manualBill.electricCost} onChange={e => setManualBill(prev => ({ ...prev, electricCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas (Therms)</label>
+                  <input type="number" value={manualBill.gasTherms} onChange={e => setManualBill(prev => ({ ...prev, gasTherms: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas Cost ($)</label>
+                  <input type="number" value={manualBill.gasCost} onChange={e => setManualBill(prev => ({ ...prev, gasCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Peak Demand (kW)</label>
+                <input type="number" value={manualBill.peakKw} onChange={e => setManualBill(prev => ({ ...prev, peakKw: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
+              <button onClick={() => setShowManualEntry(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button
+                disabled={!manualBill.month}
+                onClick={() => {
+                  addUtilityBill({
+                    buildingId: selectedBuilding?.id || '',
+                    month: Number(manualBill.month),
+                    year: Number(manualBill.year),
+                    electricKwh: Number(manualBill.electricKwh) || 0,
+                    electricCost: Number(manualBill.electricCost) || 0,
+                    gasTherms: Number(manualBill.gasTherms) || 0,
+                    gasCost: Number(manualBill.gasCost) || 0,
+                    peakKw: Number(manualBill.peakKw) || 0,
+                  });
+                  setManualBill({ month: '', year: new Date().getFullYear().toString(), electricKwh: '', electricCost: '', gasTherms: '', gasCost: '', peakKw: '' });
+                  setShowManualEntry(false);
+                }}
+                className="px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+              >
+                Add Bill
+              </button>
             </div>
           </div>
         </div>
@@ -812,7 +844,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               date: new Date().toISOString(),
               records: count,
               status: 'Success',
-              user: 'Martin',
+              user: currentUser?.name || 'System',
               fileName: fName,
               batchId,
               storeKey: 'utilityBills',
@@ -841,7 +873,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               date: new Date().toISOString(),
               records: count,
               status: 'Success',
-              user: 'Martin',
+              user: currentUser?.name || 'System',
               fileName: fName,
               batchId,
               storeKey: 'utilityBills',

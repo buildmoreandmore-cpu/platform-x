@@ -19,6 +19,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
   const deleteItem = useStore(state => state.deleteItem);
+  const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
   const [term, setTerm] = useState(15);
@@ -414,7 +415,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
               date: new Date().toISOString(),
               records: count,
               status: 'Success',
-              user: 'Martin',
+              user: currentUser?.name || 'System',
               fileName: fName,
               batchId,
               storeKey: 'ecms',
