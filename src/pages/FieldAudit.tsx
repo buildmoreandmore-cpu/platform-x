@@ -30,6 +30,10 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   const [activeTab, setActiveTab] = useState<'capture' | 'assets'>('assets');
   const [searchQuery, setSearchQuery] = useState('');
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [conditionFilter, setConditionFilter] = useState<string>('All');
+  const [typeFilter, setTypeFilter] = useState<string>('All');
+  const [buildingFilter, setBuildingFilter] = useState<string>('All');
 
   const allAssets = useStore(state => state.assets);
   const projects = useStore(state => state.projects);
@@ -50,10 +54,19 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
     }
   }
 
-  const filteredAssets = displayAssets.filter(a => 
-    a.type.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    a.manufacturer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const assetTypes = ['All', ...Array.from(new Set(displayAssets.map(a => a.type)))];
+  const conditions = ['All', 'Good', 'Fair', 'Poor', 'Critical'];
+  const buildingOptions = ['All', ...Array.from(new Set(displayAssets.map(a => buildings.find(b => b.id === a.buildingId)?.name).filter(Boolean))) as string[]];
+  const activeFilterCount = [conditionFilter, typeFilter, buildingFilter].filter(f => f !== 'All').length;
+
+  const filteredAssets = displayAssets.filter(a => {
+    const matchSearch = a.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.manufacturer.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchCondition = conditionFilter === 'All' || a.condition === conditionFilter;
+    const matchType = typeFilter === 'All' || a.type === typeFilter;
+    const matchBuilding = buildingFilter === 'All' || buildings.find(b => b.id === a.buildingId)?.name === buildingFilter;
+    return matchSearch && matchCondition && matchType && matchBuilding;
+  });
 
   return (
     <div className="flex flex-col h-full">
@@ -151,10 +164,44 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     'Replacement Cost': (a as any).replacementCost || 0,
                   }))}
                 />
-                <button className="inline-flex items-center gap-2 px-3 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors shadow-sm">
-                  <Filter className="w-4 h-4" />
-                  Filter
-                </button>
+                <div className="relative">
+                  <button onClick={() => setShowFilterPanel(!showFilterPanel)} className={cn("inline-flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm", activeFilterCount > 0 ? "bg-[#0D918C]/10 border-[#0D918C]/30 text-[#37BB26]" : "bg-[#1E2A45] border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]")}>
+                    <Filter className="w-4 h-4" />
+                    Filter
+                    {activeFilterCount > 0 && (
+                      <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#0D918C] text-white text-[10px] font-bold">{activeFilterCount}</span>
+                    )}
+                  </button>
+                  {showFilterPanel && (
+                    <div className="absolute right-0 top-full mt-2 w-72 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl z-30 p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-white uppercase tracking-wider">Filters</span>
+                        {activeFilterCount > 0 && (
+                          <button onClick={() => { setConditionFilter('All'); setTypeFilter('All'); setBuildingFilter('All'); }} className="text-[10px] text-[#0D918C] hover:text-[#37BB26] font-medium">Clear all</button>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Condition</label>
+                        <select value={conditionFilter} onChange={e => setConditionFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                          {conditions.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Asset Type</label>
+                        <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                          {assetTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Building</label>
+                        <select value={buildingFilter} onChange={e => setBuildingFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                          {buildingOptions.map(b => <option key={b} value={b}>{b}</option>)}
+                        </select>
+                      </div>
+                      <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#0B7A76] text-white text-xs font-medium rounded-lg hover:bg-[#096A66] transition-colors">Apply</button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
