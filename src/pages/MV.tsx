@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText, FileSpreadsheet, X, Layers } from 'lucide-react';
+import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -83,10 +83,6 @@ export function MV({ projectId }: { projectId?: string }) {
                 <Layers className="w-4 h-4" />
                 Import Workbook
               </button>
-              <button onClick={() => alert('Use the Reporting module to generate M&V reports.')} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
-                <FileText className="w-4 h-4" />
-                Generate M&V Report
-              </button>
             </div>
           </div>
         </div>
@@ -105,8 +101,8 @@ export function MV({ projectId }: { projectId?: string }) {
                 This indicates a potential degradation in ECM performance or a change in facility operations.
               </p>
               <div className="mt-4 flex gap-3">
-                <button onClick={() => { alert('Root cause investigation workflow coming soon.'); setShowDriftAlert(false); }} className="px-4 py-2 bg-red-500/20 text-red-500 text-sm font-medium rounded-lg hover:bg-red-500/30 transition-colors">
-                  Investigate Root Cause
+                <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-red-500/20 text-red-500 text-sm font-medium rounded-lg hover:bg-red-500/30 transition-colors">
+                  Acknowledge
                 </button>
                 <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-[#1E2A45] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors">
                   Dismiss Alert

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Camera, Upload, Mic, AlertTriangle, Search, Filter, FileSpreadsheet, X, Layers } from 'lucide-react';
+import { Camera, Upload, AlertTriangle, Search, Filter, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -332,19 +332,6 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   <p className="text-sm text-[#7A8BA8] max-w-sm">Drag and drop nameplate photos, wide shots, or inspection documents here.</p>
                 </div>
 
-                <div className="mt-8 flex items-center gap-4">
-                  <div className="flex-1 h-px bg-[#1E2A45]"></div>
-                  <span className="text-sm font-medium text-[#5A6B88] uppercase tracking-wider">OR</span>
-                  <div className="flex-1 h-px bg-[#1E2A45]"></div>
-                </div>
-
-                <div className="mt-8 text-center">
-                  <button onClick={() => alert('Voice recording coming soon — requires Whisper integration.')} className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E2A45] border border-[#2A3A5C] rounded-full text-[#9AA5B8] font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm">
-                    <Mic className="w-5 h-5" />
-                    Record Voice Audit Note
-                  </button>
-                  <p className="text-xs text-[#7A8BA8] mt-3">Whisper will transcribe and Claude will structure the data.</p>
-                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Calculator, TrendingUp, AlertTriangle, CheckCircle2, DollarSign, Leaf, Search, Filter, Plus, FileSpreadsheet, X, Layers } from 'lucide-react';
+import { TrendingUp, AlertTriangle, CheckCircle2, DollarSign, Leaf, Search, Filter, Plus, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
@@ -104,10 +104,6 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
               >
                 <Layers className="w-4 h-4" />
                 Import Workbook
-              </button>
-              <button onClick={() => alert('Scenario comparison coming soon.')} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
-                <Calculator className="w-4 h-4" />
-                Compare Scenarios
               </button>
               <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
                 <Plus className="w-4 h-4" />

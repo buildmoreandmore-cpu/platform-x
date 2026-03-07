@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Upload, MapPin, Search, Filter, Maximize2, X, Plus, ChevronDown, History } from 'lucide-react';
+import { Upload, MapPin, Search, Filter, Maximize2, X, ChevronDown, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const DRAWING_TYPES = ['All', 'Floor Plan', 'MEP', 'Site Plan', 'Electrical', 'Plumbing'];
@@ -242,10 +242,6 @@ export function Drawings({ projectId }: { projectId: string }) {
                 <button className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150">
                   <Filter className="w-3.5 h-3.5" />
                   Annotation Filter
-                </button>
-                <button onClick={() => alert('Pin placement coming soon — requires canvas interaction.')} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors duration-150">
-                  <Plus className="w-3.5 h-3.5" />
-                  Add Pin
                 </button>
                 <button
                   onClick={() => setSelectedDrawing(null)}

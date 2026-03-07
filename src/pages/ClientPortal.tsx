@@ -593,9 +593,7 @@ export function ClientPortal() {
                       <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center"><Icon icon="solar:document-bold-duotone" className="w-4 h-4 text-blue-500" /></div>
                       <div><p className="text-sm font-medium text-gray-900">{r.type}</p><p className="text-xs text-gray-500">{r.version} &middot; {r.date}</p></div>
                     </div>
-                    <button onClick={() => alert('PDF download coming soon.')} className="text-xs text-[#37BB26] font-medium hover:text-[#2A9A1E] flex items-center gap-1">
-                      <Icon icon="solar:download-minimalistic-bold-duotone" className="w-4 h-4" />Download
-                    </button>
+                    <span className="text-xs text-gray-400 italic">Available upon request</span>
                   </div>
                 ))}
               </div>
