@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
-import { FolderOpen, Plus, Search, Filter } from 'lucide-react';
+import { FolderOpen, Plus, Search, Filter, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CompletenessBar } from '@/components/CompletenessBar';
 import { getFreshnessStatus } from '@/lib/freshness';
@@ -11,7 +11,11 @@ export function Projects() {
   const organizations = useStore(state => state.organizations);
   const moduleLastUpdated = useStore(state => state.moduleLastUpdated);
   const freshnessConfig = useStore(state => state.freshnessConfig);
+  const addProject = useStore(state => state.addProject);
+  const addActivity = useStore(state => state.addActivity);
   const navigate = useNavigate();
+  const [showNewProject, setShowNewProject] = useState(false);
+  const [newProject, setNewProject] = useState({ name: '', esco: '', phase: 'Prospect' as string, value: '', engineer: '', riskScore: 0, orgId: '' });
 
   const getProjectWorstFreshness = (projectId: string): 'fresh' | 'amber' | 'red' => {
     let worst: 'fresh' | 'amber' | 'red' = 'fresh';
@@ -35,7 +39,10 @@ export function Projects() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Projects</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage ESPC projects across all phases.</p>
           </div>
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
+          <button
+            onClick={() => setShowNewProject(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+          >
             <Plus className="w-4 h-4" />
             New Project
           </button>
@@ -118,6 +125,76 @@ export function Projects() {
           })}
         </div>
       </div>
+
+      {/* New Project Modal */}
+      {showNewProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowNewProject(false)} />
+          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+              <h2 className="text-lg font-bold text-white">New Project</h2>
+              <button onClick={() => setShowNewProject(false)} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              {[
+                { label: 'Project Name', key: 'name', placeholder: 'e.g. Fort Worth ISD ESPC' },
+                { label: 'ESCO Partner', key: 'esco', placeholder: 'e.g. Trane' },
+                { label: 'Lead Engineer', key: 'engineer', placeholder: 'e.g. Ruthie Norton' },
+              ].map(field => (
+                <div key={field.key}>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">{field.label}</label>
+                  <input
+                    type="text"
+                    value={(newProject as any)[field.key]}
+                    onChange={e => setNewProject(prev => ({ ...prev, [field.key]: e.target.value }))}
+                    placeholder={field.placeholder}
+                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                  />
+                </div>
+              ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
+                  <select
+                    value={newProject.phase}
+                    onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))}
+                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                  >
+                    {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Contract Value ($)</label>
+                  <input
+                    type="number"
+                    value={newProject.value}
+                    onChange={e => setNewProject(prev => ({ ...prev, value: e.target.value }))}
+                    placeholder="e.g. 5000000"
+                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
+              <button onClick={() => setShowNewProject(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button
+                disabled={!newProject.name.trim()}
+                onClick={() => {
+                  addProject({ name: newProject.name, esco: newProject.esco || 'TBD', phase: newProject.phase, value: Number(newProject.value) || 0, engineer: newProject.engineer || 'Unassigned', riskScore: 0, orgId: newProject.orgId || '' });
+                  addActivity({ user: 'System', description: `created project "${newProject.name}"` });
+                  setNewProject({ name: '', esco: '', phase: 'Prospect', value: '', engineer: '', riskScore: 0, orgId: '' });
+                  setShowNewProject(false);
+                }}
+                className="px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+              >
+                Create Project
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

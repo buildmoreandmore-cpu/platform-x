@@ -11,13 +11,20 @@ export function Workflows() {
   const tasks = useStore(state => state.tasks);
   const projects = useStore(state => state.projects);
   const updateTaskStatus = useStore(state => state.updateTaskStatus);
+  const addTask = useStore(state => state.addTask);
+  const addActivity = useStore(state => state.addActivity);
   const addBatch = useStore(state => state.addBatch);
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
   const deleteItem = useStore(state => state.deleteItem);
+  const currentUserId = useStore(state => state.currentUserId);
+  const users = useStore(state => state.users);
 
+  const currentUser = users.find(u => u.id === currentUserId);
   const [filter, setFilter] = useState<'all' | 'my' | 'overdue'>('my');
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showNewTask, setShowNewTask] = useState(false);
+  const [newTask, setNewTask] = useState({ title: '', projectId: '', priority: 'Medium', dueDate: '', assignedTo: currentUser?.name || '' });
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'my') return task.assignedTo === 'Martin';
@@ -53,7 +60,10 @@ export function Workflows() {
               <FileSpreadsheet className="w-4 h-4" />
               Import from SharePoint
             </button>
-            <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
+            <button
+              onClick={() => setShowNewTask(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+            >
               <Plus className="w-4 h-4" />
               New Task
             </button>
@@ -240,6 +250,67 @@ export function Workflows() {
             addImportRecord({ type: 'Tasks', source: 'SharePoint', date: new Date().toISOString(), records: count, status: 'Success', user: 'Martin', fileName: fName, batchId, storeKey: 'tasks' });
           }}
         />
+      )}
+
+      {/* New Task Modal */}
+      {showNewTask && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowNewTask(false)} />
+          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+              <h2 className="text-lg font-bold text-white">New Task</h2>
+              <button onClick={() => setShowNewTask(false)} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Task Title</label>
+                <input type="text" value={newTask.title} onChange={e => setNewTask(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g. Review IGEA draft" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Project</label>
+                  <select value={newTask.projectId} onChange={e => setNewTask(prev => ({ ...prev, projectId: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                    <option value="">General</option>
+                    {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Priority</label>
+                  <select value={newTask.priority} onChange={e => setNewTask(prev => ({ ...prev, priority: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Assigned To</label>
+                  <input type="text" value={newTask.assignedTo} onChange={e => setNewTask(prev => ({ ...prev, assignedTo: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Due Date</label>
+                  <input type="date" value={newTask.dueDate} onChange={e => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                </div>
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
+              <button onClick={() => setShowNewTask(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button
+                disabled={!newTask.title.trim()}
+                onClick={() => {
+                  addTask({ title: newTask.title, projectId: newTask.projectId || undefined, priority: newTask.priority, dueDate: newTask.dueDate || new Date().toISOString().split('T')[0], assignedTo: newTask.assignedTo || currentUser?.name || 'Unassigned', status: 'To Do' });
+                  addActivity({ user: currentUser?.name || 'System', description: `created task "${newTask.title}"` });
+                  setNewTask({ title: '', projectId: '', priority: 'Medium', dueDate: '', assignedTo: currentUser?.name || '' });
+                  setShowNewTask(false);
+                }}
+                className="px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+              >
+                Create Task
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

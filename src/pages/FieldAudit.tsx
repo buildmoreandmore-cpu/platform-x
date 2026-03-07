@@ -74,11 +74,17 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors"
+              >
                 <Upload className="w-4 h-4" />
                 Batch Upload
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors">
+              <button
+                onClick={() => setActiveTab('capture')}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+              >
                 <Camera className="w-4 h-4" />
                 New Capture
               </button>

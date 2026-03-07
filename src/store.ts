@@ -98,6 +98,7 @@ export const seedData = {
 
 type StoreType = typeof seedData & {
   setServiceLineMode: (mode: ServiceLineMode) => void;
+  addProject: (project: any) => void;
   addAsset: (asset: any) => void;
   updateAsset: (id: string, asset: any) => void;
   addUtilityBill: (bill: any) => void;
@@ -107,6 +108,7 @@ type StoreType = typeof seedData & {
   addTask: (task: any) => void;
   updateTaskStatus: (id: string, status: string) => void;
   addActivity: (activity: any) => void;
+  addReport: (report: any) => void;
   updateReportStatus: (id: string, status: string) => void;
   toggleQAItem: (reportId: string, itemId: string) => void;
   addQAComment: (reportId: string, comment: any) => void;
@@ -143,6 +145,7 @@ type StoreType = typeof seedData & {
 export const useStore = create<StoreType>((set) => ({
   ...seedData,
   setServiceLineMode: (mode) => set({ serviceLineMode: mode }),
+  addProject: (project) => set((state) => ({ projects: [...state.projects, { ...project, id: `p${Date.now()}` }] })),
   addAsset: (asset) => set((state) => ({ assets: [...state.assets, { ...asset, id: `a${Date.now()}` }] })),
   updateAsset: (id, asset) => set((state) => ({ assets: state.assets.map(a => a.id === id ? { ...a, ...asset } : a) })),
   addUtilityBill: (bill) => set((state) => ({ utilityBills: [...state.utilityBills, { ...bill, id: `u${Date.now()}` }] })),
@@ -152,6 +155,7 @@ export const useStore = create<StoreType>((set) => ({
   addTask: (task) => set((state) => ({ tasks: [...state.tasks, { ...task, id: `t${Date.now()}` }] })),
   updateTaskStatus: (id, status) => set((state) => ({ tasks: state.tasks.map(t => t.id === id ? { ...t, status } : t) })),
   addActivity: (activity) => set((state) => ({ activityFeed: [{ ...activity, id: `af${Date.now()}`, date: new Date().toISOString() }, ...state.activityFeed] })),
+  addReport: (report) => set((state) => ({ reports: [...state.reports, { ...report, id: `rpt${Date.now()}` }] })),
   updateReportStatus: (id, status) => set((state) => ({ reports: state.reports.map(r => r.id === id ? { ...r, status } : r) })),
   toggleQAItem: (reportId, itemId) => set((state) => ({
     reports: state.reports.map(r => r.id === reportId ? {

@@ -417,10 +417,15 @@ export function Reporting({ projectId }: { projectId?: string }) {
   const reports = useStore(state => state.reports);
   const ecms = useStore(state => state.ecms);
   const risks = useStore(state => state.risks);
+  const addReport = useStore(state => state.addReport);
+  const addActivity = useStore(state => state.addActivity);
   const toggleQAItem = useStore(state => state.toggleQAItem);
   const addQAComment = useStore(state => state.addQAComment);
   const approveReport = useStore(state => state.approveReport);
   const lockRecords = useStore(state => state.lockRecords);
+  const currentUserId = useStore(state => state.currentUserId);
+  const users = useStore(state => state.users);
+  const currentUser = users.find(u => u.id === currentUserId);
 
   const [activeTab, setActiveTab] = useState<'generate' | 'history' | 'qa'>('generate');
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
@@ -522,7 +527,30 @@ export function Reporting({ projectId }: { projectId?: string }) {
                   ))}
                 </div>
                 <div className="mt-6 pt-6 border-t border-[#1E2A45]">
-                  <button className="btn-primary w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
+                  <button
+                    disabled={!selectedProject}
+                    onClick={() => {
+                      if (!selectedProject) return;
+                      addReport({
+                        type: reportType,
+                        projectId: selectedProjectId,
+                        version: 'v1.0',
+                        date: new Date().toISOString().split('T')[0],
+                        by: currentUser?.name || 'System',
+                        status: 'Draft',
+                        qaChecklistItems: [
+                          { id: `qa1_${Date.now()}`, label: 'Data accuracy verified', checked: false },
+                          { id: `qa2_${Date.now()}`, label: 'Calculations reviewed', checked: false },
+                          { id: `qa3_${Date.now()}`, label: 'Formatting checked', checked: false },
+                        ],
+                        qaCompleted: 0,
+                        comments: [],
+                      });
+                      addActivity({ user: currentUser?.name || 'System', description: `generated ${reportType} draft for ${selectedProject.name}` });
+                      setActiveTab('history');
+                    }}
+                    className="btn-primary w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+                  >
                     <FileText className="w-4 h-4" />
                     Generate Draft
                   </button>

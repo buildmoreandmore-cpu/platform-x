@@ -223,27 +223,12 @@ export function KnowledgeBase() {
         )}
         
         {activeTab === 'templates' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { id: 't1', title: 'IGEA Report Structure', desc: 'Standardized outline for Investment Grade Energy Audits.', updated: '2024-02-15' },
-              { id: 't2', title: 'RFP Checklist', desc: 'Comprehensive checklist for ESCO procurement.', updated: '2024-01-10' },
-              { id: 't3', title: 'M&V Plan Outline', desc: 'IPMVP Option C compliant M&V plan template.', updated: '2023-11-20' },
-              { id: 't4', title: 'Commissioning Checklist', desc: 'Pre-functional and functional testing forms.', updated: '2024-03-05' }
-            ].filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase())).map((template) => (
-              <div key={template.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-[#0D918C]/50 transition-colors group">
-                <div className="flex-1">
-                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center mb-4 group-hover:bg-[#0D918C]/20 transition-colors">
-                    <FileText className="w-5 h-5 text-[#7A8BA8] group-hover:text-[#37BB26] transition-colors" />
-                  </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{template.title}</h3>
-                  <p className="text-sm text-[#7A8BA8] leading-relaxed">{template.desc}</p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-[#1E2A45] flex items-center justify-between">
-                  <span className="text-xs text-[#7A8BA8] font-mono">Updated: {template.updated}</span>
-                  <button className="text-sm font-medium text-[#37BB26] hover:text-[#2A9A1E] transition-colors">Download</button>
-                </div>
-              </div>
-            ))}
+          <div className="text-center py-16">
+            <FileText className="w-12 h-12 text-[#2A3A5C] mx-auto mb-4" />
+            <h3 className="text-base font-semibold text-white mb-2">No templates yet</h3>
+            <p className="text-sm text-[#5A6B88] max-w-md mx-auto">
+              Templates will appear here as you generate reports and save reusable formats. Use the Reporting module to create your first deliverable.
+            </p>
           </div>
         )}
       </div>
