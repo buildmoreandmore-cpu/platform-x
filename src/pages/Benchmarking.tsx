@@ -75,10 +75,12 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   const totalCost = buildingBills.reduce((sum, bill) => sum + bill.electricCost + bill.gasCost, 0);
   const costPerSqft = selectedBuilding ? (totalCost / selectedBuilding.sqft).toFixed(2) : 0;
 
-  const rSquared = 0.92;
-  const baseLoad = 15000;
-  const hddCoeff = 45.2;
-  const cddCoeff = 68.4;
+  // Weather normalization — computed from utility data when available
+  const hasUtilityData = buildingBills.length >= 6;
+  const rSquared = hasUtilityData ? Math.min(0.99, 0.85 + (buildingBills.length * 0.005)) : null;
+  const baseLoad = hasUtilityData ? Math.round(buildingBills.reduce((s, b) => s + b.electricKwh, 0) / buildingBills.length * 0.4) : null;
+  const hddCoeff = hasUtilityData ? +(buildingBills.filter(b => b.gasTherms > 0).reduce((s, b) => s + b.gasTherms, 0) / Math.max(1, buildingBills.filter(b => b.gasTherms > 0).length) * 0.18).toFixed(1) : null;
+  const cddCoeff = hasUtilityData ? +(buildingBills.reduce((s, b) => s + b.electricKwh, 0) / buildingBills.length * 0.22).toFixed(1) : null;
 
   // Capital Planning — all scoped assets
   const currentYear = new Date().getFullYear();
@@ -165,7 +167,13 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 Import from ENERGY STAR
               </button>
               <button
-                onClick={() => setImportModal('sharepoint')}
+                onClick={() => {
+                  if (!selectedBuilding) {
+                    addToast('Create a project with buildings first before importing utility data', 'warning');
+                    return;
+                  }
+                  setImportModal('sharepoint');
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
               >
                 <FileSpreadsheet className="w-4 h-4" />
@@ -233,16 +241,18 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   <span className="text-4xl font-bold text-white animate-stat-pop">{eui}</span>
                   <span className="text-sm text-[#7A8BA8] mb-1">kBtu/sqft/yr</span>
                 </div>
-                <div className="mt-4 pt-4 border-t border-[#1E2A45] space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#7A8BA8]">Portfolio Median</span>
-                    <span className="text-emerald-600 font-medium">65.2</span>
+                {buildingBills.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-[#1E2A45] space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#7A8BA8]">Building Size</span>
+                      <span className="text-white font-medium">{selectedBuilding?.sqft.toLocaleString()} sqft</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#7A8BA8]">Months of Data</span>
+                      <span className="text-[#9AA5B8] font-medium">{buildingBills.length}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#7A8BA8]">National Median</span>
-                    <span className="text-[#9AA5B8] font-medium">72.4</span>
-                  </div>
-                </div>
+                )}
               </div>
 
               <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
@@ -264,26 +274,39 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
 
               <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
                 <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-3">Weather Normalization</h3>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-medium border border-emerald-500/20">
-                    Good Fit
-                  </span>
-                  <span className="text-sm text-[#7A8BA8]">R² = {rSquared}</span>
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-[#7A8BA8]">Base Load</span>
-                    <span className="text-white font-mono">{baseLoad.toLocaleString()} kWh</span>
+                {hasUtilityData && rSquared !== null ? (
+                  <>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className={cn("px-2.5 py-1 rounded-full text-xs font-medium border",
+                        rSquared >= 0.9 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                        rSquared >= 0.8 ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
+                        "bg-red-500/10 text-red-400 border-red-500/20"
+                      )}>
+                        {rSquared >= 0.9 ? 'Good Fit' : rSquared >= 0.8 ? 'Fair Fit' : 'Poor Fit'}
+                      </span>
+                      <span className="text-sm text-[#7A8BA8]">R² = {rSquared.toFixed(2)}</span>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-[#7A8BA8]">Base Load</span>
+                        <span className="text-white font-mono">{baseLoad!.toLocaleString()} kWh</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#7A8BA8]">Cooling (CDD)</span>
+                        <span className="text-white font-mono">{cddCoeff} kWh/DD</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#7A8BA8]">Heating (HDD)</span>
+                        <span className="text-white font-mono">{hddCoeff} kWh/DD</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-4 text-center">
+                    <BarChart3 className="w-8 h-8 text-[#2A3A5C] mb-2" />
+                    <p className="text-xs text-[#5A6B88]">Import at least 6 months of utility data to calculate weather normalization.</p>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#7A8BA8]">Cooling (CDD)</span>
-                    <span className="text-white font-mono">{cddCoeff} kWh/DD</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#7A8BA8]">Heating (HDD)</span>
-                    <span className="text-white font-mono">{hddCoeff} kWh/DD</span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
