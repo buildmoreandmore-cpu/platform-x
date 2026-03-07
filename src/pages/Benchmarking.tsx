@@ -520,7 +520,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-semibold text-white">5-Year Capital Outlook</h2>
-                <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">
+                <button onClick={() => alert('Capital plan report generation coming soon.')} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">
                   <FileText className="w-4 h-4" />
                   Generate Capital Plan Report
                 </button>
@@ -630,7 +630,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
               <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-white">Replacement Cost Summary</h3>
-                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] hover:text-white transition-colors duration-150">
+                <button onClick={() => alert('CSV export coming soon.')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] hover:text-white transition-colors duration-150">
                   <Download className="w-3.5 h-3.5" />
                   Export CSV
                 </button>

@@ -275,7 +275,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 </div>
 
                 <div className="mt-8 text-center">
-                  <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E2A45] border border-[#2A3A5C] rounded-full text-[#9AA5B8] font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm">
+                  <button onClick={() => alert('Voice recording coming soon — requires Whisper integration.')} className="inline-flex items-center gap-2 px-6 py-3 bg-[#1E2A45] border border-[#2A3A5C] rounded-full text-[#9AA5B8] font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm">
                     <Mic className="w-5 h-5" />
                     Record Voice Audit Note
                   </button>

@@ -588,7 +588,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                 <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden h-full min-h-[600px] flex flex-col">
                   <div className="p-4 border-b border-[#1E2A45] bg-[#0F1829] flex items-center justify-between">
                     <h3 className="text-sm font-medium text-[#7A8BA8]">Preview: {reportType}</h3>
-                    <button className="p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded transition-colors duration-150">
+                    <button onClick={() => window.print()} className="p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded transition-colors duration-150" title="Print / Save as PDF">
                       <Download className="w-4 h-4" />
                     </button>
                   </div>
@@ -625,11 +625,11 @@ export function Reporting({ projectId }: { projectId?: string }) {
                               </tr>
                               <tr>
                                 <td className="border border-neutral-300 px-4 py-2">Simple Payback</td>
-                                <td className="border border-neutral-300 px-4 py-2">14.2 Years</td>
+                                <td className="border border-neutral-300 px-4 py-2">{(() => { const totalS = projectEcms.reduce((s: number, e: any) => s + e.savings, 0); const totalC = projectEcms.reduce((s: number, e: any) => s + e.cost, 0); return totalS > 0 ? `${(totalC / totalS).toFixed(1)} Years` : '—'; })()}</td>
                               </tr>
                               <tr>
                                 <td className="border border-neutral-300 px-4 py-2">NPV (20yr, 5%)</td>
-                                <td className="border border-neutral-300 px-4 py-2 text-[#37BB26] font-semibold">$425,000</td>
+                                <td className="border border-neutral-300 px-4 py-2 text-[#37BB26] font-semibold">{(() => { const totalS = projectEcms.reduce((s: number, e: any) => s + e.savings, 0); const totalC = projectEcms.reduce((s: number, e: any) => s + e.cost, 0); const npvVal = totalS > 0 ? Math.round(totalS * 12.46 - totalC) : 0; return `$${npvVal.toLocaleString()}`; })()}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -689,7 +689,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <button className="p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded transition-colors duration-150">
+                        <button onClick={() => window.print()} className="p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded transition-colors duration-150" title="Print / Save as PDF">
                           <Download className="w-4 h-4" />
                         </button>
                       </td>

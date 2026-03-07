@@ -27,6 +27,9 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
   const [elecEscalation, setElecEscalation] = useState(3.0);
   const [subTab, setSubTab] = useState<'ecm' | 'pricing'>('ecm');
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showEcmModal, setShowEcmModal] = useState(false);
+  const [ecmForm, setEcmForm] = useState({ number: '', description: '', category: 'HVAC', cost: '', savings: '' });
+  const addECM = useStore(state => state.addECM);
   
   const selectedProject = projects.find(p => p.id === selectedProjectId);
   const projectEcms = ecms.filter(e => e.projectId === selectedProjectId);
@@ -90,11 +93,11 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
+              <button onClick={() => alert('Scenario comparison coming soon.')} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <Calculator className="w-4 h-4" />
                 Compare Scenarios
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+              <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
                 <Plus className="w-4 h-4" />
                 Add ECM
               </button>
@@ -399,6 +402,27 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
         })()}
       </div>
 
+      {/* ─── ADD ECM MODAL ─── */}
+      {showEcmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add ECM</h3><button onClick={() => setShowEcmModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input placeholder="ECM Number (e.g. ECM-005)" value={ecmForm.number} onChange={e => setEcmForm(f => ({ ...f, number: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Description" value={ecmForm.description} onChange={e => setEcmForm(f => ({ ...f, description: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <select value={ecmForm.category} onChange={e => setEcmForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option>HVAC</option><option>Lighting</option><option>Building Envelope</option><option>Controls</option><option>Water</option><option>Renewable</option>
+            </select>
+            <div className="grid grid-cols-2 gap-3">
+              <input type="number" placeholder="Cost ($)" value={ecmForm.cost} onChange={e => setEcmForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+              <input type="number" placeholder="Annual Savings ($)" value={ecmForm.savings} onChange={e => setEcmForm(f => ({ ...f, savings: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowEcmModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!ecmForm.description) return; addECM({ ...ecmForm, cost: Number(ecmForm.cost) || 0, savings: Number(ecmForm.savings) || 0, life: 15, projectId: selectedProjectId }); setEcmForm({ number: '', description: '', category: 'HVAC', cost: '', savings: '' }); setShowEcmModal(false); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* SharePoint Import Modal */}
       {showImportModal && (
         <SharePointImportModal

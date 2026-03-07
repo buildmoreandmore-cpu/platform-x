@@ -9,6 +9,7 @@ export function Drawings({ projectId }: { projectId: string }) {
   const allDrawings = useStore(state => state.drawings);
   const buildings = useStore(state => state.buildings);
   const assets = useStore(state => state.assets);
+  const addDrawing = useStore(state => state.addDrawing);
 
   const drawings = allDrawings.filter(d => d.projectId === projectId);
 
@@ -16,6 +17,8 @@ export function Drawings({ projectId }: { projectId: string }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('All');
   const [showVersionHistory, setShowVersionHistory] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [drawingForm, setDrawingForm] = useState({ filename: '', type: 'Floor Plan', buildingId: '' });
 
   const drawing = drawings.find(d => d.id === selectedDrawing);
 
@@ -68,7 +71,7 @@ export function Drawings({ projectId }: { projectId: string }) {
               ))}
             </div>
           </div>
-          <button className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
+          <button onClick={() => setShowUploadModal(true)} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
             <Upload className="w-4 h-4" />
             Upload Drawing
           </button>
@@ -197,6 +200,27 @@ export function Drawings({ projectId }: { projectId: string }) {
         </div>
       </div>
 
+      {/* ─── UPLOAD DRAWING MODAL ─── */}
+      {showUploadModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Upload Drawing</h3><button onClick={() => setShowUploadModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input placeholder="Filename (e.g. Main-Building-L1.pdf)" value={drawingForm.filename} onChange={e => setDrawingForm(f => ({ ...f, filename: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <select value={drawingForm.type} onChange={e => setDrawingForm(f => ({ ...f, type: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              {DRAWING_TYPES.filter(t => t !== 'All').map(t => <option key={t}>{t}</option>)}
+            </select>
+            <select value={drawingForm.buildingId} onChange={e => setDrawingForm(f => ({ ...f, buildingId: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option value="">Select building...</option>
+              {buildings.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+            </select>
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!drawingForm.filename) return; addDrawing({ ...drawingForm, projectId, version: 'v1.0', date: new Date().toISOString().split('T')[0], by: 'Current User', annotations: 0 }); setDrawingForm({ filename: '', type: 'Floor Plan', buildingId: '' }); setShowUploadModal(false); }} className="px-4 py-2 bg-[#0B7A76] text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">Upload</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Drawing Detail Modal */}
       {selectedDrawing && drawing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6 modal-backdrop">
@@ -215,7 +239,7 @@ export function Drawings({ projectId }: { projectId: string }) {
                   <Filter className="w-3.5 h-3.5" />
                   Annotation Filter
                 </button>
-                <button className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors duration-150">
+                <button onClick={() => alert('Pin placement coming soon — requires canvas interaction.')} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors duration-150">
                   <Plus className="w-3.5 h-3.5" />
                   Add Pin
                 </button>

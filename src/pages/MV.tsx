@@ -20,6 +20,7 @@ export function MV({ projectId }: { projectId?: string }) {
   const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showDriftAlert, setShowDriftAlert] = useState(true);
 
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
   const projectMvData = mvData.filter(d => d.projectId === selectedProjectId);
@@ -39,7 +40,7 @@ export function MV({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">Measurement & Verification</h1>
-                {projectId && <FreshnessBadge module="M&V" entityId={projectId} />}
+                {projectId && <FreshnessBadge module="M&V" projectId={projectId} />}
               </div>
               <p className="text-sm text-[#7A8BA8] mt-1">Track post-retrofit savings vs guarantee and detect performance drift.</p>
             </div>
@@ -71,7 +72,7 @@ export function MV({ projectId }: { projectId?: string }) {
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
               </button>
-              <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
+              <button onClick={() => alert('Use the Reporting module to generate M&V reports.')} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <FileText className="w-4 h-4" />
                 Generate M&V Report
               </button>
@@ -81,7 +82,7 @@ export function MV({ projectId }: { projectId?: string }) {
       )}
 
       <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
-        {hasDrift && (
+        {hasDrift && showDriftAlert && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6 flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-1">
               <AlertTriangle className="w-5 h-5 text-red-500" />
@@ -89,14 +90,14 @@ export function MV({ projectId }: { projectId?: string }) {
             <div>
               <h3 className="text-lg font-semibold text-red-500">Performance Drift Detected</h3>
               <p className="text-sm text-red-400/80 mt-1">
-                Recent 3-month average consumption is 12% higher than the adjusted baseline model predicts. 
+                Recent 3-month average consumption is 12% higher than the adjusted baseline model predicts.
                 This indicates a potential degradation in ECM performance or a change in facility operations.
               </p>
               <div className="mt-4 flex gap-3">
-                <button className="px-4 py-2 bg-red-500/20 text-red-500 text-sm font-medium rounded-lg hover:bg-red-500/30 transition-colors">
+                <button onClick={() => { alert('Root cause investigation workflow coming soon.'); setShowDriftAlert(false); }} className="px-4 py-2 bg-red-500/20 text-red-500 text-sm font-medium rounded-lg hover:bg-red-500/30 transition-colors">
                   Investigate Root Cause
                 </button>
-                <button className="px-4 py-2 bg-[#1E2A45] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors">
+                <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-[#1E2A45] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors">
                   Dismiss Alert
                 </button>
               </div>

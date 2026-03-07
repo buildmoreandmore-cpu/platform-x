@@ -137,6 +137,11 @@ type StoreType = typeof seedData & {
   replaceBatch: (storeKey: string, oldBatchId: string, newItems: any[], newBatchId: string) => void;
   // Project Import Modal
   setShowProjectImport: (show: boolean) => void;
+  addMilestone: (m: any) => void;
+  addChangeOrder: (co: any) => void;
+  addSubmittal: (sub: any) => void;
+  addInspectionFinding: (f: any) => void;
+  addDrawing: (d: any) => void;
   // Auth
   login: (email: string, password: string) => boolean;
   logout: () => void;
@@ -290,6 +295,12 @@ export const useStore = create<StoreType>((set) => ({
     const tagged = newItems.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId: newBatchId }));
     return { [storeKey]: [...filtered, ...tagged] };
   }),
+  // ─── CRUD Actions ───
+  addMilestone: (m) => set((state) => ({ milestones: [...state.milestones, { ...m, id: `ms${Date.now()}` }] })),
+  addChangeOrder: (co) => set((state) => ({ changeOrders: [...state.changeOrders, { ...co, id: `co${Date.now()}` }] })),
+  addSubmittal: (sub) => set((state) => ({ submittals: [...state.submittals, { ...sub, id: `sub${Date.now()}` }] })),
+  addInspectionFinding: (f) => set((state) => ({ inspectionFindings: [...state.inspectionFindings, { ...f, id: `if${Date.now()}` }] })),
+  addDrawing: (d) => set((state) => ({ drawings: [...state.drawings, { ...d, id: `drw${Date.now()}` }] })),
   // ─── Project Import Modal ───
   setShowProjectImport: (show) => set({ showProjectImport: show }),
   // ─── Auth ───

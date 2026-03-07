@@ -24,10 +24,20 @@ export function Governance({ projectId }: { projectId?: string }) {
   const deleteItem = useStore(state => state.deleteItem);
   const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
+  const addMilestone = useStore(state => state.addMilestone);
+  const addRisk = useStore(state => state.addRisk);
+  const addChangeOrder = useStore(state => state.addChangeOrder);
+
   const [activeTab, setActiveTab] = useState<'pipeline' | 'milestones' | 'risks' | 'co' | 'submittals' | 'obligations'>('pipeline');
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
   const [catFilter, setCatFilter] = useState<string>('All');
   const [importSection, setImportSection] = useState<string | null>(null);
+  const [showMilestoneModal, setShowMilestoneModal] = useState(false);
+  const [showRiskModal, setShowRiskModal] = useState(false);
+  const [showCOModal, setShowCOModal] = useState(false);
+  const [milestoneForm, setMilestoneForm] = useState({ name: '', dueDate: '', status: 'pending', assignedTo: '' });
+  const [riskForm, setRiskForm] = useState({ description: '', category: 'Schedule', severity: 'Medium', owner: '' });
+  const [coForm, setCoForm] = useState({ number: '', description: '', requestedBy: '', cost: '', days: '' });
 
   const phases = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'];
   const project = projects.find(p => p.id === selectedProjectId);
@@ -143,7 +153,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowMilestoneModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Milestone
                 </button>
@@ -216,7 +226,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowRiskModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Log Risk
                 </button>
@@ -281,7 +291,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowCOModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Change Order
                 </button>
@@ -335,6 +345,55 @@ export function Governance({ projectId }: { projectId?: string }) {
                   {changeOrders.filter(co => co.projectId === selectedProjectId).length === 0 && (
                     <tr>
                       <td colSpan={6} className="px-6 py-8 text-center text-[#7A8BA8]">No change orders found for this project.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ─── SUBMITTALS TAB ─── */}
+        {activeTab === 'submittals' && (
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-white">Submittals</h3>
+              <button onClick={() => setImportSection('submittals')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                <FileSpreadsheet className="w-3.5 h-3.5" />
+                Import
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                  <tr>
+                    <th className="px-6 py-4 font-medium">Number</th>
+                    <th className="px-6 py-4 font-medium">Description</th>
+                    <th className="px-6 py-4 font-medium">Date Submitted</th>
+                    <th className="px-6 py-4 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2A45]">
+                  {submittals.filter(s => s.projectId === selectedProjectId).map((s) => (
+                    <tr key={s.id} className="hover:bg-[#1A2544] transition-colors">
+                      <td className="px-6 py-4 font-mono text-[#9AA5B8]">{s.number}</td>
+                      <td className="px-6 py-4 font-medium text-white">{s.description}</td>
+                      <td className="px-6 py-4 text-[#9AA5B8] font-mono text-xs">{s.submitted || s.date || '—'}</td>
+                      <td className="px-6 py-4">
+                        <span className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium border",
+                          s.status === 'Approved' ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                          s.status === 'Rejected' ? "bg-red-500/10 text-red-500 border-red-500/20" :
+                          "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                        )}>
+                          {(s.status || 'Pending').toUpperCase()}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  {submittals.filter(s => s.projectId === selectedProjectId).length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-8 text-center text-[#7A8BA8]">No submittals found for this project.</td>
                     </tr>
                   )}
                 </tbody>
@@ -514,6 +573,66 @@ export function Governance({ projectId }: { projectId?: string }) {
           );
         })()}
       </div>
+
+      {/* ─── ADD MILESTONE MODAL ─── */}
+      {showMilestoneModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Milestone</h3><button onClick={() => setShowMilestoneModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input placeholder="Milestone name" value={milestoneForm.name} onChange={e => setMilestoneForm(f => ({ ...f, name: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input type="date" value={milestoneForm.dueDate} onChange={e => setMilestoneForm(f => ({ ...f, dueDate: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white" />
+            <select value={milestoneForm.status} onChange={e => setMilestoneForm(f => ({ ...f, status: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option value="pending">Pending</option><option value="in-progress">In Progress</option><option value="completed">Completed</option>
+            </select>
+            <input placeholder="Assigned to" value={milestoneForm.assignedTo} onChange={e => setMilestoneForm(f => ({ ...f, assignedTo: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowMilestoneModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!milestoneForm.name) return; addMilestone({ ...milestoneForm, projectId: selectedProjectId }); setMilestoneForm({ name: '', dueDate: '', status: 'pending', assignedTo: '' }); setShowMilestoneModal(false); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── LOG RISK MODAL ─── */}
+      {showRiskModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Log Risk</h3><button onClick={() => setShowRiskModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <textarea placeholder="Risk description" value={riskForm.description} onChange={e => setRiskForm(f => ({ ...f, description: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] min-h-[80px]" />
+            <select value={riskForm.category} onChange={e => setRiskForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option>Schedule</option><option>Financial</option><option>Technical</option><option>Regulatory</option><option>Operational</option>
+            </select>
+            <select value={riskForm.severity} onChange={e => setRiskForm(f => ({ ...f, severity: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+            </select>
+            <input placeholder="Risk owner" value={riskForm.owner} onChange={e => setRiskForm(f => ({ ...f, owner: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowRiskModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!riskForm.description) return; addRisk({ ...riskForm, projectId: selectedProjectId, status: 'Open' }); setRiskForm({ description: '', category: 'Schedule', severity: 'Medium', owner: '' }); setShowRiskModal(false); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── ADD CHANGE ORDER MODAL ─── */}
+      {showCOModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Change Order</h3><button onClick={() => setShowCOModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input placeholder="CO Number (e.g. CO-004)" value={coForm.number} onChange={e => setCoForm(f => ({ ...f, number: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Description" value={coForm.description} onChange={e => setCoForm(f => ({ ...f, description: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Requested by" value={coForm.requestedBy} onChange={e => setCoForm(f => ({ ...f, requestedBy: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <div className="grid grid-cols-2 gap-3">
+              <input type="number" placeholder="Cost ($)" value={coForm.cost} onChange={e => setCoForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+              <input type="number" placeholder="Days impact" value={coForm.days} onChange={e => setCoForm(f => ({ ...f, days: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowCOModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!coForm.description) return; addChangeOrder({ ...coForm, cost: Number(coForm.cost) || 0, days: Number(coForm.days) || 0, projectId: selectedProjectId, status: 'Pending' }); setCoForm({ number: '', description: '', requestedBy: '', cost: '', days: '' }); setShowCOModal(false); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {importSection && SECTION_CONFIGS[importSection] && (
         <SharePointImportModal

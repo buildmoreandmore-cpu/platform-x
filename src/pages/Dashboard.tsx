@@ -10,6 +10,7 @@ import {
 import { getFreshnessStatus, daysSinceUpdate } from '@/lib/freshness';
 import { ExportButton } from '@/components/ExportButton';
 import { OnboardingGuide } from '@/components/OnboardingGuide';
+import { formatTimeAgo } from '@/lib/timeAgo';
 
 const PHASE_ORDER = ['Prospect', 'Audit', 'IGEA', 'RFP', 'Contract', 'Construction', 'M&V', 'Closeout'] as const;
 
@@ -156,7 +157,7 @@ export function Dashboard() {
 
   // Extended activity feed
   const feedItems = useMemo(() => {
-    return activityFeed.map(a => ({ ...a, timeAgo: '2h ago' })).slice(0, 6);
+    return activityFeed.map(a => ({ ...a, timeAgo: formatTimeAgo(a.date) })).slice(0, 6);
   }, [activityFeed]);
 
   return (

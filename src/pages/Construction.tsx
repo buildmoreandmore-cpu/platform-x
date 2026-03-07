@@ -18,9 +18,13 @@ export function Construction({ projectId }: { projectId?: string }) {
   const deleteItem = useStore(state => state.deleteItem);
   const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
 
+  const addInspectionFinding = useStore(state => state.addInspectionFinding);
+
   const [activeTab, setActiveTab] = useState<'tracker' | 'inspections'>('tracker');
   const [showImportModal, setShowImportModal] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
+  const [showFindingModal, setShowFindingModal] = useState(false);
+  const [findingForm, setFindingForm] = useState({ date: '', ecm: '', type: 'Quality Issue', severity: 'Medium', description: '' });
 
   const projectEcms = ecms.filter(e => e.projectId === selectedProjectId);
   const projectFindings = inspectionFindings.filter(f => f.projectId === selectedProjectId);
@@ -37,7 +41,7 @@ export function Construction({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">Construction Oversight</h1>
-                {projectId && <FreshnessBadge module="Inspection" entityId={projectId} />}
+                {projectId && <FreshnessBadge module="Inspection" projectId={projectId} />}
               </div>
               <p className="text-sm text-[#7A8BA8] mt-1">Track installation progress, inspections, and scope deviations.</p>
             </div>
@@ -46,7 +50,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                 variant="compact"
                 filename={`construction-${(projects.find(p => p.id === selectedProjectId)?.name || 'project').toLowerCase().replace(/\s+/g, '-')}`}
                 sheets={[
-                  { name: 'Installation', data: projectEcms.map((e, idx) => ({ 'ECM': e.number, 'Description': e.description, 'Category': e.category, 'Cost': e.cost, 'Progress': idx === 0 ? '100%' : idx === 1 ? '45%' : '0%', 'Status': idx === 0 ? 'Complete' : idx === 1 ? 'In Progress' : 'Not Started' })) },
+                  { name: 'Installation', data: projectEcms.map(e => ({ 'ECM': e.number, 'Description': e.description, 'Category': e.category, 'Cost': e.cost, 'Progress': `${e.progress ?? 0}%`, 'Status': e.status ?? (e.progress === 100 ? 'Complete' : (e.progress ?? 0) > 0 ? 'In Progress' : 'Not Started') })) },
                   { name: 'Inspection Findings', data: projectFindings.map(f => ({ 'Date': f.date, 'ECM': f.ecm, 'Type': f.type, 'Severity': f.severity, 'Description': f.description, 'Status': f.status })) },
                 ]}
               />
@@ -140,10 +144,9 @@ export function Construction({ projectId }: { projectId?: string }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1E2A45]">
-                  {projectEcms.map((ecm, idx) => {
-                    // Mock progress based on index for demo
-                    const progress = idx === 0 ? 100 : idx === 1 ? 45 : 0;
-                    const status = idx === 0 ? 'Complete' : idx === 1 ? 'In Progress' : 'Not Started';
+                  {projectEcms.map((ecm) => {
+                    const progress = ecm.progress ?? 0;
+                    const status = ecm.status ?? (progress === 100 ? 'Complete' : progress > 0 ? 'In Progress' : 'Not Started');
                     
                     return (
                       <tr key={ecm.id} className="hover:bg-[#1A2544] transition-colors">
@@ -193,7 +196,7 @@ export function Construction({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Inspection Log</h3>
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors">
+              <button onClick={() => setShowFindingModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors">
                 <Plus className="w-3.5 h-3.5" />
                 Log Finding
               </button>
@@ -271,6 +274,27 @@ export function Construction({ projectId }: { projectId?: string }) {
           </div>
         )}
       </div>
+      {/* ─── LOG FINDING MODAL ─── */}
+      {showFindingModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Log Inspection Finding</h3><button onClick={() => setShowFindingModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input type="date" value={findingForm.date} onChange={e => setFindingForm(f => ({ ...f, date: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white" />
+            <input placeholder="ECM (e.g. ECM-001)" value={findingForm.ecm} onChange={e => setFindingForm(f => ({ ...f, ecm: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <select value={findingForm.type} onChange={e => setFindingForm(f => ({ ...f, type: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option>Quality Issue</option><option>Deviation from Scope</option><option>Safety Concern</option><option>Material Defect</option>
+            </select>
+            <select value={findingForm.severity} onChange={e => setFindingForm(f => ({ ...f, severity: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+              <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+            </select>
+            <textarea placeholder="Description" value={findingForm.description} onChange={e => setFindingForm(f => ({ ...f, description: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] min-h-[80px]" />
+            <div className="flex justify-end gap-2 pt-2">
+              <button onClick={() => setShowFindingModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!findingForm.description) return; addInspectionFinding({ ...findingForm, date: findingForm.date || new Date().toISOString().split('T')[0], projectId: selectedProjectId, status: 'Open' }); setFindingForm({ date: '', ecm: '', type: 'Quality Issue', severity: 'Medium', description: '' }); setShowFindingModal(false); }} className="px-4 py-2 bg-[#0B7A76] text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">Add</button>
+            </div>
+          </div>
+        </div>
+      )}
       {showImportModal && (
         <SharePointImportModal
           sectionConfig={SECTION_CONFIGS.inspectionFindings}
