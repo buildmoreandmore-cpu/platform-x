@@ -3,6 +3,7 @@ import { X, Upload, FileSpreadsheet, CheckCircle2, ChevronRight, ChevronDown, Al
 import { cn } from '@/lib/utils';
 import { parseWorkbook, type ParsedSheet } from '@/lib/parseSpreadsheet';
 import { useStore, type CustomColumnDef } from '@/store';
+import { useToastStore } from '@/stores/toastStore';
 import { SECTION_CONFIGS, fuzzyMatchGeneric, type SectionImportConfig, type SectionFieldDef } from './SharePointImportModal';
 
 type Step = 'upload' | 'detection' | 'mapping' | 'importing' | 'success';
@@ -59,7 +60,9 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
   const addBatch = useStore(state => state.addBatch);
   const addCustomColumns = useStore(state => state.addCustomColumns);
   const addImportRecord = useStore(state => state.addImportRecord);
+  const projectImportDefaultId = useStore(state => state.projectImportDefaultId);
   const currentUser = useStore(state => state.users).find(u => u.id === useStore.getState().currentUserId);
+  const addToast = useToastStore(s => s.addToast);
 
   const [step, setStep] = useState<Step>('upload');
   const [dragOver, setDragOver] = useState(false);
@@ -68,7 +71,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
   const [sheets, setSheets] = useState<ParsedSheet[]>([]);
   const [sheetMatches, setSheetMatches] = useState<SheetMatch[]>([]);
   const [expandedSheet, setExpandedSheet] = useState<number | null>(null);
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(projectImportDefaultId || '');
   const [importProgress, setImportProgress] = useState<{ current: number; total: number; currentSheet: string }>({ current: 0, total: 0, currentSheet: '' });
   const [importResults, setImportResults] = useState<Array<{ section: string; count: number; storeKey: string }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -245,6 +248,11 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
 
     setImportResults(results);
     setImportProgress({ current: activeSheets.length, total: activeSheets.length, currentSheet: '' });
+
+    // Toast summary
+    const summary = results.map(r => `${r.count} ${r.section.toLowerCase()}`).join(', ');
+    addToast(`Imported ${summary}`);
+
     setTimeout(() => setStep('success'), 400);
   };
 

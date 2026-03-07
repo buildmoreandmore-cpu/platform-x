@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { Camera, Upload, Mic, AlertTriangle, Search, Filter, FileSpreadsheet, X } from 'lucide-react';
+import { Camera, Upload, Mic, AlertTriangle, Search, Filter, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -94,6 +94,13 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
+              </button>
+              <button
+                onClick={() => { useStore.getState().setProjectImportDefaultId(projectId || ''); useStore.getState().setShowProjectImport(true); }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+              >
+                <Layers className="w-4 h-4" />
+                Import Workbook
               </button>
               <button
                 onClick={() => setShowImportModal(true)}
@@ -304,7 +311,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 </div>
               ))}
               {filteredAssets.length === 0 && (
-                <div className="col-span-full"><EmptyState icon={Camera} title="No assets found" description="Import asset data or start a new capture to build your equipment inventory." action={{ label: 'New Capture', onClick: () => setActiveTab('capture') }} /></div>
+                <div className="col-span-full"><EmptyState icon={Camera} title="No assets found" description="Import asset data or start a new capture to build your equipment inventory." action={{ label: 'New Capture', onClick: () => setActiveTab('capture') }} secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(projectId || ''); useStore.getState().setShowProjectImport(true); } }} /></div>
               )}
             </div>
           </div>

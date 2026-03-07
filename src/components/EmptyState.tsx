@@ -5,9 +5,10 @@ interface EmptyStateProps {
   title: string;
   description: string;
   action?: { label: string; onClick: () => void };
+  secondaryAction?: { label: string; onClick: () => void };
 }
 
-export function EmptyState({ icon: Icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon: Icon, title, description, action, secondaryAction }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
       <Icon className="w-10 h-10 text-[#2A3A5C] mb-4" />
@@ -19,6 +20,14 @@ export function EmptyState({ icon: Icon, title, description, action }: EmptyStat
           className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] text-white text-xs font-medium rounded-lg hover:bg-[#096A66] transition-colors"
         >
           {action.label}
+        </button>
+      )}
+      {secondaryAction && (
+        <button
+          onClick={secondaryAction.onClick}
+          className="mt-2 text-[10px] text-[#0D918C] hover:text-[#37BB26] transition-colors"
+        >
+          {secondaryAction.label}
         </button>
       )}
     </div>

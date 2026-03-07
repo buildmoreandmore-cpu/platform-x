@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText, FileSpreadsheet, X } from 'lucide-react';
+import { LineChart, AlertTriangle, CheckCircle2, TrendingDown, Leaf, FileText, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -75,6 +75,13 @@ export function MV({ projectId }: { projectId?: string }) {
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
+              </button>
+              <button
+                onClick={() => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+              >
+                <Layers className="w-4 h-4" />
+                Import Workbook
               </button>
               <button onClick={() => alert('Use the Reporting module to generate M&V reports.')} className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <FileText className="w-4 h-4" />

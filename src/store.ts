@@ -95,6 +95,7 @@ export const seedData = {
   importHistory: [] as any[],
   exportHistory: [] as any[],
   showProjectImport: false,
+  projectImportDefaultId: '' as string,
 };
 
 type StoreType = typeof seedData & {
@@ -138,6 +139,7 @@ type StoreType = typeof seedData & {
   replaceBatch: (storeKey: string, oldBatchId: string, newItems: any[], newBatchId: string) => void;
   // Project Import Modal
   setShowProjectImport: (show: boolean) => void;
+  setProjectImportDefaultId: (id: string) => void;
   addMilestone: (m: any) => void;
   addChangeOrder: (co: any) => void;
   addSubmittal: (sub: any) => void;
@@ -306,6 +308,7 @@ export const useStore = create<StoreType>()(
   addDrawing: (d) => set((state) => ({ drawings: [...state.drawings, { ...d, id: `drw${Date.now()}` }] })),
   // ─── Project Import Modal ───
   setShowProjectImport: (show) => set({ showProjectImport: show }),
+  setProjectImportDefaultId: (id) => set({ projectImportDefaultId: id }),
   // ─── Auth ───
   login: (email, password) => {
     const cred = AUTH_CREDENTIALS.find(c => c.email === email && c.password === password);
@@ -324,7 +327,7 @@ export const useStore = create<StoreType>()(
     storage: createJSONStorage(() => localStorage),
     partialize: (state) => {
       // Exclude auth and UI transient state from persistence
-      const { isAuthenticated, authUser, currentUserId, showProjectImport, ...rest } = state;
+      const { isAuthenticated, authUser, currentUserId, showProjectImport, projectImportDefaultId, ...rest } = state;
       return rest as any;
     },
   }

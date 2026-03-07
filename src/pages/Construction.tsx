@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { HardHat, AlertTriangle, CheckCircle2, Search, Filter, Plus, ClipboardList, Hammer, FileSpreadsheet, X } from 'lucide-react';
+import { HardHat, AlertTriangle, CheckCircle2, Search, Filter, Plus, ClipboardList, Hammer, FileSpreadsheet, X, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { cn } from '@/lib/utils';
 import { EditableField } from '@/components/EditableField';
@@ -75,6 +75,13 @@ export function Construction({ projectId }: { projectId?: string }) {
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
+              </button>
+              <button
+                onClick={() => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+              >
+                <Layers className="w-4 h-4" />
+                Import Workbook
               </button>
             </div>
           </div>
@@ -189,7 +196,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                   })}
                   {projectEcms.length === 0 && (
                     <tr>
-                      <td colSpan={4}><EmptyState icon={Hammer} title="No ECMs tracked" description="Import or add ECMs in the Financial Modeling module to track installation progress." /></td>
+                      <td colSpan={4}><EmptyState icon={Hammer} title="No ECMs tracked" description="Import or add ECMs in the Financial Modeling module to track installation progress." secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                     </tr>
                   )}
                 </tbody>
@@ -271,7 +278,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                   ))}
                   {projectFindings.length === 0 && (
                     <tr>
-                      <td colSpan={6}><EmptyState icon={ClipboardList} title="No inspection findings" description="Log findings from site inspections to track quality and scope." action={{ label: 'Log Finding', onClick: () => setShowFindingModal(true) }} /></td>
+                      <td colSpan={6}><EmptyState icon={ClipboardList} title="No inspection findings" description="Log findings from site inspections to track quality and scope." action={{ label: 'Log Finding', onClick: () => setShowFindingModal(true) }} secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                     </tr>
                   )}
                 </tbody>

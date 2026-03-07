@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStore, type CustomColumnDef } from '@/store';
-import { BarChart3, DollarSign, Plus, Calendar, TrendingUp, AlertTriangle, Zap, Download, FileText, ChevronRight, HardDrive, Leaf, CheckCircle2, X, FileSpreadsheet, Trash2 } from 'lucide-react';
+import { BarChart3, DollarSign, Plus, Calendar, TrendingUp, AlertTriangle, Zap, Download, FileText, ChevronRight, HardDrive, Leaf, CheckCircle2, X, FileSpreadsheet, Trash2, Layers } from 'lucide-react';
 import { useToastStore } from '@/stores/toastStore';
 import { useConfirmStore } from '@/stores/confirmStore';
 import { ExportButton } from '@/components/ExportButton';
@@ -178,6 +178,13 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
+              </button>
+              <button
+                onClick={() => { useStore.getState().setProjectImportDefaultId(projectId || ''); useStore.getState().setShowProjectImport(true); }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+              >
+                <Layers className="w-4 h-4" />
+                Import Workbook
               </button>
               <button
                 onClick={() => setShowManualEntry(true)}

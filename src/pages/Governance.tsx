@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
-import { ShieldCheck, Calendar, FileText, AlertTriangle, GitPullRequest, FileCheck, Plus, Filter, CalendarPlus, FileSpreadsheet, X, CalendarDays, LayoutGrid, GripVertical, Columns3 } from 'lucide-react';
+import { ShieldCheck, Calendar, FileText, AlertTriangle, GitPullRequest, FileCheck, Plus, Filter, CalendarPlus, FileSpreadsheet, X, CalendarDays, LayoutGrid, GripVertical, Columns3, Layers } from 'lucide-react';
 import { ExportButton } from '@/components/ExportButton';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
@@ -76,7 +76,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   { name: 'Contract Obligations', data: contractObligations.filter(o => o.projectId === selectedProjectId).map(o => ({ 'Description': o.description, 'Category': o.category, 'Responsible': o.responsibleParty, 'Due Date': o.dueDate || 'Ongoing', 'Status': o.status })) },
                 ]}
               />
-              <select 
+              <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5"
@@ -85,6 +85,13 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
+              <button
+                onClick={() => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+              >
+                <Layers className="w-4 h-4" />
+                Import Workbook
+              </button>
             </div>
           </div>
 
@@ -234,7 +241,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   ))}
                   {milestones.filter(m => m.projectId === selectedProjectId).length === 0 && (
                     <tr>
-                      <td colSpan={5}><EmptyState icon={Calendar} title="No milestones yet" description="Add milestones to track project deliverables and deadlines." action={{ label: 'Add Milestone', onClick: () => setShowMilestoneModal(true) }} /></td>
+                      <td colSpan={5}><EmptyState icon={Calendar} title="No milestones yet" description="Add milestones to track project deliverables and deadlines." action={{ label: 'Add Milestone', onClick: () => setShowMilestoneModal(true) }} secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                     </tr>
                   )}
                 </tbody>
@@ -329,7 +336,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   ))}
                   {risks.filter(r => r.projectId === selectedProjectId).length === 0 && (
                     <tr>
-                      <td colSpan={6}><EmptyState icon={AlertTriangle} title="No risks logged" description="Log risks to track project threats and mitigations." action={{ label: 'Log Risk', onClick: () => setShowRiskModal(true) }} /></td>
+                      <td colSpan={6}><EmptyState icon={AlertTriangle} title="No risks logged" description="Log risks to track project threats and mitigations." action={{ label: 'Log Risk', onClick: () => setShowRiskModal(true) }} secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                     </tr>
                   )}
                 </tbody>
@@ -488,7 +495,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                     })}
                     {changeOrders.filter(co => co.projectId === selectedProjectId).length === 0 && (
                       <tr>
-                        <td colSpan={6}><EmptyState icon={FileText} title="No change orders" description="Add change orders to track scope modifications and cost impacts." action={{ label: 'Add Change Order', onClick: () => setShowCOModal(true) }} /></td>
+                        <td colSpan={6}><EmptyState icon={FileText} title="No change orders" description="Add change orders to track scope modifications and cost impacts." action={{ label: 'Add Change Order', onClick: () => setShowCOModal(true) }} secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                       </tr>
                     )}
                   </tbody>
@@ -538,7 +545,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   ))}
                   {submittals.filter(s => s.projectId === selectedProjectId).length === 0 && (
                     <tr>
-                      <td colSpan={4}><EmptyState icon={FileCheck} title="No submittals" description="Import submittals to track document review workflows." /></td>
+                      <td colSpan={4}><EmptyState icon={FileCheck} title="No submittals" description="Import submittals to track document review workflows." secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td>
                     </tr>
                   )}
                 </tbody>
@@ -708,7 +715,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                         </tr>
                       ))}
                       {filtered.length === 0 && (
-                        <tr><td colSpan={6}><EmptyState icon={ShieldCheck} title="No obligations found" description="Import contract obligations to track compliance and deadlines." /></td></tr>
+                        <tr><td colSpan={6}><EmptyState icon={ShieldCheck} title="No obligations found" description="Import contract obligations to track compliance and deadlines." secondaryAction={{ label: 'or import a project workbook', onClick: () => { useStore.getState().setProjectImportDefaultId(selectedProjectId); useStore.getState().setShowProjectImport(true); } }} /></td></tr>
                       )}
                     </tbody>
                   </table>

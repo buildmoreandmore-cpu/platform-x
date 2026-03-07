@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
-import { FolderOpen, Plus, Search, Filter, X } from 'lucide-react';
+import { FolderOpen, Plus, Search, Filter, X, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CompletenessBar } from '@/components/CompletenessBar';
 import { getFreshnessStatus } from '@/lib/freshness';
@@ -39,13 +39,22 @@ export function Projects() {
             <h1 className="text-2xl font-bold text-white tracking-tight">Projects</h1>
             <p className="text-sm text-[#7A8BA8] mt-1">Manage ESPC projects across all phases.</p>
           </div>
-          <button
-            onClick={() => setShowNewProject(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            New Project
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => useStore.getState().setShowProjectImport(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-500/20 transition-colors duration-150"
+            >
+              <Layers className="w-4 h-4" />
+              Import Workbook
+            </button>
+            <button
+              onClick={() => setShowNewProject(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              New Project
+            </button>
+          </div>
         </div>
         
         <div className="flex items-center justify-between">
