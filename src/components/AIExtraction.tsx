@@ -96,7 +96,8 @@ export function AIExtraction({ onAssetExtracted }: { onAssetExtracted: (asset: E
             type="file" 
             ref={fileInputRef} 
             className="hidden" 
-            accept="image/*" 
+            accept="image/*"
+            capture="environment"
             onChange={handleFileUpload}
           />
           

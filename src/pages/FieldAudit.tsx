@@ -109,8 +109,14 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 <Upload className="w-4 h-4" />
                 Batch Upload
               </button>
-              <button
-                onClick={() => setActiveTab('capture')}
+              <button 
+                onClick={() => {
+                  setActiveTab('capture');
+                  setTimeout(() => {
+                    const fileInput = document.querySelector('input[type="file"][accept="image/*"]') as HTMLInputElement;
+                    if (fileInput) fileInput.click();
+                  }, 100);
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
               >
                 <Camera className="w-4 h-4" />
