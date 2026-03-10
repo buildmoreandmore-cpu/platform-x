@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { supabase, loadAllData, upsertItem, upsertBatch, deleteItemRemote, deleteBatchRemote } from './lib/supabase';
 
 export type Phase = 'Prospect' | 'Audit' | 'IGEA' | 'RFP' | 'Contract' | 'Construction' | 'M&V' | 'Closeout';
 export type ServiceLineMode = 'Full' | 'Audit' | 'OR' | 'Construction';
@@ -146,16 +147,22 @@ type StoreType = typeof seedData & {
   addInspectionFinding: (f: any) => void;
   addDrawing: (d: any) => void;
   // Auth
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  loadFromSupabase: () => Promise<void>;
 };
 
 export const useStore = create<StoreType>()(
   persist(
-  (set) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ((set: any) => ({
   ...seedData,
   setServiceLineMode: (mode) => set({ serviceLineMode: mode }),
-  addProject: (project) => set((state) => ({ projects: [...state.projects, { ...project, id: `p${Date.now()}` }] })),
+  addProject: (project) => {
+    const newProject = { ...project, id: `p${Date.now()}` };
+    set((state) => ({ projects: [...state.projects, newProject] }));
+    upsertItem('projects', newProject).catch(console.error);
+  },
   addAsset: (asset) => set((state) => ({ assets: [...state.assets, { ...asset, id: `a${Date.now()}` }] })),
   updateAsset: (id, asset) => set((state) => ({ assets: state.assets.map(a => a.id === id ? { ...a, ...asset } : a) })),
   addUtilityBill: (bill) => set((state) => ({ utilityBills: [...state.utilityBills, { ...bill, id: `u${Date.now()}` }] })),
@@ -277,29 +284,42 @@ export const useStore = create<StoreType>()(
     importHistory: state.importHistory.map((r: any) => r.id === id ? { ...r, status } : r),
   })),
   // ─── Generic Batch Import/Delete (any section) ───
-  addBatch: (storeKey, items, importBatchId) => set((state) => {
-    const arr = (state as any)[storeKey];
-    if (!Array.isArray(arr)) return {};
+  addBatch: (storeKey, items, importBatchId) => {
     const tagged = items.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId }));
-    return { [storeKey]: [...arr, ...tagged] };
-  }),
-  deleteBatch: (storeKey, importBatchId) => set((state) => {
-    const arr = (state as any)[storeKey];
-    if (!Array.isArray(arr)) return {};
-    return { [storeKey]: arr.filter((item: any) => item.importBatchId !== importBatchId) };
-  }),
-  deleteItem: (storeKey, itemId) => set((state) => {
-    const arr = (state as any)[storeKey];
-    if (!Array.isArray(arr)) return {};
-    return { [storeKey]: arr.filter((item: any) => item.id !== itemId) };
-  }),
-  replaceBatch: (storeKey, oldBatchId, newItems, newBatchId) => set((state) => {
-    const arr = (state as any)[storeKey];
-    if (!Array.isArray(arr)) return {};
-    const filtered = arr.filter((item: any) => item.importBatchId !== oldBatchId);
+    set((state) => {
+      const arr = (state as any)[storeKey];
+      if (!Array.isArray(arr)) return {};
+      return { [storeKey]: [...arr, ...tagged] };
+    });
+    upsertBatch(storeKey, tagged, importBatchId).catch(console.error);
+  },
+  deleteBatch: (storeKey, importBatchId) => {
+    set((state) => {
+      const arr = (state as any)[storeKey];
+      if (!Array.isArray(arr)) return {};
+      return { [storeKey]: arr.filter((item: any) => item.importBatchId !== importBatchId) };
+    });
+    deleteBatchRemote(storeKey, importBatchId).catch(console.error);
+  },
+  deleteItem: (storeKey, itemId) => {
+    set((state) => {
+      const arr = (state as any)[storeKey];
+      if (!Array.isArray(arr)) return {};
+      return { [storeKey]: arr.filter((item: any) => item.id !== itemId) };
+    });
+    deleteItemRemote(storeKey, itemId).catch(console.error);
+  },
+  replaceBatch: (storeKey, oldBatchId, newItems, newBatchId) => {
     const tagged = newItems.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId: newBatchId }));
-    return { [storeKey]: [...filtered, ...tagged] };
-  }),
+    set((state) => {
+      const arr = (state as any)[storeKey];
+      if (!Array.isArray(arr)) return {};
+      const filtered = arr.filter((item: any) => item.importBatchId !== oldBatchId);
+      return { [storeKey]: [...filtered, ...tagged] };
+    });
+    deleteBatchRemote(storeKey, oldBatchId).catch(console.error);
+    upsertBatch(storeKey, tagged, newBatchId).catch(console.error);
+  },
   // ─── CRUD Actions ───
   addMilestone: (m) => set((state) => ({ milestones: [...state.milestones, { ...m, id: `ms${Date.now()}` }] })),
   addChangeOrder: (co) => set((state) => ({ changeOrders: [...state.changeOrders, { ...co, id: `co${Date.now()}` }] })),
@@ -309,19 +329,28 @@ export const useStore = create<StoreType>()(
   // ─── Project Import Modal ───
   setShowProjectImport: (show) => set({ showProjectImport: show }),
   setProjectImportDefaultId: (id) => set({ projectImportDefaultId: id }),
+  // ─── Supabase: load remote data into store ───
+  loadFromSupabase: async () => {
+    const data = await loadAllData();
+    set(data as Partial<StoreType>);
+  },
   // ─── Auth ───
-  login: (email, password) => {
-    const cred = AUTH_CREDENTIALS.find(c => c.email === email && c.password === password);
-    if (!cred) return false;
-    sessionStorage.setItem('2kb_auth', cred.userId);
-    set({ isAuthenticated: true, authUser: cred.userId, currentUserId: cred.userId });
+  login: async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error || !data.user) return false;
+    const userId = data.user.id;
+    sessionStorage.setItem('2kb_auth', userId);
+    set({ isAuthenticated: true, authUser: userId, currentUserId: userId });
+    // Load persisted project data from Supabase after login
+    loadAllData().then(remote => set(remote as Partial<StoreType>)).catch(console.error);
     return true;
   },
-  logout: () => {
+  logout: async () => {
+    await supabase.auth.signOut();
     sessionStorage.removeItem('2kb_auth');
     set({ isAuthenticated: false, authUser: null });
   },
-}),
+})) as any,
   {
     name: '2kb-store',
     storage: createJSONStorage(() => localStorage),

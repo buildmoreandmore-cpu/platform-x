@@ -22,7 +22,7 @@ export function Login() {
     // Small delay for UX
     await new Promise(r => setTimeout(r, 400));
 
-    const success = login(email.trim().toLowerCase(), password);
+    const success = await login(email.trim().toLowerCase(), password);
     if (success) {
       navigate(redirect, { replace: true });
     } else {
