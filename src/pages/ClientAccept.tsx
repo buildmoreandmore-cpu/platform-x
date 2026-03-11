@@ -90,10 +90,13 @@ export function ClientAccept() {
       // Create profile for the client
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert({
+        .upsert({
           id: authData.user.id,
           name: formData.name,
-          role: 'Client'
+          initials: formData.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2),
+          email: invite.client_email,
+          default_role: 'Client',
+          project_roles: {},
         });
 
       if (profileError) {

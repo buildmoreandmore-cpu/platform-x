@@ -32,11 +32,11 @@ export function Login() {
           // Try to get profile to determine role
           const { data: profile } = await supabase
             .from('profiles')
-            .select('role')
+            .select('default_role')
             .eq('id', user.id)
             .single();
 
-          if (profile && profile.role === 'Client') {
+          if (profile && profile.default_role === 'Client') {
             navigate('/client', { replace: true });
           } else {
             navigate(redirect, { replace: true });
