@@ -336,27 +336,20 @@ export const useStore = create<StoreType>()(
   },
   // ─── Auth ───
   login: async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error || !data.user) return false;
-    // Map Supabase UUID back to store user ID so editField/audit trail work correctly
-    const storeUserId = EMAIL_TO_USER_ID[data.user.email!] || data.user.id;
-    sessionStorage.setItem('2kb_auth', storeUserId);
-    set({ isAuthenticated: true, authUser: storeUserId, currentUserId: storeUserId });
-    // Upsert profile row so Supabase has user metadata
-    const storeUser = useStore.getState().users.find(u => u.id === storeUserId);
-    if (storeUser) {
-      supabase.from('profiles').upsert({
-        id: data.user.id,
-        name: storeUser.name,
-        initials: storeUser.initials,
-        email: storeUser.email,
-        default_role: storeUser.defaultRole,
-        project_roles: storeUser.projectRoles,
-      }).catch(console.error);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error || !data.user) return false;
+      // Map Supabase UUID back to store user ID so editField/audit trail work correctly
+      const storeUserId = EMAIL_TO_USER_ID[data.user.email!] || data.user.id;
+      sessionStorage.setItem('2kb_auth', storeUserId);
+      set({ isAuthenticated: true, authUser: storeUserId, currentUserId: storeUserId });
+      // Load persisted project data from Supabase in background
+      loadAllData().then(remote => set(remote as Partial<StoreType>)).catch(console.error);
+      return true;
+    } catch (err) {
+      console.error('Login error:', err);
+      return false;
     }
-    // Load persisted project data from Supabase after login
-    loadAllData().then(remote => set(remote as Partial<StoreType>)).catch(console.error);
-    return true;
   },
   logout: async () => {
     await supabase.auth.signOut();
