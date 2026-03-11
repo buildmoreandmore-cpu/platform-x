@@ -230,25 +230,16 @@ export function Layout() {
           <>
             <div className="fixed inset-0 z-30" onClick={() => setShowUserMenu(false)} />
             <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl z-40 overflow-hidden animate-slide-down">
-              <div className="px-3 py-2 border-b border-[#1E2A45]">
-                <p className="text-[10px] font-medium text-[#7A8BA8] uppercase tracking-wider">Switch User</p>
+              <div className="px-3 py-2.5 flex items-center gap-3 border-b border-[#1E2A45]">
+                <div className="w-7 h-7 rounded-full bg-[#1E2A45] border border-[#37BB26]/30 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-semibold text-[#37BB26]">{currentUser?.initials}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-white truncate">{currentUser?.name}</p>
+                  <p className="text-[10px] text-[#5A6B88]">{currentUser?.email}</p>
+                </div>
               </div>
-              {users.filter(u => u.id !== currentUserId).map(user => (
-                <button
-                  key={user.id}
-                  onClick={() => { setCurrentUser(user.id); setShowUserMenu(false); }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#1E2A45] transition-colors text-left"
-                >
-                  <div className="w-7 h-7 rounded-full bg-[#1E2A45] border border-[#2A3A5C] flex items-center justify-center flex-shrink-0">
-                    <span className="text-[10px] font-semibold text-[#7A8BA8]">{user.initials}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-[#CBD2DF] truncate">{user.name}</p>
-                    <p className="text-[10px] text-[#5A6B88]">{user.defaultRole}</p>
-                  </div>
-                </button>
-              ))}
-              <div className="border-t border-[#1E2A45]">
+              <div>
                 <button
                   onClick={() => { logout(); navigate('/login'); setShowUserMenu(false); }}
                   className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#1E2A45] transition-colors text-left text-red-400"
