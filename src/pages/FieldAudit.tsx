@@ -12,6 +12,8 @@ import { useConfirmStore } from '@/stores/confirmStore';
 import { EmptyState } from '@/components/EmptyState';
 import { BulkActions } from '@/components/BulkActions';
 
+const EQUIPMENT_CATEGORIES = ['HVAC', 'Lighting', 'Controls', 'Envelope', 'Water', 'Renewables', 'Mechanical System', 'Electrical System', 'Other'];
+
 const ASSET_IMAGES: Record<string, string> = {
   'Chiller': '/assets/chiller.jpg',
   'AHU': '/assets/ahu.jpg',
@@ -38,6 +40,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   const [conditionFilter, setConditionFilter] = useState<string>('All');
   const [typeFilter, setTypeFilter] = useState<string>('All');
   const [buildingFilter, setBuildingFilter] = useState<string>('All');
+  const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [captureProjectId, setCaptureProjectId] = useState<string>(projectId || '');
   const [uploadedPhotos, setUploadedPhotos] = useState<Array<{ id: string; file: File; preview: string; name: string; projectId: string }>>([]);
@@ -124,7 +127,12 @@ Return ONLY a valid JSON object with these fields (use null for any field not vi
   "condition": "Good | Fair | Poor | Critical",
   "refrigerant": "refrigerant type if applicable",
   "capacity": "capacity with units if visible",
-  "notes": "any other relevant observations"
+  "notes": "any other relevant observations",
+  "category": "one of: HVAC | Lighting | Controls | Envelope | Water | Renewables | Mechanical System | Electrical System | Other",
+  "floor": "floor or level if visible (e.g. 'B1', '2nd Floor', 'Roof')",
+  "zone": "zone or area if visible (e.g. 'East Wing', 'Server Room')",
+  "panel": "electrical panel ID if visible",
+  "meter": "meter ID if visible"
 }
 Return only the JSON, no explanation.`
                 }
@@ -144,6 +152,11 @@ Return only the JSON, no explanation.`
         // Add to assets store
         addAsset({
           ...extracted,
+          category: extracted.category || '',
+          floor: extracted.floor || '',
+          zone: extracted.zone || '',
+          panel: extracted.panel || '',
+          meter: extracted.meter || '',
           projectId: photo.projectId,
           buildingId: '',
           importBatchId: `claude_${Date.now()}`,
@@ -177,7 +190,7 @@ Return only the JSON, no explanation.`
   const assetTypes = ['All', ...Array.from(new Set(displayAssets.map(a => a.type)))];
   const conditions = ['All', 'Good', 'Fair', 'Poor', 'Critical'];
   const buildingOptions = ['All', ...Array.from(new Set(displayAssets.map(a => buildings.find(b => b.id === a.buildingId)?.name).filter(Boolean))) as string[]];
-  const activeFilterCount = [conditionFilter, typeFilter, buildingFilter].filter(f => f !== 'All').length;
+  const activeFilterCount = [conditionFilter, typeFilter, buildingFilter, categoryFilter].filter(f => f !== 'All').length;
 
   const filteredAssets = displayAssets.filter(a => {
     const matchSearch = a.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -185,7 +198,8 @@ Return only the JSON, no explanation.`
     const matchCondition = conditionFilter === 'All' || a.condition === conditionFilter;
     const matchType = typeFilter === 'All' || a.type === typeFilter;
     const matchBuilding = buildingFilter === 'All' || buildings.find(b => b.id === a.buildingId)?.name === buildingFilter;
-    return matchSearch && matchCondition && matchType && matchBuilding;
+    const matchCategory = categoryFilter === 'All' || (a as any).category === categoryFilter;
+    return matchSearch && matchCondition && matchType && matchBuilding && matchCategory;
   });
 
   return (
@@ -310,7 +324,7 @@ Return only the JSON, no explanation.`
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-white uppercase tracking-wider">Filters</span>
                         {activeFilterCount > 0 && (
-                          <button onClick={() => { setConditionFilter('All'); setTypeFilter('All'); setBuildingFilter('All'); }} className="text-[10px] text-[#0D918C] hover:text-[#37BB26] font-medium">Clear all</button>
+                          <button onClick={() => { setConditionFilter('All'); setTypeFilter('All'); setBuildingFilter('All'); setCategoryFilter('All'); }} className="text-[10px] text-[#0D918C] hover:text-[#37BB26] font-medium">Clear all</button>
                         )}
                       </div>
                       <div>
@@ -330,6 +344,25 @@ Return only the JSON, no explanation.`
                         <select value={buildingFilter} onChange={e => setBuildingFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
                           {buildingOptions.map(b => <option key={b} value={b}>{b}</option>)}
                         </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Category</label>
+                        <div className="flex flex-wrap gap-1.5">
+                          {['All', ...EQUIPMENT_CATEGORIES].map(cat => (
+                            <button
+                              key={cat}
+                              onClick={() => setCategoryFilter(cat)}
+                              className={cn(
+                                "px-2 py-1 rounded text-[10px] font-medium border transition-colors",
+                                categoryFilter === cat
+                                  ? "bg-[#0D918C]/20 text-[#37BB26] border-[#0D918C]/40"
+                                  : "bg-[#0F1829] text-[#7A8BA8] border-[#1E2A45] hover:text-white"
+                              )}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                       <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#0B7A76] text-white text-xs font-medium rounded-lg hover:bg-[#096A66] transition-colors">Apply</button>
                     </div>
@@ -373,6 +406,11 @@ Return only the JSON, no explanation.`
                       <div>
                         <h3 className="text-lg font-semibold text-white group-hover:text-[#37BB26] transition-colors">{asset.type}</h3>
                         <p className="text-sm text-[#7A8BA8]">{buildings.find(b => b.id === asset.buildingId)?.name}</p>
+                        {(asset as any).category && (
+                          <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-[#1E2A45] text-[#7A8BA8] border border-[#2A3A5C]">
+                            {(asset as any).category}
+                          </span>
+                        )}
                       </div>
                       <EditableField
                         value={asset.condition}

@@ -35,6 +35,7 @@ export function Dashboard() {
   const ecms = useStore(s => s.ecms);
   const moduleLastUpdated = useStore(s => s.moduleLastUpdated);
   const freshnessConfig = useStore(s => s.freshnessConfig);
+  const users = useStore(s => s.users);
 
   // Empty state → show onboarding guide
   if (projects.length === 0) {
@@ -163,6 +164,22 @@ export function Dashboard() {
   const feedItems = useMemo(() => {
     return activityFeed.map(a => ({ ...a, timeAgo: formatTimeAgo(a.date) })).slice(0, 6);
   }, [activityFeed]);
+
+  // Team Workload — next 4 weeks
+  const fourWeeksOut = new Date(Date.now() + 28 * 24 * 60 * 60 * 1000);
+  const workloadByPerson = useMemo(() => {
+    const map: Record<string, { total: number; high: number; overdue: number }> = {};
+    tasks
+      .filter(t => t.status !== 'Done' && t.status !== 'Completed')
+      .forEach(t => {
+        const person = t.assignedTo || 'Unassigned';
+        if (!map[person]) map[person] = { total: 0, high: 0, overdue: 0 };
+        map[person].total++;
+        if (t.priority === 'High') map[person].high++;
+        if (t.dueDate && new Date(t.dueDate) < new Date()) map[person].overdue++;
+      });
+    return Object.entries(map).sort((a, b) => b[1].total - a[1].total);
+  }, [tasks]);
 
   return (
     <div className="p-3 md:p-6 max-w-[1400px] mx-auto space-y-4 md:space-y-5 animate-in fade-in duration-500 relative">
@@ -563,6 +580,42 @@ export function Dashboard() {
                         </span>
                       </div>
                       <p className="text-[10px] text-[#5A6B88] mt-0.5">{item.project} • {item.assignedTo}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Team Workload — Next 4 Weeks */}
+          <div className="bg-[#121C35] border border-[#1E2A45] rounded-lg">
+            <div className="px-5 py-3 border-b border-[#1E2A45]">
+              <h3 className="text-sm font-semibold text-white">Team Workload — Next 4 Weeks</h3>
+            </div>
+            <div className="divide-y divide-[#1E2A45]">
+              {workloadByPerson.length === 0 ? (
+                <div className="px-5 py-6 text-center text-xs text-[#5A6B88]">All caught up</div>
+              ) : (
+                workloadByPerson.map(([person, counts]) => (
+                  <div key={person} className="px-5 py-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-6 h-6 rounded-full bg-[#0D918C]/15 text-[#37BB26] flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                        {person.charAt(0)}
+                      </div>
+                      <span className="text-xs font-medium text-white truncate">{person}</span>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="text-xs text-[#7A8BA8] tabular-nums">{counts.total} tasks</span>
+                      {counts.high > 0 && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                          {counts.high} High
+                        </span>
+                      )}
+                      {counts.overdue > 0 && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                          {counts.overdue} Overdue
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))

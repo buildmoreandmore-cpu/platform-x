@@ -430,6 +430,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
   const [activeTab, setActiveTab] = useState<'generate' | 'history' | 'qa'>('generate');
   const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
   const [reportType, setReportType] = useState('IGEA Report');
+  const [reportAshraeLevel, setReportAshraeLevel] = useState('');
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
 
@@ -468,7 +469,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
               />
               <select
                 value={selectedProjectId}
-                onChange={(e) => setSelectedProjectId(e.target.value)}
+                onChange={(e) => { setSelectedProjectId(e.target.value); setReportAshraeLevel((projects.find(p => p.id === e.target.value) as any)?.ashraeLevel || ''); }}
                 className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5 transition-colors"
               >
                 {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -526,7 +527,20 @@ export function Reporting({ projectId }: { projectId?: string }) {
                     </button>
                   ))}
                 </div>
-                <div className="mt-6 pt-6 border-t border-[#1E2A45]">
+                <div className="mt-6 pt-6 border-t border-[#1E2A45] space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">ASHRAE Level</label>
+                    <select
+                      value={reportAshraeLevel || (selectedProject as any)?.ashraeLevel || ''}
+                      onChange={e => setReportAshraeLevel(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                    >
+                      <option value="">— Select level —</option>
+                      <option value="Level I — Walk-Through">Level I — Walk-Through</option>
+                      <option value="Level II — Energy Survey">Level II — Energy Survey</option>
+                      <option value="Level III — IGEA/Investment Grade">Level III — IGEA/Investment Grade</option>
+                    </select>
+                  </div>
                   <button
                     disabled={!selectedProject}
                     onClick={() => {
@@ -538,6 +552,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                         date: new Date().toISOString().split('T')[0],
                         by: currentUser?.name || 'System',
                         status: 'Draft',
+                        ashraeLevel: reportAshraeLevel || (selectedProject as any)?.ashraeLevel || '',
                         qaChecklistItems: [
                           { id: `qa1_${Date.now()}`, label: 'Data accuracy verified', checked: false },
                           { id: `qa2_${Date.now()}`, label: 'Calculations reviewed', checked: false },
@@ -545,7 +560,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                         ],
                         qaCompleted: 0,
                         comments: [],
-                      });
+                      } as any);
                       addActivity({ user: currentUser?.name || 'System', description: `generated ${reportType} draft for ${selectedProject.name}` });
                       setActiveTab('history');
                     }}

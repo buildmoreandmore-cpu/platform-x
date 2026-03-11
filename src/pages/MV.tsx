@@ -26,8 +26,9 @@ export function MV({ projectId }: { projectId?: string }) {
   const [showImportModal, setShowImportModal] = useState(false);
   const [showDriftAlert, setShowDriftAlert] = useState(true);
 
-  const [selectedProjectId, setSelectedProjectId] = useState(projectId || projects[0]?.id || '');
-  const projectMvData = mvData.filter(d => d.projectId === selectedProjectId);
+  const [selectedProjectId, setSelectedProjectId] = useState(projectId || '__portfolio__');
+  const isPortfolio = selectedProjectId === '__portfolio__';
+  const projectMvData = isPortfolio ? mvData : mvData.filter(d => d.projectId === selectedProjectId);
 
   const totalGuaranteed = projectMvData.reduce((sum, d) => sum + d.guaranteed, 0);
   const totalCalculated = projectMvData.reduce((sum, d) => sum + d.calculated, 0);
@@ -49,11 +50,12 @@ export function MV({ projectId }: { projectId?: string }) {
               <p className="text-sm text-[#7A8BA8] mt-1">Track post-retrofit savings vs guarantee and detect performance drift.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
-              <select 
+              <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5"
               >
+                <option value="__portfolio__">All Projects (Portfolio)</option>
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
@@ -89,6 +91,12 @@ export function MV({ projectId }: { projectId?: string }) {
       )}
 
       <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
+        {isPortfolio && (
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-3 flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0" />
+            <p className="text-xs text-blue-300 font-medium">Showing aggregated M&V data across all projects.</p>
+          </div>
+        )}
         {hasDrift && showDriftAlert && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6 flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-1">
