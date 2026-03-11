@@ -16,12 +16,14 @@ export function ForgotPassword() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-        redirectTo: `${window.location.origin}/reset-password`
+      const resp = await fetch('/api/send-reset-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
       
-      if (error) {
-        setError(error.message);
+      if (!resp.ok) {
+        setError('An error occurred. Please try again.');
       } else {
         setSuccess(true);
       }

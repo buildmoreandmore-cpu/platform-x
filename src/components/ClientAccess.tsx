@@ -47,9 +47,25 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
       invitedBy: currentUser.name,
     });
 
-    if (result.success) {
+    if (result.success && result.invite) {
+      // Send invite email
+      try {
+        await fetch('/api/send-invite-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientName,
+            clientEmail,
+            projectName: project?.name || projectId,
+            inviteToken: result.invite.invite_token,
+            invitedBy: currentUser.name,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to send invite email:', err);
+      }
       setShowInviteModal(false);
-      loadInvites(); // Refresh the list
+      loadInvites();
     } else {
       alert(result.error || 'Failed to send invite');
     }
@@ -58,8 +74,25 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
 
   const handleResendInvite = async (inviteId: string) => {
     setActionLoading(inviteId);
+    const invite = invites.find(i => i.id === inviteId);
     const result = await resendInvite(inviteId);
-    if (result.success) {
+    if (result.success && invite) {
+      // Re-send the email
+      try {
+        await fetch('/api/send-invite-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientName: invite.client_name,
+            clientEmail: invite.client_email,
+            projectName: project?.name || projectId,
+            inviteToken: invite.invite_token,
+            invitedBy: currentUser?.name || invite.invited_by,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to resend invite email:', err);
+      }
       loadInvites();
     } else {
       alert(result.error || 'Failed to resend invite');
