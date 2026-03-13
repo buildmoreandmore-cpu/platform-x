@@ -529,7 +529,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 </div>
               )}
 
-              {/* Field guide + sample download */}
+              {/* Field guide collapsible */}
               <div className="space-y-2">
                 <button
                   onClick={() => setShowFieldGuide(v => !v)}
@@ -549,13 +549,6 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                     ))}
                   </div>
                 )}
-                <button
-                  onClick={() => downloadSampleCSV(sectionConfig)}
-                  className="flex items-center gap-2 px-3 py-2 w-full bg-[#0D918C]/10 border border-[#0D918C]/30 text-[#0D918C] text-xs font-medium rounded-lg hover:bg-[#0D918C]/20 transition-colors"
-                >
-                  <FileSpreadsheet className="w-3.5 h-3.5 flex-shrink-0" />
-                  Download Sample CSV — {sectionName}
-                </button>
               </div>
             </div>
           )}
@@ -786,6 +779,19 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
             </div>
           )}
         </div>
+
+        {/* Footer action for upload step */}
+        {step === 'upload' && (
+          <div className="px-6 py-4 border-t border-[#1E2A45] flex-shrink-0">
+            <button
+              onClick={() => downloadSampleCSV(sectionConfig)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-[#0D918C]/10 border border-[#0D918C]/30 text-[#0D918C] text-sm font-medium rounded-lg hover:bg-[#0D918C]/20 transition-colors"
+            >
+              <FileSpreadsheet className="w-4 h-4 flex-shrink-0" />
+              Download Sample CSV — {sectionName}
+            </button>
+          </div>
+        )}
 
         {/* Footer action for mapping step */}
         {step === 'mapping' && (
