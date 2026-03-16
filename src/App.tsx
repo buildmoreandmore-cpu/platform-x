@@ -32,6 +32,7 @@ const Reporting = lazy(() => import('./pages/Reporting').then(m => ({ default: m
 const KnowledgeBase = lazy(() => import('./pages/KnowledgeBase').then(m => ({ default: m.KnowledgeBase })));
 const Workflows = lazy(() => import('./pages/Workflows').then(m => ({ default: m.Workflows })));
 const Timeline = lazy(() => import('./pages/Timeline').then(m => ({ default: m.Timeline })));
+const Drawings = lazy(() => import('./pages/Drawings').then(m => ({ default: m.Drawings })));
 const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.Settings })));
 const ClientPortal = lazy(() => import('./pages/ClientPortal').then(m => ({ default: m.ClientPortal })));
 
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="knowledge" element={<Suspense fallback={<PageSkeleton />}><KnowledgeBase /></Suspense>} />
           <Route path="timeline" element={<Suspense fallback={<PageSkeleton />}><Timeline /></Suspense>} />
           <Route path="workflows" element={<Suspense fallback={<PageSkeleton />}><Workflows /></Suspense>} />
+          <Route path="drawings" element={<Suspense fallback={<PageSkeleton />}><Drawings /></Suspense>} />
           <Route path="settings" element={<Suspense fallback={<PageSkeleton />}><Settings /></Suspense>} />
           <Route path="*" element={<div className="p-8 text-gray-500">Module under construction</div>} />
         </Route>

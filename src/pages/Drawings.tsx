@@ -5,13 +5,18 @@ import { cn } from '@/lib/utils';
 
 const DRAWING_TYPES = ['All', 'Floor Plan', 'MEP', 'Site Plan', 'Electrical', 'Plumbing'];
 
-export function Drawings({ projectId }: { projectId: string }) {
+export function Drawings({ projectId: propProjectId }: { projectId?: string } = {}) {
   const allDrawings = useStore(state => state.drawings);
   const buildings = useStore(state => state.buildings);
   const assets = useStore(state => state.assets);
   const addDrawing = useStore(state => state.addDrawing);
+  const projects = useStore(state => state.projects);
 
-  const drawings = allDrawings.filter(d => d.projectId === projectId);
+  // Use prop projectId or show all drawings across projects
+  const projectId = propProjectId || '';
+  const drawings = projectId
+    ? allDrawings.filter(d => d.projectId === projectId)
+    : allDrawings;
 
   const [selectedDrawing, setSelectedDrawing] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');

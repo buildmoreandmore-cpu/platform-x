@@ -37,6 +37,7 @@ const allNavigation = [
   { name: 'Knowledge Base', href: '/app/knowledge', icon: BookOpen, modes: ['Full', 'Audit'], badgeKey: null, freshnessModule: null },
   { name: 'Schedule', href: '/app/timeline', icon: CalendarRange, modes: ['Full', 'Audit', 'Construction'], badgeKey: null, freshnessModule: null },
   { name: 'Tasks & Workflow', href: '/app/workflows', icon: Zap, modes: ['Full', 'Audit', 'OR', 'Construction'], badgeKey: 'tasks', freshnessModule: null },
+  { name: 'Technical Drawings', href: '/app/drawings', icon: Layers, modes: ['Full', 'Audit', 'Construction'], badgeKey: null, freshnessModule: null },
 ];
 
 const modeLabels: Record<ServiceLineMode, string> = {
