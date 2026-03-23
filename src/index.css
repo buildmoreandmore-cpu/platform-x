@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary: #0D918C;
+  --color-secondary: #37BB26;
   --color-bg: #0B1120;
   --color-card: #121C35;
   --color-hover: #1A2544;
@@ -217,7 +219,7 @@ body {
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 145, 140, 0.25);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 .btn-primary:active {
   transform: translateY(0px) scale(0.98);
@@ -253,7 +255,7 @@ body {
   bottom: -1px;
   left: 0; right: 0;
   height: 2px;
-  background: #0D918C;
+  background: var(--color-primary);
   border-radius: 2px 2px 0 0;
   transform: scaleX(0);
   transition: transform 0.2s var(--ease-out-expo);
@@ -307,7 +309,7 @@ body {
 
 /* Focus ring — brand teal, fast */
 *:focus-visible {
-  outline: 2px solid #0D918C;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }

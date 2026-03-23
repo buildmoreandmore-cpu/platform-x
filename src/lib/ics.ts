@@ -2,12 +2,12 @@ export function downloadICS(title: string, date: string, description: string): v
   const dtStart = date.replace(/-/g, '');
   const dtEnd = dtStart;
   const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-  const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@2kb.energy`;
+  const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@platform-x.app`;
 
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//2KB Energy//Intelligence//EN',
+    'PRODID:-//Platform-X//ESPC//EN',
     'BEGIN:VEVENT',
     `UID:${uid}`,
     `DTSTAMP:${now}`,

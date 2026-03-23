@@ -191,12 +191,12 @@ const SAMPLE_ROWS: Record<string, string[]> = {
   assets: ['Chiller', 'Trane', 'RTAC150', '2008', 'Fair', 'HVAC', '5', '185000'],
   ecms: ['ECM-01', 'LED Lighting Retrofit', 'Lighting', '42000', '8500', '15'],
   benchmarks: ['HVAC', 'K-12 School', '18.50', '$/SF', '22', 'RSMeans 2024'],
-  milestones: ['Investment Grade Audit', '2024-06-15', 'In Progress', 'Ruthie Norton'],
-  risks: ['Equipment lead times delayed', 'High', 'Construction', 'Open', 'Martin Francis'],
+  milestones: ['Investment Grade Audit', '2024-06-15', 'In Progress', 'Jane Smith'],
+  risks: ['Equipment lead times delayed', 'High', 'Construction', 'Open', 'John Doe'],
   mvData: ['2024', '125000', '131450'],
   contractObligations: ['Energy Savings Guarantee', 'Guarantee minimum savings per contract', 'ESCO', '2025-01-01', 'Active', 'Section 4.2'],
   inspectionFindings: ['ECM-03', '2024-03-15', 'Performance', 'Medium', 'LED driver failure in Zone B', 'Open'],
-  tasks: ['Submit M&V report', 'Ruthie Norton', '2024-07-01', 'High', 'To Do'],
+  tasks: ['Submit M&V report', 'Jane Smith', '2024-07-01', 'High', 'To Do'],
   timelineItems: ['Construction Phase', '2024-04-01', '2024-09-30', 'In Progress', 'Implementation'],
   pricingReview: ['LED Lighting Retrofit', '48000', '35000', '44000', '56000'],
   changeOrders: ['CO-001', 'Added emergency lighting scope', 'Owner', '12500', '5', 'Approved'],
@@ -460,8 +460,8 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
         {/* Header */}
         <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#0D918C]/15 flex items-center justify-center">
-              <FileSpreadsheet className="w-4 h-4 text-[#0D918C]" />
+            <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
+              <FileSpreadsheet className="w-4 h-4 text-primary" />
             </div>
             <div>
               <h3 className="text-base font-semibold text-white">{replaceBatchId ? `Replace ${sectionName} Import` : `Import ${sectionName} from SharePoint`}</h3>
@@ -481,7 +481,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 {i > 0 && <ChevronRight className="w-3 h-3 text-[#5A6B88]" />}
                 <span className={cn(
                   "px-2 py-0.5 rounded-full font-medium",
-                  step === s ? "bg-[#0D918C]/15 text-[#0D918C]" :
+                  step === s ? "bg-primary/15 text-primary" :
                   (['upload', 'mapping', 'importing', 'success'].indexOf(step) > i) ? "text-emerald-400" : "text-[#5A6B88]"
                 )}>
                   {s === 'upload' ? 'Upload' : s === 'mapping' ? 'Map Columns' : s === 'importing' ? 'Importing' : 'Complete'}
@@ -503,12 +503,12 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 className={cn(
                   "border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer",
                   dragOver
-                    ? "border-[#0D918C] bg-[#0D918C]/5 drop-zone-active"
-                    : "border-[#2A3A5C] hover:border-[#0D918C]/50 bg-[#0F1829]"
+                    ? "border-primary bg-primary/5 drop-zone-active"
+                    : "border-[#2A3A5C] hover:border-primary/50 bg-[#0F1829]"
                 )}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <Upload className={cn("w-10 h-10 mx-auto mb-3 transition-colors", dragOver ? "text-[#0D918C]" : "text-[#5A6B88]")} />
+                <Upload className={cn("w-10 h-10 mx-auto mb-3 transition-colors", dragOver ? "text-primary" : "text-[#5A6B88]")} />
                 <p className="text-sm font-medium text-white mb-1">
                   {dragOver ? 'Drop file here' : 'Drag & drop your spreadsheet'}
                 </p>
@@ -558,10 +558,10 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
             <div className="space-y-4">
               {/* AI Analysis Banner */}
               {aiAnalysis && (aiAnalysis.missingFields.length > 0 || aiAnalysis.extraColumns.length > 0) && (
-                <div className="bg-[#0D918C]/5 border border-[#0D918C]/20 rounded-lg p-3 space-y-2">
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 space-y-2">
                   <div className="flex items-center gap-2">
-                    <Brain className="w-4 h-4 text-[#0D918C]" />
-                    <span className="text-xs font-semibold text-[#0D918C]">AI Column Analysis</span>
+                    <Brain className="w-4 h-4 text-primary" />
+                    <span className="text-xs font-semibold text-primary">AI Column Analysis</span>
                     <span className="text-[10px] text-[#5A6B88] ml-auto">{aiAnalysis.mappedCount}/{knownFields.length} fields matched</span>
                   </div>
                   {aiAnalysis.missingFields.length > 0 && (
@@ -614,7 +614,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 Tip: If columns aren&apos;t matching,{' '}
                 <button
                   onClick={() => downloadSampleCSV(sectionConfig)}
-                  className="text-[#0D918C] hover:underline"
+                  className="text-primary hover:underline"
                 >
                   download the sample template
                 </button>
@@ -627,7 +627,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 <select
                   value={selectedProjectId}
                   onChange={e => setSelectedProjectId(e.target.value)}
-                  className="flex-1 bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-[#0D918C] focus:border-[#0D918C]"
+                  className="flex-1 bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary"
                 >
                   <option value="">All Projects (no grouping)</option>
                   {projects.map(p => (
@@ -651,7 +651,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                     <select
                       value={m.mapping}
                       onChange={(e) => updateMapping(i, e.target.value)}
-                      className="flex-1 bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-[#0D918C] focus:border-[#0D918C]"
+                      className="flex-1 bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary"
                     >
                       <optgroup label="Known Fields">
                         {knownFields.map(f => (
@@ -704,13 +704,13 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-[#9AA5B8]">Importing {sectionName.toLowerCase()}...</p>
-                <span className="text-xs font-mono text-[#0D918C]">
+                <span className="text-xs font-mono text-primary">
                   {importedCount}/{totalRows}
                 </span>
               </div>
               <div className="w-full h-1.5 bg-[#0F1829] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#0D918C] rounded-full transition-all duration-100"
+                  className="h-full bg-primary rounded-full transition-all duration-100"
                   style={{ width: `${(importedCount / totalRows) * 100}%` }}
                 />
               </div>
@@ -785,7 +785,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
           <div className="px-6 py-4 border-t border-[#1E2A45] flex-shrink-0">
             <button
               onClick={() => downloadSampleCSV(sectionConfig)}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-[#0D918C]/10 border border-[#0D918C]/30 text-[#0D918C] text-sm font-medium rounded-lg hover:bg-[#0D918C]/20 transition-colors"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-primary/10 border border-primary/30 text-primary text-sm font-medium rounded-lg hover:bg-primary/20 transition-colors"
             >
               <FileSpreadsheet className="w-4 h-4 flex-shrink-0" />
               Download Sample CSV — {sectionName}
@@ -810,7 +810,7 @@ export function SharePointImportModal({ sectionConfig, contextFields, contextLab
                 className={cn(
                   "px-4 py-2 text-sm font-medium rounded-lg transition-colors",
                   hasMappedFields
-                    ? "bg-[#0D918C] text-white hover:bg-[#0B7A76]"
+                    ? "bg-primary text-white hover:bg-[#0B7A76]"
                     : "bg-[#1E2A45] text-[#5A6B88] cursor-not-allowed"
                 )}
               >

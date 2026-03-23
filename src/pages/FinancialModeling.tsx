@@ -94,7 +94,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                   'SIR': e.savings > 0 ? Number((e.savings * term / e.cost).toFixed(2)) : 0,
                 }))}
               />
-              <button onClick={() => setShowImportModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+              <button onClick={() => setShowImportModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
               </button>

@@ -9,6 +9,7 @@ import { Layout } from './components/Layout';
 import { ClientLayout } from './components/ClientLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PageSkeleton } from './components/Skeleton';
+import { TenantThemeProvider } from './providers/TenantThemeProvider';
 
 // Eager-loaded (always needed)
 import { Landing } from './pages/Landing';
@@ -16,6 +17,7 @@ import { Login } from './pages/Login';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import { ClientAccept } from './pages/ClientAccept';
+import { TenantOnboarding } from './pages/TenantOnboarding';
 import { ensureDatabaseExists } from './lib/initDatabase';
 
 // Lazy-loaded pages
@@ -35,6 +37,7 @@ const Timeline = lazy(() => import('./pages/Timeline').then(m => ({ default: m.T
 const Drawings = lazy(() => import('./pages/Drawings').then(m => ({ default: m.Drawings })));
 const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.Settings })));
 const ClientPortal = lazy(() => import('./pages/ClientPortal').then(m => ({ default: m.ClientPortal })));
+const SuperAdmin = lazy(() => import('./pages/SuperAdmin').then(m => ({ default: m.SuperAdmin })));
 
 export default function App() {
   useEffect(() => {
@@ -42,6 +45,7 @@ export default function App() {
   }, []);
 
   return (
+    <TenantThemeProvider>
     <BrowserRouter>
       <Routes>
         {/* Landing — portal selector */}
@@ -70,6 +74,12 @@ export default function App() {
           <Route path="*" element={<div className="p-8 text-gray-500">Module under construction</div>} />
         </Route>
 
+        {/* Super admin panel (key-protected, no tenant auth) */}
+        <Route path="/super-admin" element={<Suspense fallback={<PageSkeleton />}><SuperAdmin /></Suspense>} />
+
+        {/* Tenant onboarding (owner only) */}
+        <Route path="/onboarding" element={<TenantOnboarding />} />
+
         {/* Client invite acceptance (public) */}
         <Route path="/client/accept" element={<ClientAccept />} />
 
@@ -82,5 +92,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+    </TenantThemeProvider>
   );
 }

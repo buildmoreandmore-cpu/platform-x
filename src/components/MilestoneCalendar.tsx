@@ -80,14 +80,14 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
               onClick={() => setSelectedDay(isSelected ? null : dateStr)}
               className={cn(
                 "relative aspect-square flex flex-col items-center justify-center rounded-lg text-xs transition-colors",
-                isSelected ? "bg-[#0D918C]/20 border border-[#0D918C]/40" :
+                isSelected ? "bg-primary/20 border border-primary/40" :
                 isToday ? "bg-[#1E2A45] border border-[#2A3A5C]" :
                 "hover:bg-[#1A2544] border border-transparent"
               )}
             >
               <span className={cn(
                 "font-medium",
-                isToday ? "text-[#37BB26]" : "text-[#CBD2DF]"
+                isToday ? "text-secondary" : "text-[#CBD2DF]"
               )}>
                 {day}
               </span>

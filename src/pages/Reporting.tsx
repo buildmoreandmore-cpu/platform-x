@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '@/store';
+import { useTenantName } from '@/hooks/useTenantName';
 import {
   FileText, Download, CheckCircle2, AlertTriangle, MessageSquare, Clock,
   ShieldCheck, FileCheck, Send, Lock, ChevronRight, BarChart2,
@@ -25,7 +26,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
   'Draft':       { label: 'DRAFT',      color: 'text-[#7A8BA8]',     bg: 'bg-[#1E2A45]',        border: 'border-[#2A3A5C]' },
   'In Review':   { label: 'IN REVIEW',  color: 'text-amber-600',    bg: 'bg-amber-500/10',     border: 'border-amber-500/20' },
   'QA Complete': { label: 'QA COMPLETE',color: 'text-blue-600',     bg: 'bg-blue-500/10',      border: 'border-blue-500/20' },
-  'Approved':    { label: 'APPROVED',   color: 'text-[#37BB26]',  bg: 'bg-[#0D918C]/10',   border: 'border-[#0D918C]/20' },
+  'Approved':    { label: 'APPROVED',   color: 'text-secondary',  bg: 'bg-primary/10',   border: 'border-primary/20' },
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -43,6 +44,7 @@ function StatusBadge({ status }: { status: string }) {
 
 // Council/Board Presentation Slides
 function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any[], risks: any[] }) {
+  const { company } = useTenantName();
   const [copiedSlide, setCopiedSlide] = useState<number | null>(null);
   const mvData = useStore(state => state.mvData);
   const milestones = useStore(state => state.milestones);
@@ -66,7 +68,7 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
   const slides = [
     {
       title: 'Project Overview',
-      icon: <Star className="w-5 h-5 text-[#37BB26]" />,
+      icon: <Star className="w-5 h-5 text-secondary" />,
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -92,13 +94,13 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
       content: (
         <div className="space-y-4">
           <div className="flex items-end gap-3">
-            <span className="text-4xl font-bold text-[#37BB26]">${totalSavings.toLocaleString()}</span>
+            <span className="text-4xl font-bold text-secondary">${totalSavings.toLocaleString()}</span>
             <span className="text-sm text-[#7A8BA8] mb-1">/ year guaranteed savings</span>
           </div>
           <div className="w-full bg-[#0F1829] rounded-full h-3 border border-[#1E2A45] overflow-hidden">
-            <div className="bg-[#0D918C] h-full rounded-full progress-bar-fill" style={{ width: `${Math.min(achievement, 100)}%` }} />
+            <div className="bg-primary h-full rounded-full progress-bar-fill" style={{ width: `${Math.min(achievement, 100)}%` }} />
           </div>
-          <p className="text-xs text-[#7A8BA8]">Achievement rate: <span className="text-[#37BB26] font-semibold">{achievement > 0 ? `${achievement}%` : 'N/A'}</span> of guaranteed baseline</p>
+          <p className="text-xs text-[#7A8BA8]">Achievement rate: <span className="text-secondary font-semibold">{achievement > 0 ? `${achievement}%` : 'N/A'}</span> of guaranteed baseline</p>
         </div>
       ),
       copyText: `Savings Performance\nAnnual Guaranteed Savings: $${totalSavings.toLocaleString()}\nAchievement Rate: ${achievement > 0 ? `${achievement}%` : 'N/A'}`
@@ -116,7 +118,7 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
           ].map(({ label, val, highlight }) => (
             <div key={label} className="flex items-center justify-between py-2 border-b border-[#1E2A45] last:border-0">
               <span className="text-sm text-[#7A8BA8]">{label}</span>
-              <span className={cn("text-sm font-bold", highlight ? "text-[#37BB26]" : "text-white")}>{val}</span>
+              <span className={cn("text-sm font-bold", highlight ? "text-secondary" : "text-white")}>{val}</span>
             </div>
           ))}
         </div>
@@ -153,11 +155,11 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
     },
     {
       title: 'Carbon Impact',
-      icon: <Leaf className="w-5 h-5 text-[#37BB26]" />,
+      icon: <Leaf className="w-5 h-5 text-secondary" />,
       content: (
         <div className="space-y-4">
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-bold text-[#37BB26] animate-stat-pop">{co2Reduced.toLocaleString()}</span>
+            <span className="text-4xl font-bold text-secondary animate-stat-pop">{co2Reduced.toLocaleString()}</span>
             <span className="text-sm text-[#7A8BA8] mb-1">tCO₂e / year</span>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -165,8 +167,8 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
               { label: 'Equivalent to', val: `${Math.round(co2Reduced / 4.6)} cars off road` },
               { label: 'Trees Planted Equiv.', val: `${(co2Reduced * 16.5).toLocaleString()}` },
             ].map(({ label, val }) => (
-              <div key={label} className="bg-[#0D918C]/5 border border-[#0D918C]/15 rounded-lg p-3">
-                <p className="text-[10px] text-[#37BB26]/70 uppercase tracking-wider">{label}</p>
+              <div key={label} className="bg-primary/5 border border-primary/15 rounded-lg p-3">
+                <p className="text-[10px] text-secondary/70 uppercase tracking-wider">{label}</p>
                 <p className="text-sm font-semibold text-[#2A9A1E] mt-1">{val}</p>
               </div>
             ))}
@@ -183,7 +185,7 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
           {projMilestones.length > 0 ? projMilestones.slice(0, 4).map((m: any) => (
             <div key={m.id} className="flex items-center gap-3 py-2 border-b border-[#1E2A45] last:border-0">
               {m.status === 'completed'
-                ? <CheckCircle className="w-4 h-4 text-[#37BB26] flex-shrink-0" />
+                ? <CheckCircle className="w-4 h-4 text-secondary flex-shrink-0" />
                 : <CircleDot className="w-4 h-4 text-[#5A6B88] flex-shrink-0" />
               }
               <span className={cn("text-sm", m.status === 'completed' ? "text-[#5A6B88] line-through" : "text-[#CBD2DF]")}>{m.name}</span>
@@ -222,7 +224,7 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs text-[#7A8BA8] hover:text-white hover:border-[#3A4B68] transition-all duration-150"
               >
                 {copiedSlide === idx
-                  ? <CheckCircle2 className="w-3.5 h-3.5 text-[#37BB26]" />
+                  ? <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
                   : <Copy className="w-3.5 h-3.5" />
                 }
                 {copiedSlide === idx ? 'Copied' : 'Copy'}
@@ -240,6 +242,7 @@ function CouncilPresentation({ project, ecms, risks }: { project: any, ecms: any
 
 // One-Page Executive Summary
 function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
+  const { company } = useTenantName();
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
   const mvData = useStore(state => state.mvData);
@@ -291,12 +294,12 @@ function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
         <div className="bg-[#096A66] text-white px-8 py-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-[#37BB26]">One-Page Executive Summary</p>
+              <p className="text-xs font-medium uppercase tracking-widest text-secondary">One-Page Executive Summary</p>
               <h2 className="text-xl font-bold mt-1">{project.name}</h2>
             </div>
-            <div className="text-right text-xs text-[#37BB26]">
+            <div className="text-right text-xs text-secondary">
               <p>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-              <p className="mt-1">Prepared by 2KB Energy Services</p>
+              <p className="mt-1">Prepared by {company}</p>
             </div>
           </div>
         </div>
@@ -369,7 +372,7 @@ function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
                 if (upcoming.length === 0) return <p className="text-xs text-neutral-400">No upcoming items.</p>;
                 return upcoming.map((item: string) => (
                   <div key={item} className="flex items-start gap-1.5 text-xs text-neutral-600">
-                    <ChevronRight className="w-3 h-3 text-[#37BB26] flex-shrink-0 mt-0.5" />
+                    <ChevronRight className="w-3 h-3 text-secondary flex-shrink-0 mt-0.5" />
                     {item}
                   </div>
                 ));
@@ -404,7 +407,7 @@ function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
 
         {/* Footer */}
         <div className="px-8 py-3 bg-neutral-50 border-t border-neutral-200 flex justify-between items-center text-[10px] text-neutral-400">
-          <span>2KB Energy Services • Confidential</span>
+          <span>{company} • Confidential</span>
           <span>Generated {new Date().toLocaleDateString()}</span>
         </div>
       </div>
@@ -413,6 +416,7 @@ function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
 }
 
 export function Reporting({ projectId }: { projectId?: string }) {
+  const { company } = useTenantName();
   const projects = useStore(state => state.projects);
   const reports = useStore(state => state.reports);
   const ecms = useStore(state => state.ecms);
@@ -470,7 +474,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
               <select
                 value={selectedProjectId}
                 onChange={(e) => { setSelectedProjectId(e.target.value); setReportAshraeLevel((projects.find(p => p.id === e.target.value) as any)?.ashraeLevel || ''); }}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5 transition-colors"
+                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-primary focus:border-primary block w-64 p-2.5 transition-colors"
               >
                 {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
               </select>
@@ -489,7 +493,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                 className={cn(
                   "tab-btn px-4 pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                   activeTab === tab.id
-                    ? "border-[#0D918C] text-[#37BB26] active"
+                    ? "border-primary text-secondary active"
                     : "border-transparent text-[#7A8BA8] hover:text-white"
                 )}
               >
@@ -518,7 +522,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                       className={cn(
                         "w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-150 border flex items-center justify-between group",
                         reportType === type
-                          ? "bg-[#0D918C]/10 text-[#2A9A1E] border-[#0D918C]/20"
+                          ? "bg-primary/10 text-[#2A9A1E] border-primary/20"
                           : "bg-[#0F1829] text-[#7A8BA8] border-[#1E2A45] hover:bg-[#1A2544] hover:text-white hover:border-[#2A3A5C]"
                       )}
                     >
@@ -533,7 +537,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                     <select
                       value={reportAshraeLevel || (selectedProject as any)?.ashraeLevel || ''}
                       onChange={e => setReportAshraeLevel(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                      className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     >
                       <option value="">— Select level —</option>
                       <option value="Level I — Walk-Through">Level I — Walk-Through</option>
@@ -612,7 +616,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                       <div className="border-b-4 border-[#0B7A76] pb-6 mb-8">
                         <h1 className="text-3xl font-bold text-neutral-900 mb-2">{selectedProject?.name}</h1>
                         <h2 className="text-xl text-neutral-500">{reportType}</h2>
-                        <p className="text-sm text-neutral-500 mt-4">Prepared by: 2KB Energy Services</p>
+                        <p className="text-sm text-neutral-500 mt-4">Prepared by: {company}</p>
                         <p className="text-sm text-neutral-500">Date: {new Date().toLocaleDateString()}</p>
                       </div>
                       <div className="space-y-6">
@@ -644,7 +648,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                               </tr>
                               <tr>
                                 <td className="border border-neutral-300 px-4 py-2">NPV (20yr, 5%)</td>
-                                <td className="border border-neutral-300 px-4 py-2 text-[#37BB26] font-semibold">{(() => { const totalS = projectEcms.reduce((s: number, e: any) => s + e.savings, 0); const totalC = projectEcms.reduce((s: number, e: any) => s + e.cost, 0); const npvVal = totalS > 0 ? Math.round(totalS * 12.46 - totalC) : 0; return `$${npvVal.toLocaleString()}`; })()}</td>
+                                <td className="border border-neutral-300 px-4 py-2 text-secondary font-semibold">{(() => { const totalS = projectEcms.reduce((s: number, e: any) => s + e.savings, 0); const totalC = projectEcms.reduce((s: number, e: any) => s + e.cost, 0); const npvVal = totalS > 0 ? Math.round(totalS * 12.46 - totalC) : 0; return `$${npvVal.toLocaleString()}`; })()}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -753,7 +757,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-sm font-semibold text-[#CBD2DF] flex items-center gap-2">
-                          <FileCheck className="w-4 h-4 text-[#37BB26]" />
+                          <FileCheck className="w-4 h-4 text-secondary" />
                           QA Checklist
                         </h4>
                         <span className="text-xs font-mono text-[#7A8BA8]">{completedCount}/{qaItems.length} items</span>
@@ -762,7 +766,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                         <div
                           className={cn(
                             "h-full rounded-full progress-bar-fill",
-                            progress === 100 ? "bg-[#0D918C]" :
+                            progress === 100 ? "bg-primary" :
                             progress >= 50 ? "bg-blue-500" : "bg-amber-500"
                           )}
                           style={{ width: `${progress}%` }}
@@ -777,7 +781,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                             className={cn(
                               "flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all duration-150",
                               item.checked
-                                ? "bg-[#0D918C]/5 border-[#0D918C]/15 opacity-80"
+                                ? "bg-primary/5 border-primary/15 opacity-80"
                                 : "bg-[#0F1829] border-[#1E2A45] hover:border-[#2A3A5C]"
                             )}
                           >
@@ -786,7 +790,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                               checked={item.checked}
                               disabled={isApproved}
                               onChange={() => toggleQAItem(report.id, item.id)}
-                              className="mt-0.5 rounded border-[#2A3A5C] text-[#37BB26] focus:ring-[#0D918C] bg-[#1E2A45] flex-shrink-0"
+                              className="mt-0.5 rounded border-[#2A3A5C] text-secondary focus:ring-primary bg-[#1E2A45] flex-shrink-0"
                             />
                             <div className="flex-1 min-w-0">
                               <span className={cn(
@@ -801,7 +805,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                                 </span>
                               )}
                             </div>
-                            {item.checked && <CheckCircle2 className="w-4 h-4 text-[#37BB26] flex-shrink-0 mt-0.5" />}
+                            {item.checked && <CheckCircle2 className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />}
                           </label>
                         ))}
                       </div>
@@ -844,7 +848,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                                   </span>
                                 </div>
                                 {comment.resolved && (
-                                  <span className="text-[10px] text-[#37BB26] bg-[#0D918C]/10 px-1.5 py-0.5 rounded border border-[#0D918C]/20">Resolved</span>
+                                  <span className="text-[10px] text-secondary bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">Resolved</span>
                                 )}
                               </div>
                               <p className="text-[#9AA5B8] leading-relaxed">{comment.text}</p>
@@ -859,7 +863,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                                 value={commentInputs[report.id] || ''}
                                 onChange={(e) => setCommentInputs(prev => ({ ...prev, [report.id]: e.target.value }))}
                                 onKeyDown={(e) => { if (e.key === 'Enter') handleAddComment(report.id); }}
-                                className="flex-1 bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent placeholder-gray-400 transition-colors"
+                                className="flex-1 bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 transition-colors"
                               />
                               <button
                                 onClick={() => handleAddComment(report.id)}
@@ -875,9 +879,9 @@ export function Reporting({ projectId }: { projectId?: string }) {
 
                     {/* Approved by banner */}
                     {isApproved && approvedBy && (
-                      <div className="flex items-center gap-3 p-3 bg-[#0D918C]/5 border border-[#0D918C]/20 rounded-lg">
-                        <Lock className="w-4 h-4 text-[#37BB26] flex-shrink-0" />
-                        <p className="text-sm text-[#37BB26]">
+                      <div className="flex items-center gap-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                        <Lock className="w-4 h-4 text-secondary flex-shrink-0" />
+                        <p className="text-sm text-secondary">
                           Approved by <strong>{approvedBy}</strong> on{' '}
                           {new Date((report as any).approvedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                           <span className="text-[#7A8BA8]"> — Report locked</span>

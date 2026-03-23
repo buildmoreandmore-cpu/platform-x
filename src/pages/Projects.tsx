@@ -14,9 +14,9 @@ const PROJECT_TYPE_CARDS = [
     type: 'ESPC',
     label: 'ESPC',
     description: 'Energy Savings Performance Contract',
-    accent: 'border-[#0D918C]/50 bg-[#0D918C]/5',
-    iconColor: 'text-[#37BB26]',
-    dotColor: 'bg-[#37BB26]',
+    accent: 'border-primary/50 bg-primary/5',
+    iconColor: 'text-secondary',
+    dotColor: 'bg-secondary',
   },
   {
     type: 'Energy Audit',
@@ -45,14 +45,14 @@ const PROJECT_TYPE_CARDS = [
 ];
 
 const TYPE_BADGE_STYLES: Record<string, string> = {
-  'ESPC': 'bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20',
+  'ESPC': 'bg-primary/10 text-secondary border-primary/20',
   'Energy Audit': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
   'Energy Program Management': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   'EV Planning': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
 };
 
 const STATUS_BADGE_STYLES: Record<string, string> = {
-  'Active': 'bg-[#37BB26]/10 text-[#37BB26] border-[#37BB26]/20',
+  'Active': 'bg-secondary/10 text-secondary border-secondary/20',
   'Complete': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
   'Archived': 'bg-[#5A6B88]/10 text-[#5A6B88] border-[#5A6B88]/20',
 };
@@ -176,7 +176,7 @@ export function Projects() {
                 className={cn(
                   "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                   statusFilter === opt
-                    ? "bg-[#0D918C]/20 text-[#37BB26] border-[#0D918C]/40"
+                    ? "bg-primary/20 text-secondary border-primary/40"
                     : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
                 )}
               >
@@ -197,7 +197,7 @@ export function Projects() {
                 className={cn(
                   "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                   typeFilter === opt
-                    ? "bg-[#0D918C]/20 text-[#37BB26] border-[#0D918C]/40"
+                    ? "bg-primary/20 text-secondary border-primary/40"
                     : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
                 )}
               >
@@ -228,11 +228,11 @@ export function Projects() {
               <div
                 key={project.id}
                 onClick={() => navigate(`/app/projects/${project.id}`)}
-                className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 hover:border-[#0D918C]/50 transition-colors cursor-pointer group flex flex-col"
+                className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center group-hover:bg-[#0D918C]/20 transition-colors">
-                    <FolderOpen className="w-5 h-5 text-neutral-400 group-hover:text-[#37BB26] transition-colors" />
+                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <FolderOpen className="w-5 h-5 text-neutral-400 group-hover:text-secondary transition-colors" />
                   </div>
                   <div className="flex items-center gap-2 flex-wrap justify-end">
                     {projType && (
@@ -247,14 +247,14 @@ export function Projects() {
                       "px-2.5 py-1 rounded text-xs font-medium border",
                       project.phase === 'Construction' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
                       project.phase === 'M&V' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
-                      "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20"
+                      "bg-primary/10 text-secondary border-primary/20"
                     )}>
                       {project.phase.toUpperCase()}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-[#37BB26] transition-colors">{project.name}</h3>
+                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-secondary transition-colors">{project.name}</h3>
                 <p className="text-sm text-[#7A8BA8] mb-4">{org?.name}</p>
 
                 <div className="mt-auto pt-4 border-t border-[#1E2A45] space-y-3">
@@ -283,7 +283,7 @@ export function Projects() {
                         className={cn(
                           "px-1.5 py-0.5 rounded text-[10px] font-medium border",
                           item.has
-                            ? "bg-[#37BB26]/10 text-[#37BB26] border-[#37BB26]/20"
+                            ? "bg-secondary/10 text-secondary border-secondary/20"
                             : "bg-[#1E2A45] text-[#3A4B68] border-[#2A3A5C]"
                         )}
                         title={item.has ? `${item.label}: data present` : `${item.label}: no data`}
@@ -363,7 +363,7 @@ export function Projects() {
                     value={newProject.name}
                     onChange={e => setNewProject(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="e.g. Fort Worth ISD ESPC"
-                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]"
+                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
 
@@ -372,22 +372,22 @@ export function Projects() {
                   <>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">ESCO Partner</label>
-                      <input type="text" value={newProject.esco} onChange={e => setNewProject(prev => ({ ...prev, esco: e.target.value }))} placeholder="e.g. Trane" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                      <input type="text" value={newProject.esco} onChange={e => setNewProject(prev => ({ ...prev, esco: e.target.value }))} placeholder="e.g. Trane" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Ruthie Norton" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                        <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                        <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                           {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                         </select>
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Contract Value ($)</label>
-                        <input type="number" value={newProject.value} onChange={e => setNewProject(prev => ({ ...prev, value: e.target.value }))} placeholder="e.g. 5000000" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                        <input type="number" value={newProject.value} onChange={e => setNewProject(prev => ({ ...prev, value: e.target.value }))} placeholder="e.g. 5000000" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                       </div>
                     </div>
                   </>
@@ -398,11 +398,11 @@ export function Projects() {
                   <>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Ruthie Norton" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">ASHRAE Level</label>
-                      <select value={newProject.ashraeLevel} onChange={e => setNewProject(prev => ({ ...prev, ashraeLevel: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                      <select value={newProject.ashraeLevel} onChange={e => setNewProject(prev => ({ ...prev, ashraeLevel: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         <option value="">Select level...</option>
                         <option value="Level I — Walk-Through">Level I — Walk-Through</option>
                         <option value="Level II — Energy Survey">Level II — Energy Survey</option>
@@ -411,7 +411,7 @@ export function Projects() {
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -423,11 +423,11 @@ export function Projects() {
                   <>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Program Manager</label>
-                      <input type="text" value={newProject.pm} onChange={e => setNewProject(prev => ({ ...prev, pm: e.target.value }))} placeholder="e.g. George Buchanan" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                      <input type="text" value={newProject.pm} onChange={e => setNewProject(prev => ({ ...prev, pm: e.target.value }))} placeholder="e.g. John Doe" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -439,11 +439,11 @@ export function Projects() {
                   <>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Ruthie Norton" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -453,7 +453,7 @@ export function Projects() {
                 {/* Status — all types */}
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Status</label>
-                  <select value={newProject.status} onChange={e => setNewProject(prev => ({ ...prev, status: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                  <select value={newProject.status} onChange={e => setNewProject(prev => ({ ...prev, status: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="Active">Active</option>
                     <option value="Complete">Complete</option>
                     <option value="Archived">Archived</option>

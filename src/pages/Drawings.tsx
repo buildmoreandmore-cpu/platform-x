@@ -37,7 +37,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
 
   // Mock annotation pins per drawing type
   const annotationPins = drawing ? [
-    { x: '30%', y: '35%', label: 'RTU-4', color: 'bg-[#0D918C]', asset: assets.find(a => a.type === 'AHU') },
+    { x: '30%', y: '35%', label: 'RTU-4', color: 'bg-primary', asset: assets.find(a => a.type === 'AHU') },
     { x: '60%', y: '55%', label: 'Chiller Plant', color: 'bg-amber-500', asset: assets.find(a => a.type === 'Chiller') },
     drawing.annotations >= 3 ? { x: '45%', y: '25%', label: 'EF-3', color: 'bg-blue-500', asset: assets.find(a => a.type === 'Cooling Tower') } : null,
     drawing.annotations >= 4 ? { x: '20%', y: '65%', label: 'DHW-1', color: 'bg-purple-500', asset: assets.find(a => a.type === 'Domestic HW Heater') } : null,
@@ -57,7 +57,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                 placeholder="Search drawings..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent placeholder-gray-400 w-72 transition-all duration-150"
+                className="pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 w-72 transition-all duration-150"
               />
             </div>
             <div className="flex items-center gap-1 bg-[#0F1829] border border-[#1E2A45] rounded-lg p-1">
@@ -110,7 +110,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                       className="hover:bg-[#1A2544] transition-colors duration-100 cursor-pointer group"
                       onClick={() => setSelectedDrawing(d.id)}
                     >
-                      <td className="px-6 py-4 font-medium text-white group-hover:text-[#37BB26] transition-colors duration-150">
+                      <td className="px-6 py-4 font-medium text-white group-hover:text-secondary transition-colors duration-150">
                         {d.filename}
                       </td>
                       <td className="px-6 py-4">
@@ -121,7 +121,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                       <td className="px-6 py-4 text-[#9AA5B8]">{buildings.find(b => b.id === d.buildingId)?.name}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-1 rounded bg-[#0D918C]/10 text-[#37BB26] text-xs font-semibold border border-[#0D918C]/20">
+                          <span className="px-2.5 py-1 rounded bg-primary/10 text-secondary text-xs font-semibold border border-primary/20">
                             {d.version}
                           </span>
                           {(d as any).versions?.length > 1 && (
@@ -145,7 +145,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                       </td>
                       <td className="px-6 py-4">
                         {d.annotations > 0 ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0D918C]/10 text-[#37BB26] text-xs font-medium border border-[#0D918C]/20">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-secondary text-xs font-medium border border-primary/20">
                             <MapPin className="w-3 h-3" />
                             {d.annotations} pins
                           </span>
@@ -174,7 +174,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                                   <span className={cn(
                                     "px-2 py-0.5 rounded text-[10px] font-semibold border",
                                     v.v === d.version
-                                      ? "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20"
+                                      ? "bg-primary/10 text-secondary border-primary/20"
                                       : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
                                   )}>
                                     {v.v}
@@ -309,13 +309,13 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                               "text-[9px] font-bold px-1 py-0.5 rounded border",
                               pin.asset.condition === 'Critical' ? "bg-red-500/20 text-red-600 border-red-500/30" :
                               pin.asset.condition === 'Poor' ? "bg-amber-500/20 text-amber-600 border-amber-500/30" :
-                              "bg-[#0D918C]/20 text-[#37BB26] border-[#0D918C]/30"
+                              "bg-primary/20 text-secondary border-primary/30"
                             )}>
                               {pin.asset.condition}
                             </span>
                             <span className="text-[10px] text-[#7A8BA8]">Year {pin.asset.year}</span>
                           </div>
-                          <p className="text-[10px] text-[#37BB26] font-semibold">
+                          <p className="text-[10px] text-secondary font-semibold">
                             Replacement: ${pin.asset.replacementCost?.toLocaleString()}
                           </p>
                         </div>
@@ -330,7 +330,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
             <div className="flex-shrink-0 border-t border-[#1E2A45] bg-[#0F1829] px-6 py-3 flex items-center justify-between">
               <div className="flex items-center gap-4 text-xs text-[#7A8BA8]">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-[#0D918C]" />
+                  <span className="w-3 h-3 rounded-full bg-primary" />
                   Good condition
                 </span>
                 <span className="flex items-center gap-1.5">

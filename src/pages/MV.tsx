@@ -53,7 +53,7 @@ export function MV({ projectId }: { projectId?: string }) {
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5"
+                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-primary focus:border-primary block w-64 p-2.5"
               >
                 <option value="__portfolio__">All Projects (Portfolio)</option>
                 {projects.map(p => (
@@ -73,7 +73,7 @@ export function MV({ projectId }: { projectId?: string }) {
               />
               <button
                 onClick={() => setShowImportModal(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
@@ -131,7 +131,7 @@ export function MV({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Total Achieved</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-2xl md:text-4xl font-bold ${totalCalculated >= totalGuaranteed ? 'text-[#37BB26]' : 'text-amber-500'}`}>
+              <span className={`text-2xl md:text-4xl font-bold ${totalCalculated >= totalGuaranteed ? 'text-secondary' : 'text-amber-500'}`}>
                 ${totalCalculated.toLocaleString()}
               </span>
             </div>
@@ -140,7 +140,7 @@ export function MV({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Achievement Rate</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-2xl md:text-4xl font-bold ${achievementRate >= 100 ? 'text-[#37BB26]' : 'text-amber-500'}`}>
+              <span className={`text-2xl md:text-4xl font-bold ${achievementRate >= 100 ? 'text-secondary' : 'text-amber-500'}`}>
                 {achievementRate.toFixed(1)}%
               </span>
             </div>
@@ -169,7 +169,7 @@ export function MV({ projectId }: { projectId?: string }) {
                         </div>
                       </div>
                       <div 
-                        className={`w-1/3 rounded-t-sm relative group ${isShortfall ? 'bg-amber-500' : 'bg-[#0D918C]'}`}
+                        className={`w-1/3 rounded-t-sm relative group ${isShortfall ? 'bg-amber-500' : 'bg-primary'}`}
                         style={{ height: `${calculatedHeight}%` }}
                       >
                         <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10 pointer-events-none">
@@ -188,7 +188,7 @@ export function MV({ projectId }: { projectId?: string }) {
                 <span>Guaranteed</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#0D918C] rounded-sm"></div>
+                <div className="w-3 h-3 bg-primary rounded-sm"></div>
                 <span>Achieved (Surplus)</span>
               </div>
               <div className="flex items-center gap-2">
@@ -249,13 +249,13 @@ export function MV({ projectId }: { projectId?: string }) {
                             type="number"
                           />
                         </td>
-                        <td className={`px-6 py-4 text-right font-mono ${isShortfall ? 'text-amber-500' : 'text-[#37BB26]'}`}>
+                        <td className={`px-6 py-4 text-right font-mono ${isShortfall ? 'text-amber-500' : 'text-secondary'}`}>
                           {isShortfall ? '' : '+'}${variance.toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
                           <span className={cn(
                             "px-2.5 py-1 rounded text-xs font-medium border",
-                            !isShortfall ? "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20" :
+                            !isShortfall ? "bg-primary/10 text-secondary border-primary/20" :
                             "bg-amber-500/10 text-amber-500 border-amber-500/20"
                           )}>
                             {!isShortfall ? 'SURPLUS' : 'SHORTFALL'}

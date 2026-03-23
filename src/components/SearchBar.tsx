@@ -49,7 +49,7 @@ export function SearchBar({
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="w-full pl-9 pr-9 py-2.5 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white placeholder-[#5A6B88] focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+        className="w-full pl-9 pr-9 py-2.5 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white placeholder-[#5A6B88] focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
         placeholder={placeholder}
       />
       {inputValue && (

@@ -25,7 +25,7 @@ export function EmptyState({ icon: Icon, title, description, action, secondaryAc
       {secondaryAction && (
         <button
           onClick={secondaryAction.onClick}
-          className="mt-2 text-[10px] text-[#0D918C] hover:text-[#37BB26] transition-colors"
+          className="mt-2 text-[10px] text-primary hover:text-secondary transition-colors"
         >
           {secondaryAction.label}
         </button>

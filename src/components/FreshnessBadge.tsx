@@ -9,7 +9,7 @@ interface FreshnessBadgeProps {
 }
 
 const statusColors = {
-  fresh: 'bg-[#0D918C]',
+  fresh: 'bg-primary',
   amber: 'bg-amber-500',
   red: 'bg-red-500',
 };

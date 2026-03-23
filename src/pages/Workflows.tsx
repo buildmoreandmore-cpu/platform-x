@@ -72,7 +72,7 @@ export function Workflows() {
             />
             <button
               onClick={() => setShowImportModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
             >
               <FileSpreadsheet className="w-4 h-4" />
               Import from SharePoint
@@ -93,7 +93,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'my' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -105,7 +105,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'all' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -117,7 +117,7 @@ export function Workflows() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'overdue' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -175,8 +175,8 @@ export function Workflows() {
                           className={cn(
                             "w-5 h-5 rounded border flex items-center justify-center transition-colors",
                             task.status === 'Completed' 
-                              ? "bg-[#0D918C] border-[#0D918C] text-white" 
-                              : "border-[#2A3A5C] hover:border-[#0D918C] group-hover:bg-[#1E2A45]"
+                              ? "bg-primary border-primary text-white" 
+                              : "border-[#2A3A5C] hover:border-primary group-hover:bg-[#1E2A45]"
                           )}
                         >
                           {task.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
@@ -291,19 +291,19 @@ export function Workflows() {
             <div className="px-6 py-5 space-y-4">
               <div>
                 <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Task Title</label>
-                <input type="text" value={newTask.title} onChange={e => setNewTask(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g. Review IGEA draft" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                <input type="text" value={newTask.title} onChange={e => setNewTask(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g. Review IGEA draft" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Project</label>
-                  <select value={newTask.projectId} onChange={e => setNewTask(prev => ({ ...prev, projectId: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                  <select value={newTask.projectId} onChange={e => setNewTask(prev => ({ ...prev, projectId: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">General</option>
                     {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Priority</label>
-                  <select value={newTask.priority} onChange={e => setNewTask(prev => ({ ...prev, priority: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                  <select value={newTask.priority} onChange={e => setNewTask(prev => ({ ...prev, priority: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
@@ -313,11 +313,11 @@ export function Workflows() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Assigned To</label>
-                  <input type="text" value={newTask.assignedTo} onChange={e => setNewTask(prev => ({ ...prev, assignedTo: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="text" value={newTask.assignedTo} onChange={e => setNewTask(prev => ({ ...prev, assignedTo: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Due Date</label>
-                  <input type="date" value={newTask.dueDate} onChange={e => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="date" value={newTask.dueDate} onChange={e => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
             </div>

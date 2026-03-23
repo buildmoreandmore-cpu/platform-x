@@ -90,64 +90,22 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
     if (uploadedPhotos.length === 0) return;
     setExtracting(true);
     setExtractionResults([]);
-    const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string;
     const results: Array<{ photoName: string; extracted: any }> = [];
 
     for (const photo of uploadedPhotos) {
       try {
         const arrayBuffer = await photo.file.arrayBuffer();
         const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-        const mediaType = (photo.file.type || 'image/jpeg') as 'image/jpeg' | 'image/png' | 'image/webp';
+        const mediaType = photo.file.type || 'image/jpeg';
 
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
+        const res = await fetch('/api/ai-vision', {
           method: 'POST',
-          headers: {
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'content-type': 'application/json',
-            'anthropic-dangerous-direct-browser-access': 'true',
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 1024,
-            messages: [{
-              role: 'user',
-              content: [
-                { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-                {
-                  type: 'text',
-                  text: `You are an energy auditor. Extract equipment data from this photo.
-Return ONLY a valid JSON object with these fields (use null for any field not visible):
-{
-  "type": "equipment type (e.g. Chiller, AHU, Boiler, Pump, etc.)",
-  "manufacturer": "brand/manufacturer name",
-  "model": "model number",
-  "serialNumber": "serial number",
-  "yearInstalled": "year as string or null",
-  "condition": "Good | Fair | Poor | Critical",
-  "refrigerant": "refrigerant type if applicable",
-  "capacity": "capacity with units if visible",
-  "notes": "any other relevant observations",
-  "category": "one of: HVAC | Lighting | Controls | Envelope | Water | Renewables | Mechanical System | Electrical System | Other",
-  "floor": "floor or level if visible (e.g. 'B1', '2nd Floor', 'Roof')",
-  "zone": "zone or area if visible (e.g. 'East Wing', 'Server Room')",
-  "panel": "electrical panel ID if visible",
-  "meter": "meter ID if visible"
-}
-Return only the JSON, no explanation.`
-                }
-              ]
-            }]
-          })
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ image: base64, mediaType }),
         });
 
         const data = await res.json();
-        const text = data.content?.[0]?.text || '{}';
-        let extracted: any = {};
-        try {
-          const match = text.match(/\{[\s\S]*\}/);
-          extracted = match ? JSON.parse(match[0]) : {};
-        } catch { extracted = {}; }
+        const extracted = data.extracted || {};
 
         // Add to assets store
         addAsset({
@@ -217,7 +175,7 @@ Return only the JSON, no explanation.`
             <div className="flex items-center gap-3 flex-wrap">
               <button
                 onClick={() => setShowImportModal(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
@@ -258,7 +216,7 @@ Return only the JSON, no explanation.`
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'assets' 
-                  ? "border-[#0D918C] text-[#37BB26]"
+                  ? "border-primary text-secondary"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
@@ -269,7 +227,7 @@ Return only the JSON, no explanation.`
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'capture' 
-                  ? "border-[#0D918C] text-[#37BB26]"
+                  ? "border-primary text-secondary"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
@@ -290,7 +248,7 @@ Return only the JSON, no explanation.`
                   placeholder="Search assets by type or manufacturer..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent shadow-sm"
+                  className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -312,11 +270,11 @@ Return only the JSON, no explanation.`
                   }))}
                 />
                 <div className="relative">
-                  <button onClick={() => setShowFilterPanel(!showFilterPanel)} className={cn("inline-flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm", activeFilterCount > 0 ? "bg-[#0D918C]/10 border-[#0D918C]/30 text-[#37BB26]" : "bg-[#1E2A45] border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]")}>
+                  <button onClick={() => setShowFilterPanel(!showFilterPanel)} className={cn("inline-flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm", activeFilterCount > 0 ? "bg-primary/10 border-primary/30 text-secondary" : "bg-[#1E2A45] border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]")}>
                     <Filter className="w-4 h-4" />
                     Filter
                     {activeFilterCount > 0 && (
-                      <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#0D918C] text-white text-[10px] font-bold">{activeFilterCount}</span>
+                      <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold">{activeFilterCount}</span>
                     )}
                   </button>
                   {showFilterPanel && (
@@ -324,7 +282,7 @@ Return only the JSON, no explanation.`
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-white uppercase tracking-wider">Filters</span>
                         {activeFilterCount > 0 && (
-                          <button onClick={() => { setConditionFilter('All'); setTypeFilter('All'); setBuildingFilter('All'); setCategoryFilter('All'); }} className="text-[10px] text-[#0D918C] hover:text-[#37BB26] font-medium">Clear all</button>
+                          <button onClick={() => { setConditionFilter('All'); setTypeFilter('All'); setBuildingFilter('All'); setCategoryFilter('All'); }} className="text-[10px] text-primary hover:text-secondary font-medium">Clear all</button>
                         )}
                       </div>
                       <div>
@@ -355,7 +313,7 @@ Return only the JSON, no explanation.`
                               className={cn(
                                 "px-2 py-1 rounded text-[10px] font-medium border transition-colors",
                                 categoryFilter === cat
-                                  ? "bg-[#0D918C]/20 text-[#37BB26] border-[#0D918C]/40"
+                                  ? "bg-primary/20 text-secondary border-primary/40"
                                   : "bg-[#0F1829] text-[#7A8BA8] border-[#1E2A45] hover:text-white"
                               )}
                             >
@@ -373,9 +331,9 @@ Return only the JSON, no explanation.`
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAssets.map((asset) => (
-                <div key={asset.id} className={cn("bg-[#121C35] border rounded-xl overflow-hidden hover:border-[#0D918C]/50 transition-colors group cursor-pointer relative", selectedIds.has(asset.id) ? 'border-[#0D918C] ring-1 ring-[#0D918C]/30' : 'border-[#1E2A45]')}>
+                <div key={asset.id} className={cn("bg-[#121C35] border rounded-xl overflow-hidden hover:border-primary/50 transition-colors group cursor-pointer relative", selectedIds.has(asset.id) ? 'border-primary ring-1 ring-primary/30' : 'border-[#1E2A45]')}>
                   <label className="absolute top-2 right-2 z-10" onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={selectedIds.has(asset.id)} onChange={() => setSelectedIds(prev => { const next = new Set(prev); next.has(asset.id) ? next.delete(asset.id) : next.add(asset.id); return next; })} className="w-4 h-4 rounded border-[#2A3A5C] bg-[#0F1829] text-[#0D918C] focus:ring-[#0D918C]" />
+                    <input type="checkbox" checked={selectedIds.has(asset.id)} onChange={() => setSelectedIds(prev => { const next = new Set(prev); next.has(asset.id) ? next.delete(asset.id) : next.add(asset.id); return next; })} className="w-4 h-4 rounded border-[#2A3A5C] bg-[#0F1829] text-primary focus:ring-primary" />
                   </label>
                   {asset.importBatchId && (
                     <button
@@ -404,7 +362,7 @@ Return only the JSON, no explanation.`
                   <div className="p-5">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="text-lg font-semibold text-white group-hover:text-[#37BB26] transition-colors">{asset.type}</h3>
+                        <h3 className="text-lg font-semibold text-white group-hover:text-secondary transition-colors">{asset.type}</h3>
                         <p className="text-sm text-[#7A8BA8]">{buildings.find(b => b.id === asset.buildingId)?.name}</p>
                         {(asset as any).category && (
                           <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-[#1E2A45] text-[#7A8BA8] border border-[#2A3A5C]">
@@ -483,7 +441,7 @@ Return only the JSON, no explanation.`
                     <select
                       value={captureProjectId}
                       onChange={e => setCaptureProjectId(e.target.value)}
-                      className="bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-[#0D918C] focus:border-[#0D918C] min-w-[200px]"
+                      className="bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary min-w-[200px]"
                     >
                       <option value="">Select a project...</option>
                       {projects.map(p => (
@@ -504,11 +462,11 @@ Return only the JSON, no explanation.`
                   className={cn(
                     "border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center text-center transition-all duration-200 cursor-pointer group",
                     dragOver
-                      ? "border-[#0D918C] bg-[#0D918C]/5"
-                      : "border-[#2A3A5C] hover:bg-[#1A2544] hover:border-[#0D918C]/50"
+                      ? "border-primary bg-primary/5"
+                      : "border-[#2A3A5C] hover:bg-[#1A2544] hover:border-primary/50"
                   )}
                 >
-                  <div className="w-16 h-16 bg-[#1E2A45] text-[#37BB26] rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-[#1E2A45] text-secondary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Camera className="w-8 h-8" />
                   </div>
                   <h4 className="text-lg font-medium text-white mb-1">
@@ -532,13 +490,13 @@ Return only the JSON, no explanation.`
               <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-[#1E2A45] flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4 text-[#0D918C]" />
+                    <ImageIcon className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium text-white">{uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''} queued</span>
                   </div>
                   <button
                     onClick={runClaudeExtraction}
                     disabled={extracting}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C] hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
                   >
                     {extracting ? (
                       <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Extracting...</>
@@ -569,9 +527,9 @@ Return only the JSON, no explanation.`
             )}
 
             {extractionResults.length > 0 && (
-              <div className="bg-[#121C35] border border-[#0D918C]/30 rounded-xl overflow-hidden">
+              <div className="bg-[#121C35] border border-primary/30 rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-[#1E2A45] flex items-center gap-2">
-                  <Camera className="w-4 h-4 text-[#37BB26]" />
+                  <Camera className="w-4 h-4 text-secondary" />
                   <span className="text-sm font-medium text-white">Extraction Complete — {extractionResults.filter(r => !r.extracted.error).length} assets added</span>
                 </div>
                 <div className="divide-y divide-[#1E2A45]">
@@ -582,7 +540,7 @@ Return only the JSON, no explanation.`
                         <p className="text-xs text-red-400">{r.extracted.error}</p>
                       ) : (
                         <div className="flex flex-wrap gap-2">
-                          {r.extracted.type && <span className="text-xs bg-[#0D918C]/10 text-[#37BB26] px-2 py-0.5 rounded border border-[#0D918C]/20">{r.extracted.type}</span>}
+                          {r.extracted.type && <span className="text-xs bg-primary/10 text-secondary px-2 py-0.5 rounded border border-primary/20">{r.extracted.type}</span>}
                           {r.extracted.manufacturer && <span className="text-xs text-[#9AA5B8]">{r.extracted.manufacturer}</span>}
                           {r.extracted.model && <span className="text-xs text-[#9AA5B8] font-mono">{r.extracted.model}</span>}
                           {r.extracted.condition && <span className="text-xs text-amber-400">{r.extracted.condition}</span>}

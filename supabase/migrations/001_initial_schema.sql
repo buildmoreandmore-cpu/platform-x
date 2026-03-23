@@ -1,6 +1,6 @@
--- 2KB Intelligence — Initial Schema
+-- Platform-X — Initial Schema
 -- All tables use jsonb data column for flexibility
--- Row Level Security: authenticated users can read/write all rows (single-tenant)
+-- Row Level Security: see 002_multi_tenant.sql for tenant-scoped policies
 
 create extension if not exists "uuid-ossp";
 
@@ -131,3 +131,17 @@ create policy "lock_records_auth" on public.lock_records for all using (auth.rol
 create table if not exists public.import_history (id text primary key, data jsonb not null default '{}', created_at timestamptz not null default now());
 alter table public.import_history enable row level security;
 create policy "import_history_auth" on public.import_history for all using (auth.role() = 'authenticated');
+
+create table if not exists public.client_invites (
+  id uuid default gen_random_uuid() primary key,
+  project_id text not null,
+  client_name text not null,
+  client_email text not null,
+  invite_token text unique not null default encode(gen_random_bytes(32), 'hex'),
+  status text default 'pending',
+  invited_by text not null,
+  created_at timestamptz default now(),
+  accepted_at timestamptz
+);
+alter table public.client_invites enable row level security;
+create policy "client_invites_service" on public.client_invites for all using (true);

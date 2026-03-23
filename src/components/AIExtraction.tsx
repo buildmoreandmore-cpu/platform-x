@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Mic, Loader2, UploadCloud, FileText, CheckCircle2, AlertTriangle } from 'lucide-react';
 
-const ANTHROPIC_API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY as string;
-
 interface ExtractedAsset {
   type: string;
   manufacturer: string;
@@ -27,7 +25,7 @@ export function AIExtraction({ onAssetExtracted }: { onAssetExtracted: (asset: E
     try {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      
+
       reader.onload = async () => {
         try {
           const base64Data = reader.result?.toString().split(',')[1];
@@ -35,60 +33,28 @@ export function AIExtraction({ onAssetExtracted }: { onAssetExtracted: (asset: E
 
           const mediaType = file.type || 'image/jpeg';
 
-          const res = await fetch('https://api.anthropic.com/v1/messages', {
+          const res = await fetch('/api/ai-vision', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': ANTHROPIC_API_KEY,
-              'anthropic-version': '2023-06-01',
-              'anthropic-dangerous-direct-browser-access': 'true',
-            },
-            body: JSON.stringify({
-              model: 'claude-sonnet-4-6',
-              max_tokens: 1024,
-              messages: [{
-                role: 'user',
-                content: [
-                  {
-                    type: 'image',
-                    source: {
-                      type: 'base64',
-                      media_type: mediaType,
-                      data: base64Data,
-                    },
-                  },
-                  {
-                    type: 'text',
-                    text: `Extract equipment data from this image. Return ONLY valid JSON with this exact structure:
-{
-  "type": "Equipment type (e.g., Chiller, AHU, Boiler, RTU)",
-  "manufacturer": "Manufacturer name",
-  "model": "Model number",
-  "year": 2000,
-  "condition": "Good | Fair | Poor | Critical",
-  "flags": ["List of deficiency flags like R-22 Refrigerant, Past Useful Life, Safety Risk, Corrosion, etc."]
-}
-
-If you cannot determine a field, use reasonable defaults ("Unknown" for strings, 0 for year, [] for flags). Always return valid JSON.`,
-                  },
-                ],
-              }],
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64Data, mediaType }),
           });
 
           if (!res.ok) {
             const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.error?.message || `API error: ${res.status}`);
+            throw new Error(errData.error || `API error: ${res.status}`);
           }
 
           const data = await res.json();
-          const text = data.content?.[0]?.text || '';
-          
-          // Extract JSON from response (handle markdown code blocks)
-          const jsonMatch = text.match(/\{[\s\S]*\}/);
-          if (!jsonMatch) throw new Error('No structured data found in response');
-          
-          const extractedData = JSON.parse(jsonMatch[0]) as ExtractedAsset;
+          const extracted = data.extracted || {};
+
+          const extractedData: ExtractedAsset = {
+            type: extracted.type || 'Unknown',
+            manufacturer: extracted.manufacturer || 'Unknown',
+            model: extracted.model || 'Unknown',
+            year: extracted.year || 0,
+            condition: extracted.condition || 'Unknown',
+            flags: extracted.flags || [],
+          };
           onAssetExtracted(extractedData);
           setIsProcessing(false);
         } catch (err: any) {
@@ -126,19 +92,19 @@ If you cannot determine a field, use reasonable defaults ("Unknown" for strings,
             onClick={() => !isProcessing && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center text-center transition-colors cursor-pointer group ${
               isProcessing 
-                ? 'border-[#0D918C]/40 bg-[#0D918C]/10' 
-                : 'border-neutral-300 hover:bg-neutral-50 hover:border-[#0D918C]'
+                ? 'border-primary/40 bg-primary/10' 
+                : 'border-neutral-300 hover:bg-neutral-50 hover:border-primary'
             }`}
           >
             {isProcessing ? (
               <>
-                <Loader2 className="w-12 h-12 text-[#37BB26] animate-spin mb-4" />
+                <Loader2 className="w-12 h-12 text-secondary animate-spin mb-4" />
                 <h4 className="text-lg font-medium text-neutral-900 mb-1">Processing...</h4>
                 <p className="text-sm text-neutral-500 max-w-sm">Extracting structured data and identifying deficiencies.</p>
               </>
             ) : (
               <>
-                <div className="w-16 h-16 bg-[#0D918C]/15 text-[#37BB26] rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-primary/15 text-secondary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Camera className="w-8 h-8" />
                 </div>
                 <h4 className="text-lg font-medium text-neutral-900 mb-1">Upload Equipment Photos or Documents</h4>
@@ -163,7 +129,7 @@ If you cannot determine a field, use reasonable defaults ("Unknown" for strings,
           <div className="mt-8 text-center">
             <button 
               disabled={isProcessing}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-neutral-200 rounded-full text-neutral-700 font-medium hover:border-[#0D918C] hover:text-[#37BB26] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-neutral-200 rounded-full text-neutral-700 font-medium hover:border-primary hover:text-secondary transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Mic className="w-5 h-5" />
               Record Voice Audit Note

@@ -11,18 +11,18 @@ export function HydratingOverlay({ message = 'Loading data...' }: HydratingOverl
         <div className="relative">
           {/* Animated loading rings */}
           <div className="w-16 h-16 mx-auto">
-            <div className="absolute inset-0 rounded-full border-2 border-[#0D918C]/30"></div>
-            <div className="absolute inset-2 rounded-full border-2 border-[#37BB26]/50 animate-spin border-t-transparent"></div>
-            <div className="absolute inset-4 rounded-full border-2 border-[#0D918C] animate-ping border-t-transparent opacity-75"></div>
+            <div className="absolute inset-0 rounded-full border-2 border-primary/30"></div>
+            <div className="absolute inset-2 rounded-full border-2 border-secondary/50 animate-spin border-t-transparent"></div>
+            <div className="absolute inset-4 rounded-full border-2 border-primary animate-ping border-t-transparent opacity-75"></div>
           </div>
         </div>
         
         <div className="space-y-2">
           <p className="text-white text-sm font-medium">{message}</p>
           <div className="flex items-center justify-center gap-1">
-            <div className="w-1 h-1 bg-[#37BB26] rounded-full animate-pulse"></div>
-            <div className="w-1 h-1 bg-[#37BB26] rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-1 h-1 bg-[#37BB26] rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+            <div className="w-1 h-1 bg-secondary rounded-full animate-pulse"></div>
+            <div className="w-1 h-1 bg-secondary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-1 h-1 bg-secondary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
           </div>
         </div>
       </div>

@@ -177,7 +177,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   }
                   setImportModal('sharepoint');
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
@@ -267,10 +267,10 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             }
                             if (e.key === 'Escape') setEditingSqft(false);
                           }}
-                          className="w-24 px-2 py-0.5 bg-[#0F1829] border border-[#0D918C] rounded text-white text-xs focus:outline-none"
+                          className="w-24 px-2 py-0.5 bg-[#0F1829] border border-primary rounded text-white text-xs focus:outline-none"
                           autoFocus
                         />
-                        <button onClick={() => { if (selectedBuilding) { updateBuilding(selectedBuilding.id, { sqft: parseInt(sqftInput) || 0 }); setEditingSqft(false); } }} className="text-[#37BB26] text-xs font-medium hover:underline">Save</button>
+                        <button onClick={() => { if (selectedBuilding) { updateBuilding(selectedBuilding.id, { sqft: parseInt(sqftInput) || 0 }); setEditingSqft(false); } }} className="text-secondary text-xs font-medium hover:underline">Save</button>
                       </div>
                     ) : (
                       <button
@@ -419,7 +419,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             <span className="inline-flex items-center gap-2">
                               {bill.month}
                               {isImported && (
-                                <span className="text-[9px] font-semibold bg-[#0D918C]/10 text-[#0D918C] px-1.5 py-0.5 rounded border border-[#0D918C]/20">SP</span>
+                                <span className="text-[9px] font-semibold bg-primary/10 text-primary px-1.5 py-0.5 rounded border border-primary/20">SP</span>
                               )}
                             </span>
                           </td>
@@ -511,7 +511,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                     {spImports.map((imp: any) => (
                       <div key={imp.id} className="px-6 py-4 flex items-center justify-between hover:bg-[#1A2544] transition-colors">
                         <div className="flex items-center gap-4">
-                          <FileSpreadsheet className="w-4 h-4 text-[#0D918C]" />
+                          <FileSpreadsheet className="w-4 h-4 text-primary" />
                           <div>
                             <p className="text-sm text-white font-medium">{imp.fileName || imp.type}</p>
                             <p className="text-xs text-[#7A8BA8]">
@@ -532,7 +532,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                           {imp.status === 'Success' && imp.batchId && (
                             <button
                               onClick={() => setReplacingBatchId(imp.batchId)}
-                              className="px-2 py-1 text-[10px] font-medium text-[#0D918C] bg-[#0D918C]/10 border border-[#0D918C]/20 rounded hover:bg-[#0D918C]/20 transition-colors"
+                              className="px-2 py-1 text-[10px] font-medium text-primary bg-primary/10 border border-primary/20 rounded hover:bg-primary/20 transition-colors"
                             >
                               Replace
                             </button>
@@ -671,7 +671,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                               ? "bg-red-500/15 text-red-600 border border-red-500/25 hover:bg-red-500/25"
                               : a.condition === 'Poor'
                               ? "bg-amber-500/15 text-amber-600 border border-amber-500/25 hover:bg-amber-500/25"
-                              : "bg-emerald-500/15 text-emerald-600 border border-emerald-500/25 hover:bg-[#0D918C]/25"
+                              : "bg-emerald-500/15 text-emerald-600 border border-emerald-500/25 hover:bg-primary/25"
                           )}
                         >
                           {a.type}
@@ -802,7 +802,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               <div className="flex gap-3">
                 <button
                   onClick={() => { setImportModal(null); if (importModal === 'drive') setImportModal('sharepoint'); }}
-                  className="flex-1 px-4 py-2.5 bg-[#0D918C]/10 border border-[#0D918C]/30 text-[#0D918C] text-sm font-medium rounded-lg hover:bg-[#0D918C]/20 transition-colors"
+                  className="flex-1 px-4 py-2.5 bg-primary/10 border border-primary/30 text-primary text-sm font-medium rounded-lg hover:bg-primary/20 transition-colors"
                 >
                   {importModal === 'drive' ? 'Use SharePoint Instead' : 'Go to Settings'}
                 </button>
@@ -831,39 +831,39 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Month</label>
-                  <select value={manualBill.month} onChange={e => setManualBill(prev => ({ ...prev, month: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]">
+                  <select value={manualBill.month} onChange={e => setManualBill(prev => ({ ...prev, month: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">Select</option>
                     {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m, i) => <option key={m} value={String(i + 1)}>{m}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Year</label>
-                  <input type="number" value={manualBill.year} onChange={e => setManualBill(prev => ({ ...prev, year: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="number" value={manualBill.year} onChange={e => setManualBill(prev => ({ ...prev, year: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric (kWh)</label>
-                  <input type="number" value={manualBill.electricKwh} onChange={e => setManualBill(prev => ({ ...prev, electricKwh: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="number" value={manualBill.electricKwh} onChange={e => setManualBill(prev => ({ ...prev, electricKwh: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric Cost ($)</label>
-                  <input type="number" value={manualBill.electricCost} onChange={e => setManualBill(prev => ({ ...prev, electricCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="number" value={manualBill.electricCost} onChange={e => setManualBill(prev => ({ ...prev, electricCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas (Therms)</label>
-                  <input type="number" value={manualBill.gasTherms} onChange={e => setManualBill(prev => ({ ...prev, gasTherms: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="number" value={manualBill.gasTherms} onChange={e => setManualBill(prev => ({ ...prev, gasTherms: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas Cost ($)</label>
-                  <input type="number" value={manualBill.gasCost} onChange={e => setManualBill(prev => ({ ...prev, gasCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                  <input type="number" value={manualBill.gasCost} onChange={e => setManualBill(prev => ({ ...prev, gasCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Peak Demand (kW)</label>
-                <input type="number" value={manualBill.peakKw} onChange={e => setManualBill(prev => ({ ...prev, peakKw: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#0D918C]" />
+                <input type="number" value={manualBill.peakKw} onChange={e => setManualBill(prev => ({ ...prev, peakKw: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
             </div>
             <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">

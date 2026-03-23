@@ -124,7 +124,7 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'accepted':
-        return 'bg-[#37BB26]/10 text-[#37BB26] border-[#37BB26]/20';
+        return 'bg-secondary/10 text-secondary border-secondary/20';
       case 'pending':
         return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
       case 'expired':
@@ -138,7 +138,7 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
     return (
       <div className="p-8">
         <div className="flex items-center justify-center">
-          <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-[#0D918C]" />
+          <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-primary" />
         </div>
       </div>
     );
@@ -155,7 +155,7 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
         </div>
         <button
           onClick={() => setShowInviteModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C] text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] transition-colors"
         >
           <Icon icon="solar:user-plus-bold" className="w-4 h-4" />
           Invite Client
@@ -201,8 +201,8 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
                   <tr key={invite.id} className="hover:bg-[#1A2544] transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center flex-shrink-0 mr-3">
-                          <span className="text-xs font-semibold text-[#37BB26]">
+                        <div className="w-8 h-8 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center flex-shrink-0 mr-3">
+                          <span className="text-xs font-semibold text-secondary">
                             {invite.client_name.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -234,7 +234,7 @@ export function ClientAccess({ projectId }: ClientAccessProps) {
                           <button
                             onClick={() => handleResendInvite(invite.id)}
                             disabled={actionLoading === invite.id}
-                            className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-[#37BB26] hover:text-[#0D918C] border border-[#37BB26]/30 hover:border-[#0D918C]/50 rounded transition-colors disabled:opacity-50"
+                            className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-secondary hover:text-primary border border-secondary/30 hover:border-primary/50 rounded transition-colors disabled:opacity-50"
                           >
                             {actionLoading === invite.id ? (
                               <Icon icon="svg-spinners:ring-resize" className="w-3 h-3 mr-1" />
@@ -316,7 +316,7 @@ function InviteClientModal({ onClose, onInvite, loading }: InviteClientModalProp
               type="text"
               value={clientName}
               onChange={(e) => setClientName(e.target.value)}
-              className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-white placeholder-[#5A6B88] focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30"
+              className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-white placeholder-[#5A6B88] focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
               placeholder="John Doe"
               required
             />
@@ -330,7 +330,7 @@ function InviteClientModal({ onClose, onInvite, loading }: InviteClientModalProp
               type="email"
               value={clientEmail}
               onChange={(e) => setClientEmail(e.target.value)}
-              className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-white placeholder-[#5A6B88] focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30"
+              className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-white placeholder-[#5A6B88] focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
               placeholder="john@company.com"
               required
             />
@@ -347,7 +347,7 @@ function InviteClientModal({ onClose, onInvite, loading }: InviteClientModalProp
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C] text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? (
                 <>

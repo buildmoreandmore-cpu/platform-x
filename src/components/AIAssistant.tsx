@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useStore } from '@/store';
 import { MessageSquare, X, Send, Bot, User, Minimize2, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { TenantLogo } from '@/components/TenantLogo';
+import { useTenantName } from '@/hooks/useTenantName';
 
 interface Message {
   id: string;
@@ -22,17 +24,20 @@ const SUGGESTED_QUERIES = [
 ];
 
 export function AIAssistant() {
+  const { name, company } = useTenantName();
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    setMessages([{
       id: 'welcome',
       role: 'assistant',
-      content: 'Hi, I\'m your 2KB Intelligence assistant. I can help you analyze assets, review financials, check project status, flag risks, and draft reports. What do you need?',
+      content: `Hi, I'm your ${name} assistant. I can help you analyze assets, review financials, check project status, flag risks, and draft reports. What do you need?`,
       timestamp: new Date(),
-    }
-  ]);
+    }]);
+  }, []);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +67,7 @@ export function AIAssistant() {
   }, [isOpen]);
 
   const buildContext = () => {
-    return `You are the AI assistant for 2KB Energy Services' internal intelligence platform. 2KB is an energy engineering consulting firm that serves as Owner's Representative on Energy Savings Performance Contracts (ESPCs). They protect building owners from aggressive ESCO assumptions.
+    return `You are the AI assistant for ${company}'s intelligence platform. ${company} is an energy engineering consulting firm that serves as Owner's Representative on Energy Savings Performance Contracts (ESPCs). They protect building owners from aggressive ESCO assumptions.
 
 CURRENT PORTFOLIO DATA:
 
@@ -253,9 +258,9 @@ RULES:
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-xl bg-[#080D1A] border border-[#1E2A45] hover:border-[#0D918C]/40 text-white shadow-lg shadow-black/40 flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-[#0D918C]/10 hover:shadow-xl active:scale-95 group"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-xl bg-[#080D1A] border border-[#1E2A45] hover:border-primary/40 text-white shadow-lg shadow-black/40 flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-primary/10 hover:shadow-xl active:scale-95 group"
       >
-        <img src="/logo.webp" alt="2KB" className="w-7 h-7 object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+        <TenantLogo className="w-7 h-7 opacity-90 group-hover:opacity-100 transition-opacity" />
       </button>
     );
   }
@@ -270,12 +275,12 @@ RULES:
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E2A45]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#0D918C]/15 flex items-center justify-center">
-            <Bot className="w-4 h-4 text-[#37BB26]" />
+          <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
+            <Bot className="w-4 h-4 text-secondary" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">2KB Intelligence</h3>
-            <p className="text-[10px] text-[#37BB26]">AI Assistant • Portfolio-aware</p>
+            <h3 className="text-sm font-semibold text-white">{name}</h3>
+            <p className="text-[10px] text-secondary">AI Assistant • Portfolio-aware</p>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -300,10 +305,10 @@ RULES:
           <div key={msg.id} className={cn("flex gap-3", msg.role === 'user' && "flex-row-reverse")}>
             <div className={cn(
               "w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5",
-              msg.role === 'assistant' ? "bg-[#0D918C]/15" : "bg-sky-500/15"
+              msg.role === 'assistant' ? "bg-primary/15" : "bg-sky-500/15"
             )}>
               {msg.role === 'assistant' 
-                ? <Bot className="w-3.5 h-3.5 text-[#37BB26]" />
+                ? <Bot className="w-3.5 h-3.5 text-secondary" />
                 : <User className="w-3.5 h-3.5 text-sky-400" />
               }
             </div>
@@ -324,15 +329,15 @@ RULES:
 
         {isLoading && (
           <div className="flex gap-3">
-            <div className="w-7 h-7 rounded-lg bg-[#0D918C]/15 flex items-center justify-center flex-shrink-0">
-              <Bot className="w-3.5 h-3.5 text-[#37BB26]" />
+            <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center flex-shrink-0">
+              <Bot className="w-3.5 h-3.5 text-secondary" />
             </div>
             <div className="bg-[#0F1829] border border-[#1E2A45] rounded-xl px-4 py-3">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
-                  <span className="w-2 h-2 rounded-full bg-[#0D918C] animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-[#0D918C] animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-[#0D918C] animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
                 <span className="text-xs text-[#5A6B88]">Analyzing portfolio data...</span>
               </div>
@@ -349,7 +354,7 @@ RULES:
                 <button
                   key={q}
                   onClick={() => handleSuggestion(q)}
-                  className="text-xs px-3 py-1.5 rounded-lg bg-[#121C35] border border-[#1E2A45] text-[#7A8BA8] hover:text-white hover:border-[#0D918C]/30 transition-colors text-left"
+                  className="text-xs px-3 py-1.5 rounded-lg bg-[#121C35] border border-[#1E2A45] text-[#7A8BA8] hover:text-white hover:border-primary/30 transition-colors text-left"
                 >
                   {q}
                 </button>
@@ -363,7 +368,7 @@ RULES:
 
       {/* Input */}
       <div className="px-4 pb-4 pt-2">
-        <div className="flex items-center gap-2 bg-[#0F1829] border border-[#1E2A45] rounded-xl px-4 py-2 focus-within:border-[#0D918C]/40 transition-colors">
+        <div className="flex items-center gap-2 bg-[#0F1829] border border-[#1E2A45] rounded-xl px-4 py-2 focus-within:border-primary/40 transition-colors">
           <input
             ref={inputRef}
             type="text"
@@ -380,14 +385,14 @@ RULES:
             className={cn(
               "p-1.5 rounded-lg transition-colors",
               input.trim() && !isLoading
-                ? "bg-[#0D918C] text-white hover:bg-[#0D918C]"
+                ? "bg-primary text-white hover:bg-primary"
                 : "text-[#5A6B88]"
             )}
           >
             <Send className="w-4 h-4" />
           </button>
         </div>
-        <p className="text-[10px] text-[#3A4A68] text-center mt-2">Powered by 2KB Intelligence Engine</p>
+        <p className="text-[10px] text-[#3A4A68] text-center mt-2">Powered by {name} Engine</p>
       </div>
     </div>
   );

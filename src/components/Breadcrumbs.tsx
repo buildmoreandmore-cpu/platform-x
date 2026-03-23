@@ -99,7 +99,7 @@ export function Breadcrumbs() {
           {item.href && !item.active ? (
             <Link
               to={item.href}
-              className="text-[#7A8BA8] hover:text-[#37BB26] transition-colors font-medium truncate max-w-[200px]"
+              className="text-[#7A8BA8] hover:text-secondary transition-colors font-medium truncate max-w-[200px]"
             >
               {item.label}
             </Link>

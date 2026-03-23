@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
+import { useTenantName } from '@/hooks/useTenantName';
 import {
   FolderOpen, Upload, BarChart3, Zap, ArrowRight,
   LayoutDashboard, Camera, FileText, BookOpen, CalendarRange,
@@ -56,13 +57,14 @@ const capabilities = [
 
 export function OnboardingGuide() {
   const navigate = useNavigate();
+  const { name } = useTenantName();
   const setShowProjectImport = useStore(s => s.setShowProjectImport);
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center py-6">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Welcome to 2KB Intelligence</h1>
+        <h1 className="text-2xl font-bold text-white tracking-tight">Welcome to {name}</h1>
         <p className="text-sm text-[#7A8BA8] mt-2 max-w-lg mx-auto">
           Your energy engineering command center is ready. Follow these steps to set up your first project.
         </p>
@@ -77,15 +79,15 @@ export function OnboardingGuide() {
             style={{ animationDelay: `${i * 0.06}s` }}
           >
             <div className="flex items-start gap-4">
-              <div className="w-9 h-9 rounded-lg bg-[#0D918C]/10 border border-[#0D918C]/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-sm font-bold text-[#0D918C]">{step.num}</span>
+              <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                <span className="text-sm font-bold text-primary">{step.num}</span>
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-white">{step.title}</h3>
                 <p className="text-xs text-[#5A6B88] mt-1 leading-relaxed">{step.desc}</p>
                 <button
                   onClick={() => step.route ? navigate(step.route) : setShowProjectImport(true)}
-                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-[#37BB26] hover:text-[#4DD636] transition-colors"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-secondary hover:text-[#4DD636] transition-colors"
                 >
                   {step.cta}
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -103,8 +105,8 @@ export function OnboardingGuide() {
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex items-center gap-3 flex-1">
-            <div className="w-9 h-9 rounded-lg bg-[#37BB26]/10 border border-[#37BB26]/20 flex items-center justify-center flex-shrink-0">
-              <Upload className="w-4 h-4 text-[#37BB26]" />
+            <div className="w-9 h-9 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center flex-shrink-0">
+              <Upload className="w-4 h-4 text-secondary" />
             </div>
             <div>
               <h3 className="text-sm font-semibold text-white">Have a project workbook ready?</h3>
@@ -113,7 +115,7 @@ export function OnboardingGuide() {
           </div>
           <button
             onClick={() => setShowProjectImport(true)}
-            className="px-4 py-2 bg-[#0D918C] hover:bg-[#0D918C]/80 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-2 flex-shrink-0"
+            className="px-4 py-2 bg-primary hover:bg-primary/80 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-2 flex-shrink-0"
           >
             Import Project File
             <ArrowRight className="w-3.5 h-3.5" />

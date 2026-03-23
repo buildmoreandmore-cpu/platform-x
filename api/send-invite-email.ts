@@ -1,7 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { transporter, FROM } from './_mailer';
+import { transporter, FROM, FROM_NAME } from './_mailer';
 
-const SITE_URL = process.env.SITE_URL || 'https://2kb-intelligence.vercel.app';
+const SITE_URL = process.env.SITE_URL;
+
+if (!SITE_URL) {
+  throw new Error('Missing required environment variable: SITE_URL');
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -19,14 +23,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#ffffff;font-size:24px;font-weight:800;margin:0;">
-        2KB <span style="color:#37BB26;font-weight:300;letter-spacing:0.15em;">Intelligence</span>
+        ${FROM_NAME}
       </h1>
     </div>
     <div style="background:#121C35;border:1px solid #1E2A45;border-radius:16px;padding:32px;margin-bottom:24px;">
       <h2 style="color:#ffffff;font-size:20px;margin:0 0 8px;">You've Been Invited</h2>
       <p style="color:#7A8BA8;font-size:14px;line-height:1.6;margin:0 0 24px;">
         Hi ${clientName || 'there'},<br><br>
-        You've been invited to access the <strong style="color:#37BB26;">${projectName || 'project'}</strong> portal on 2KB Intelligence. This gives you real-time visibility into your project's progress, savings, and key milestones.
+        You've been invited to access the <strong style="color:#37BB26;">${projectName || 'project'}</strong> portal on ${FROM_NAME}. This gives you real-time visibility into your project's progress, savings, and key milestones.
       </p>
       <div style="text-align:center;margin:24px 0;">
         <a href="${inviteUrl}" style="display:inline-block;background:#0D918C;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:14px;font-weight:600;">
@@ -40,8 +44,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </div>
     <div style="text-align:center;">
       <p style="color:#3A4860;font-size:11px;margin:0;">
-        This invite was sent by ${invitedBy || 'your project team'} via 2KB Intelligence.<br>
-        &copy; ${new Date().getFullYear()} 2KB Energy Services, LLC
+        This invite was sent by ${invitedBy || 'your project team'} via ${FROM_NAME}.<br>
+        &copy; ${new Date().getFullYear()} ${FROM_NAME}
       </p>
     </div>
   </div>
@@ -52,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await transporter.sendMail({
       from: FROM,
       to: clientEmail,
-      subject: `You're invited to the ${projectName || 'project'} portal — 2KB Intelligence`,
+      subject: `You're invited to the ${projectName || 'project'} portal — ${FROM_NAME}`,
       html,
     });
     return res.status(200).json({ success: true });

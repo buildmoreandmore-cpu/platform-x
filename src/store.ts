@@ -1,10 +1,21 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { supabase, loadAllData, upsertItem, upsertBatch, deleteItemRemote, deleteBatchRemote } from './lib/supabase';
+import { supabase, loadAllData, upsertItem, upsertBatch, deleteItemRemote, deleteBatchRemote, bindStore } from './lib/supabase';
 
 export type Phase = 'Prospect' | 'Audit' | 'IGEA' | 'RFP' | 'Contract' | 'Construction' | 'M&V' | 'Closeout';
 export type ServiceLineMode = 'Full' | 'Audit' | 'OR' | 'Construction';
 export type UserRole = 'Engineer' | 'Project Lead' | 'Admin';
+export type TenantRole = 'owner' | 'admin' | 'viewer';
+
+export interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  primary_color: string;
+  secondary_color: string;
+  custom_domain: string | null;
+}
 
 export interface User {
   id: string; name: string; initials: string; email: string;
@@ -38,16 +49,22 @@ export interface CustomColumnDef {
   type: 'number' | 'string';
 }
 
-// ─── Email → store user ID mapping ───
-const EMAIL_TO_USER_ID: Record<string, string> = {
-  'ruthie.norton@2kbco.com': 'user1',
-  'george.buchanan@2kbco.com': 'user2',
-};
+// ─── Helper: get tenant_id or throw ───
+function requireTenantId(): string {
+  const state = useStore.getState();
+  if (!state.currentTenant?.id) {
+    throw new Error('No tenant context — cannot write data without a tenant');
+  }
+  return state.currentTenant.id;
+}
 
 export const seedData = {
   // ─── Auth State ───
-  isAuthenticated: !!sessionStorage.getItem('2kb_auth'),
-  authUser: sessionStorage.getItem('2kb_auth') || null as string | null,
+  isAuthenticated: !!sessionStorage.getItem('platform_auth'),
+  authUser: sessionStorage.getItem('platform_auth') || null as string | null,
+  // ─── Tenant State ───
+  currentTenant: null as Tenant | null,
+  currentUserRole: null as TenantRole | null,
   serviceLineMode: 'Full' as ServiceLineMode,
   organizations: [] as any[],
   buildings: [] as any[],
@@ -75,11 +92,8 @@ export const seedData = {
   timelineItems: [] as any[],
   teamContacts: [] as any[],
   // ─── Edit Controls & Data Freshness ───
-  currentUserId: sessionStorage.getItem('2kb_auth') || 'user1',
-  users: [
-    { id: 'user1', name: 'Ruthie Norton', initials: 'RN', email: 'ruthie.norton@2kbco.com', defaultRole: 'Admin' as UserRole, projectRoles: {} },
-    { id: 'user2', name: 'George Buchanan', initials: 'GB', email: 'george.buchanan@2kbco.com', defaultRole: 'Admin' as UserRole, projectRoles: {} },
-  ] as User[],
+  currentUserId: sessionStorage.getItem('platform_auth') || '',
+  users: [] as User[],
   auditTrail: [] as AuditEntry[],
   lockRecords: [] as LockRecord[],
   freshnessConfig: [
@@ -101,6 +115,9 @@ export const seedData = {
 };
 
 type StoreType = typeof seedData & {
+  // Tenant
+  setTenant: (tenant: Tenant, role: TenantRole) => void;
+  clearTenant: () => void;
   setServiceLineMode: (mode: ServiceLineMode) => void;
   addProject: (project: any) => void;
   addAsset: (asset: any) => void;
@@ -149,9 +166,9 @@ type StoreType = typeof seedData & {
   addInspectionFinding: (f: any) => void;
   addDrawing: (d: any) => void;
   // Auth
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
-  loadFromSupabase: () => Promise<void>;
+  loadFromSupabase: (tenantId: string) => Promise<void>;
 };
 
 export const useStore = create<StoreType>()(
@@ -159,11 +176,17 @@ export const useStore = create<StoreType>()(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ((set: any) => ({
   ...seedData,
+
+  // ─── Tenant Actions ───
+  setTenant: (tenant: Tenant, role: TenantRole) => set({ currentTenant: tenant, currentUserRole: role }),
+  clearTenant: () => set({ currentTenant: null, currentUserRole: null }),
+
   setServiceLineMode: (mode) => set({ serviceLineMode: mode }),
   addProject: (project) => {
+    const tenantId = requireTenantId();
     const newProject = { ...project, id: `p${Date.now()}` };
     set((state) => ({ projects: [...state.projects, newProject] }));
-    upsertItem('projects', newProject).catch(console.error);
+    upsertItem('projects', newProject, tenantId).catch(console.error);
   },
   addAsset: (asset) => set((state) => ({ assets: [...state.assets, { ...asset, id: `a${Date.now()}` }] })),
   updateAsset: (id, asset) => set((state) => ({ assets: state.assets.map(a => a.id === id ? { ...a, ...asset } : a) })),
@@ -204,7 +227,6 @@ export const useStore = create<StoreType>()(
   editField: (entityType, entityId, field, newValue, reason, projectId) => set((state) => {
     const user = state.users.find(u => u.id === state.currentUserId);
     if (!user) return {};
-    // Find the entity in the matching array and get old value
     const arrayMap: Record<string, any[]> = {
       asset: state.assets, utilityBill: state.utilityBills, ecm: state.ecms,
       milestone: state.milestones, risk: state.risks, changeOrder: state.changeOrders,
@@ -235,7 +257,6 @@ export const useStore = create<StoreType>()(
       timestamp: new Date().toISOString(),
       projectId,
     };
-    // Parse numeric values if the original was a number
     const parsedValue = typeof (entity as any)[field] === 'number' ? Number(newValue) : newValue;
     return {
       [storeKey]: arr.map((e: any) => e.id === entityId ? { ...e, [field]: parsedValue } : e),
@@ -288,13 +309,14 @@ export const useStore = create<StoreType>()(
   })),
   // ─── Generic Batch Import/Delete (any section) ───
   addBatch: (storeKey, items, importBatchId) => {
+    const tenantId = requireTenantId();
     const tagged = items.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId }));
     set((state) => {
       const arr = (state as any)[storeKey];
       if (!Array.isArray(arr)) return {};
       return { [storeKey]: [...arr, ...tagged] };
     });
-    upsertBatch(storeKey, tagged, importBatchId).catch(console.error);
+    upsertBatch(storeKey, tagged, importBatchId, tenantId).catch(console.error);
   },
   deleteBatch: (storeKey, importBatchId) => {
     set((state) => {
@@ -313,6 +335,7 @@ export const useStore = create<StoreType>()(
     deleteItemRemote(storeKey, itemId).catch(console.error);
   },
   replaceBatch: (storeKey, oldBatchId, newItems, newBatchId) => {
+    const tenantId = requireTenantId();
     const tagged = newItems.map((item, i) => ({ ...item, id: `${storeKey.charAt(0)}${Date.now()}_${i}`, importBatchId: newBatchId }));
     set((state) => {
       const arr = (state as any)[storeKey];
@@ -321,7 +344,7 @@ export const useStore = create<StoreType>()(
       return { [storeKey]: [...filtered, ...tagged] };
     });
     deleteBatchRemote(storeKey, oldBatchId).catch(console.error);
-    upsertBatch(storeKey, tagged, newBatchId).catch(console.error);
+    upsertBatch(storeKey, tagged, newBatchId, tenantId).catch(console.error);
   },
   // ─── CRUD Actions ───
   addMilestone: (m) => set((state) => ({ milestones: [...state.milestones, { ...m, id: `ms${Date.now()}` }] })),
@@ -332,48 +355,157 @@ export const useStore = create<StoreType>()(
   // ─── Project Import Modal ───
   setShowProjectImport: (show) => set({ showProjectImport: show }),
   setProjectImportDefaultId: (id) => set({ projectImportDefaultId: id }),
-  // ─── Supabase: load remote data into store ───
-  loadFromSupabase: async () => {
+
+  // ─── Supabase: load remote data into store (tenant-scoped) ───
+  loadFromSupabase: async (tenantId: string) => {
     set({ hydrating: true });
     try {
-      const data = await loadAllData();
-      set({ ...data as Partial<StoreType>, hydrating: false });
+      const data = await loadAllData(tenantId);
+      // Also load tenant users as the users array for audit trail / edit controls
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, name, initials, email, default_role, project_roles')
+        .eq('tenant_id', tenantId);
+      const users: User[] = (profiles ?? []).map(p => ({
+        id: p.id,
+        name: p.name,
+        initials: p.initials || p.name.split(' ').map((n: string) => n[0]).join('').toUpperCase(),
+        email: p.email,
+        defaultRole: p.default_role as UserRole,
+        projectRoles: p.project_roles ?? {},
+      }));
+      set({ ...data as Partial<StoreType>, users, hydrating: false });
     } catch (error) {
       set({ hydrating: false });
       throw error;
     }
   },
+
   // ─── Auth ───
-  login: async (email, password) => {
+  login: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error || !data.user) return false;
-      // Map Supabase UUID back to store user ID so editField/audit trail work correctly
-      const storeUserId = EMAIL_TO_USER_ID[data.user.email!] || data.user.id;
-      sessionStorage.setItem('2kb_auth', storeUserId);
-      set({ isAuthenticated: true, authUser: storeUserId, currentUserId: storeUserId });
-      // Load persisted project data from Supabase in background
+      if (error || !data.user) {
+        return { success: false, error: error?.message || 'Login failed' };
+      }
+
+      const userId = data.user.id;
+
+      // Look up tenant membership
+      const { data: membership, error: membershipError } = await supabase
+        .from('tenant_users')
+        .select('tenant_id, role')
+        .eq('user_id', userId)
+        .limit(1)
+        .single();
+
+      if (membershipError || !membership) {
+        // Orphaned user — no tenant association
+        await supabase.auth.signOut();
+        return { success: false, error: 'NO_TENANT' };
+      }
+
+      // Fetch the tenant record
+      const { data: tenant, error: tenantError } = await supabase
+        .from('tenants')
+        .select('id, name, slug, logo_url, primary_color, secondary_color, custom_domain')
+        .eq('id', membership.tenant_id)
+        .single();
+
+      if (tenantError || !tenant) {
+        await supabase.auth.signOut();
+        return { success: false, error: 'Tenant not found' };
+      }
+
+      // Check tenant is active
+      const { data: tenantFull } = await supabase
+        .from('tenants')
+        .select('is_active')
+        .eq('id', tenant.id)
+        .single();
+
+      if (!tenantFull?.is_active) {
+        await supabase.auth.signOut();
+        return { success: false, error: 'TENANT_INACTIVE' };
+      }
+
+      // Store auth state
+      sessionStorage.setItem('platform_auth', userId);
+      set({
+        isAuthenticated: true,
+        authUser: userId,
+        currentUserId: userId,
+        currentTenant: tenant as Tenant,
+        currentUserRole: membership.role as TenantRole,
+      });
+
+      // Load tenant-scoped data in background
       const store = useStore.getState();
-      store.loadFromSupabase().catch(console.error);
-      return true;
+      store.loadFromSupabase(tenant.id).catch(console.error);
+
+      return { success: true };
     } catch (err) {
       console.error('Login error:', err);
-      return false;
+      return { success: false, error: 'Unexpected error' };
     }
   },
+
   logout: async () => {
     await supabase.auth.signOut();
-    sessionStorage.removeItem('2kb_auth');
-    set({ isAuthenticated: false, authUser: null });
+    sessionStorage.removeItem('platform_auth');
+    set({
+      isAuthenticated: false,
+      authUser: null,
+      currentUserId: '',
+      currentTenant: null,
+      currentUserRole: null,
+      // Clear all tenant-scoped data
+      organizations: [],
+      buildings: [],
+      projects: [],
+      assets: [],
+      utilityBills: [],
+      ecms: [],
+      milestones: [],
+      risks: [],
+      changeOrders: [],
+      submittals: [],
+      inspectionFindings: [],
+      tasks: [],
+      benchmarks: [],
+      activityFeed: [],
+      drawings: [],
+      reports: [],
+      mvData: [],
+      buildingSavings: [],
+      lessonsLearned: [],
+      pricingReview: [],
+      contractObligations: [],
+      clientNotifications: [],
+      meetingNotes: [],
+      timelineItems: [],
+      teamContacts: [],
+      auditTrail: [],
+      lockRecords: [],
+      importHistory: [],
+      users: [],
+    });
   },
 })) as any,
   {
-    name: '2kb-store',
+    name: 'platform-store',
     storage: createJSONStorage(() => localStorage),
     partialize: (state) => {
-      // Exclude auth and UI transient state from persistence
-      const { isAuthenticated, authUser, currentUserId, showProjectImport, projectImportDefaultId, ...rest } = state;
+      // Exclude auth, tenant, and UI transient state from persistence
+      const {
+        isAuthenticated, authUser, currentUserId, currentTenant, currentUserRole,
+        showProjectImport, projectImportDefaultId, hydrating,
+        ...rest
+      } = state;
       return rest as any;
     },
   }
 ));
+
+// Bind store reference so supabase.ts can access tenant context for deletes
+bindStore(useStore);

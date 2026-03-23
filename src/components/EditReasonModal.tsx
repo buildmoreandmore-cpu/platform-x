@@ -31,7 +31,7 @@ export function EditReasonModal({ field, oldValue, newValue, onConfirm, onCancel
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="text-[#7A8BA8]">To</span>
-              <span className="text-[#37BB26] font-mono">{newValue || '(empty)'}</span>
+              <span className="text-secondary font-mono">{newValue || '(empty)'}</span>
             </div>
           </div>
           <div>
@@ -41,9 +41,9 @@ export function EditReasonModal({ field, oldValue, newValue, onConfirm, onCancel
               onChange={e => setReason(e.target.value)}
               placeholder="Minimum 10 characters..."
               rows={3}
-              className="w-full bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent placeholder-[#5A6B88] resize-none"
+              className="w-full bg-[#0F1829] border border-[#1E2A45] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-[#5A6B88] resize-none"
             />
-            <p className={`text-[10px] mt-1 ${isValid ? 'text-[#37BB26]' : 'text-[#5A6B88]'}`}>
+            <p className={`text-[10px] mt-1 ${isValid ? 'text-secondary' : 'text-[#5A6B88]'}`}>
               {reason.trim().length}/10 characters minimum
             </p>
           </div>

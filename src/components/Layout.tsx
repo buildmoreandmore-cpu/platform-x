@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { TenantLogo } from '@/components/TenantLogo';
+import { useTenantName } from '@/hooks/useTenantName';
 import {
   LayoutDashboard,
   Camera,
@@ -56,6 +58,7 @@ const modeLabelsShort: Record<ServiceLineMode, string> = {
 
 export function Layout() {
   const navigate = useNavigate();
+  const { name: tenantName } = useTenantName();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const showProjectImport = useStore(state => state.showProjectImport);
@@ -122,13 +125,13 @@ export function Layout() {
       {/* Logo */}
       <div className="flex items-center px-5 pt-4 pb-3 border-b border-[#1E2A45]">
         <div className="flex items-center gap-3 flex-1">
-          <img src="/logo.webp" alt="2KB Energy" className="w-10 h-10 object-contain" />
+          <TenantLogo className="w-10 h-10" />
           <div className="flex flex-col">
             <span className="font-semibold text-white tracking-tight leading-tight text-[15px]">Intelligence</span>
             <span
               className={cn(
                 "text-[10px] font-medium uppercase tracking-wider transition-all duration-200",
-                mode !== 'Full' ? "text-[#37BB26] opacity-100" : "text-[#7A8BA8] opacity-100"
+                mode !== 'Full' ? "text-secondary opacity-100" : "text-[#7A8BA8] opacity-100"
               )}
             >
               {mode !== 'Full' ? `${mode} Mode` : 'Full Platform'}
@@ -157,7 +160,7 @@ export function Layout() {
                 cn(
                   'nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium relative',
                   isActive
-                    ? 'bg-[#0D918C]/10 text-[#37BB26] active'
+                    ? 'bg-primary/10 text-secondary active'
                     : 'text-[#7A8BA8] hover:bg-[#121C35] hover:text-white'
                 )
               }
@@ -201,7 +204,7 @@ export function Layout() {
               cn(
                 'nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium',
                 isActive
-                  ? 'bg-[#0D918C]/10 text-[#37BB26] active'
+                  ? 'bg-primary/10 text-secondary active'
                   : 'text-[#7A8BA8] hover:bg-[#121C35] hover:text-white'
               )
             }
@@ -218,8 +221,8 @@ export function Layout() {
           onClick={() => setShowUserMenu(!showUserMenu)}
           className="w-full flex items-center gap-3 px-1 hover:bg-[#121C35] rounded-lg py-1 -my-1 transition-colors"
         >
-          <div className="w-8 h-8 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-semibold text-[#37BB26]">{currentUser?.initials || 'RN'}</span>
+          <div className="w-8 h-8 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center flex-shrink-0">
+            <span className="text-xs font-semibold text-secondary">{currentUser?.initials || 'RN'}</span>
           </div>
           <div className="flex flex-col min-w-0 text-left flex-1">
             <span className="text-sm font-medium text-white truncate">{currentUser?.name || 'User'}</span>
@@ -233,8 +236,8 @@ export function Layout() {
             <div className="fixed inset-0 z-30" onClick={() => setShowUserMenu(false)} />
             <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl z-40 overflow-hidden animate-slide-down">
               <div className="px-3 py-2.5 flex items-center gap-3 border-b border-[#1E2A45]">
-                <div className="w-7 h-7 rounded-full bg-[#1E2A45] border border-[#37BB26]/30 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-semibold text-[#37BB26]">{currentUser?.initials}</span>
+                <div className="w-7 h-7 rounded-full bg-[#1E2A45] border border-secondary/30 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-semibold text-secondary">{currentUser?.initials}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white truncate">{currentUser?.name}</p>
@@ -309,8 +312,8 @@ export function Layout() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
-            <div className="w-2 h-2 rounded-full bg-[#0D918C] animate-badge-pulse" title="System online" />
-            <span className="text-[10px] md:text-xs text-[#5A6B88] hidden sm:block">2KB Intelligence v2.1</span>
+            <div className="w-2 h-2 rounded-full bg-primary animate-badge-pulse" title="System online" />
+            <span className="text-[10px] md:text-xs text-[#5A6B88] hidden sm:block">{tenantName}</span>
           </div>
         </header>
 

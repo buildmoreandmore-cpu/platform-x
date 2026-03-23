@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { supabase } from '@/lib/supabase';
+import { TenantLogo } from '@/components/TenantLogo';
 
 export function ResetPassword() {
   const navigate = useNavigate();
@@ -69,13 +70,13 @@ export function ResetPassword() {
 
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
           <div className="relative mb-6">
-            <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-[#0D918C]/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
-            <img src="/logo.webp" alt="2KB Energy" className="relative w-24 h-24 object-contain" />
+            <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-primary/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
+            <TenantLogo className="relative w-24 h-24" />
           </div>
 
           <div className="w-full max-w-sm text-center">
             <div className="mb-6">
-              <Icon icon="solar:check-circle-bold-duotone" className="w-16 h-16 text-[#37BB26] mx-auto mb-4" />
+              <Icon icon="solar:check-circle-bold-duotone" className="w-16 h-16 text-secondary mx-auto mb-4" />
               <h1 className="text-2xl font-bold mb-2">Password Updated</h1>
               <p className="text-white/60">
                 Your password has been successfully updated.
@@ -84,7 +85,7 @@ export function ResetPassword() {
 
             <button
               onClick={() => navigate('/login')}
-              className="w-full py-3 bg-[#0D918C] text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] transition-colors flex items-center justify-center gap-2"
             >
               <Icon icon="solar:login-3-bold-duotone" className="w-4 h-4" />
               Sign In
@@ -107,8 +108,8 @@ export function ResetPassword() {
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         <div className="relative mb-6">
-          <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-[#0D918C]/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
-          <img src="/logo.webp" alt="2KB Energy" className="relative w-24 h-24 object-contain" />
+          <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-primary/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
+          <TenantLogo className="relative w-24 h-24" />
         </div>
 
         <h1 className="text-2xl tracking-tight mb-1" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
@@ -125,7 +126,7 @@ export function ResetPassword() {
               onChange={e => setPassword(e.target.value)}
               placeholder="Enter new password"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
             />
           </div>
 
@@ -137,7 +138,7 @@ export function ResetPassword() {
               onChange={e => setConfirmPassword(e.target.value)}
               placeholder="Confirm new password"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
             />
           </div>
 
@@ -151,7 +152,7 @@ export function ResetPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#0D918C] text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

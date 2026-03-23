@@ -147,7 +147,7 @@ export function CommandPalette() {
                       <p className="text-sm text-white truncate">{item.label}</p>
                       <p className="text-[11px] text-[#5A6B88] truncate">{item.description}</p>
                     </div>
-                    {idx === selectedIndex && <ArrowRight className="w-3.5 h-3.5 text-[#0D918C] flex-shrink-0" />}
+                    {idx === selectedIndex && <ArrowRight className="w-3.5 h-3.5 text-primary flex-shrink-0" />}
                   </button>
                 );
               })}

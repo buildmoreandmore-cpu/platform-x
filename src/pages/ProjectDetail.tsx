@@ -64,7 +64,7 @@ export function ProjectDetail() {
             "px-3 py-1.5 rounded text-sm font-medium border",
             project.phase === 'Construction' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
             project.phase === 'M&V' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
-            "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20"
+            "bg-primary/10 text-secondary border-primary/20"
           )}>
             {project.phase.toUpperCase()}
           </span>
@@ -78,7 +78,7 @@ export function ProjectDetail() {
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                 activeTab === tab.id 
-                  ? "border-[#0D918C] text-[#37BB26]"
+                  ? "border-primary text-secondary"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
             >

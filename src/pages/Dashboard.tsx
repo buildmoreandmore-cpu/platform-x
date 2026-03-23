@@ -121,16 +121,16 @@ export function Dashboard() {
       { label: 'Assets Captured', value: assets.length, icon: Activity, color: 'text-cyan-400', trend: '+3 this week' },
       { label: 'Buildings Surveyed', value: buildings.length, icon: BarChart3, color: 'text-blue-400', trend: null },
       { label: 'Deficiencies Flagged', value: assets.filter(a => a.flags.length > 0).length, icon: AlertTriangle, color: 'text-amber-400', trend: null },
-      { label: 'ECMs Identified', value: ecms.length, icon: Zap, color: 'text-[#37BB26]', trend: null },
+      { label: 'ECMs Identified', value: ecms.length, icon: Zap, color: 'text-secondary', trend: null },
     ];
     if (mode === 'OR') return [
-      { label: 'Savings Achievement', value: `${avgAchievement}%`, icon: TrendingUp, color: avgAchievement >= 100 ? 'text-[#37BB26]' : 'text-red-400', trend: driftDetected ? 'Drift detected' : 'On track' },
+      { label: 'Savings Achievement', value: `${avgAchievement}%`, icon: TrendingUp, color: avgAchievement >= 100 ? 'text-secondary' : 'text-red-400', trend: driftDetected ? 'Drift detected' : 'On track' },
       { label: 'Proposals in Review', value: reports.filter(r => r.type.includes('IGEA')).length, icon: FileText, color: 'text-blue-400', trend: null },
       { label: 'Reports Due', value: reportsDue, icon: Clock, color: 'text-amber-400', trend: null },
       { label: 'Open Risks', value: highRisks, icon: ShieldAlert, color: 'text-red-400', trend: null },
     ];
     if (mode === 'Construction') return [
-      { label: 'Inspections', value: inspectionFindings.length, icon: CheckCircle2, color: 'text-[#37BB26]', trend: `${inspectionFindings.filter(i => i.status === 'Open').length} open` },
+      { label: 'Inspections', value: inspectionFindings.length, icon: CheckCircle2, color: 'text-secondary', trend: `${inspectionFindings.filter(i => i.status === 'Open').length} open` },
       { label: 'Scope Deviations', value: inspectionFindings.filter(i => i.type === 'Deviation from Scope').length, icon: AlertTriangle, color: 'text-amber-400', trend: null },
       { label: 'ECMs Tracked', value: ecms.length, icon: Activity, color: 'text-blue-400', trend: null },
       { label: 'Open Tasks', value: tasks.filter(t => t.status !== 'Completed').length, icon: FileText, color: 'text-cyan-400', trend: null },
@@ -201,7 +201,7 @@ export function Dashboard() {
             onClick={() => { setCompareMode(!compareMode); setCompareIds([]); }}
             className={cn(
               "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
-              compareMode ? "bg-[#0D918C] text-white" : "bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
+              compareMode ? "bg-primary text-white" : "bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
             )}
           >
             <GitCompare className="w-3.5 h-3.5" />
@@ -279,9 +279,9 @@ export function Dashboard() {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
         {[
           { label: 'Active Projects', value: projects.length, icon: BarChart3, color: 'text-blue-400', trend: '+0', trendUp: true },
-          { label: 'Capital Exposure', value: `$${(totalValue / 1000000).toFixed(1)}M`, icon: DollarSign, color: 'text-[#37BB26]', trend: null, trendUp: true },
-          { label: 'Avg Risk Score', value: avgRisk, icon: Activity, color: avgRisk > 55 ? 'text-amber-400' : 'text-[#37BB26]', trend: avgRisk > 55 ? 'Elevated' : 'Normal', trendUp: false },
-          { label: 'High/Crit Risks', value: highRisks, icon: AlertTriangle, color: highRisks > 0 ? 'text-red-400' : 'text-[#37BB26]', trend: null, trendUp: false },
+          { label: 'Capital Exposure', value: `$${(totalValue / 1000000).toFixed(1)}M`, icon: DollarSign, color: 'text-secondary', trend: null, trendUp: true },
+          { label: 'Avg Risk Score', value: avgRisk, icon: Activity, color: avgRisk > 55 ? 'text-amber-400' : 'text-secondary', trend: avgRisk > 55 ? 'Elevated' : 'Normal', trendUp: false },
+          { label: 'High/Crit Risks', value: highRisks, icon: AlertTriangle, color: highRisks > 0 ? 'text-red-400' : 'text-secondary', trend: null, trendUp: false },
           { label: 'Carbon Avoided', value: '—', icon: Leaf, color: 'text-purple-400', trend: 'tCO2e', trendUp: true },
           { label: 'Open Tasks', value: openTasks, icon: Zap, color: 'text-cyan-400', trend: null, trendUp: true },
         ].map((kpi, i) => (
@@ -293,7 +293,7 @@ export function Dashboard() {
             <p className={cn("text-2xl font-bold tracking-tight", kpi.color === 'text-red-400' ? 'text-red-400' : 'text-white')}>{kpi.value}</p>
             {kpi.trend && (
               <div className="flex items-center gap-1 mt-0.5">
-                {kpi.trendUp ? <TrendingUp className="w-3 h-3 text-[#37BB26]" /> : <TrendingDown className="w-3 h-3 text-amber-500" />}
+                {kpi.trendUp ? <TrendingUp className="w-3 h-3 text-secondary" /> : <TrendingDown className="w-3 h-3 text-amber-500" />}
                 <span className="text-[10px] text-[#5A6B88]">{kpi.trend}</span>
               </div>
             )}
@@ -304,9 +304,9 @@ export function Dashboard() {
       {/* Row 1b: Secondary KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'Total Guaranteed Savings', value: `$${(totalGuaranteed / 1000).toFixed(0)}K`, sub: '3-year cumulative', color: 'text-[#37BB26]' },
-          { label: 'Avg Achievement', value: `${avgAchievement}%`, sub: driftDetected ? 'Drift detected Year 3' : 'On track', color: avgAchievement >= 96 ? 'text-[#37BB26]' : 'text-red-400' },
-          { label: 'Reports Due', value: reportsDue, sub: 'Draft or in review', color: reportsDue > 0 ? 'text-amber-400' : 'text-[#37BB26]' },
+          { label: 'Total Guaranteed Savings', value: `$${(totalGuaranteed / 1000).toFixed(0)}K`, sub: '3-year cumulative', color: 'text-secondary' },
+          { label: 'Avg Achievement', value: `${avgAchievement}%`, sub: driftDetected ? 'Drift detected Year 3' : 'On track', color: avgAchievement >= 96 ? 'text-secondary' : 'text-red-400' },
+          { label: 'Reports Due', value: reportsDue, sub: 'Draft or in review', color: reportsDue > 0 ? 'text-amber-400' : 'text-secondary' },
           { label: 'Obligations Coming Due', value: contractObligations.filter(c => c.status === 'Coming Due').length, sub: 'Next 90 days', color: 'text-cyan-400' },
         ].map((kpi, i) => (
           <div key={kpi.label} className="bg-[#121C35] border border-[#1E2A45] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${(i + 6) * 0.04}s` }}>
@@ -335,8 +335,8 @@ export function Dashboard() {
 
       {/* Compare mode selection prompt */}
       {compareMode && compareIds.length < 2 && (
-        <div className="bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg px-4 py-3 flex items-center justify-between">
-          <p className="text-xs text-[#0D918C]">
+        <div className="bg-primary/10 border border-primary/30 rounded-lg px-4 py-3 flex items-center justify-between">
+          <p className="text-xs text-primary">
             <span className="font-semibold">Compare mode:</span> Select {2 - compareIds.length} project{compareIds.length === 0 ? 's' : ''} from the pipeline below
           </p>
           <button onClick={() => { setCompareMode(false); setCompareIds([]); }} className="text-[#5A6B88] hover:text-white"><X className="w-3.5 h-3.5" /></button>
@@ -462,7 +462,7 @@ export function Dashboard() {
         <div className="lg:col-span-7 bg-[#121C35] border border-[#1E2A45] rounded-lg">
           <div className="px-5 py-4 border-b border-[#1E2A45] flex items-center justify-between">
             <h3 className="text-sm font-semibold text-white">Project Pipeline</h3>
-            <button onClick={() => navigate('/app/projects')} className="text-[10px] text-[#37BB26] hover:text-[#37BB26] font-medium flex items-center gap-1">
+            <button onClick={() => navigate('/app/projects')} className="text-[10px] text-secondary hover:text-secondary font-medium flex items-center gap-1">
               View all <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>
@@ -490,14 +490,14 @@ export function Dashboard() {
                   }}
                   className={cn(
                     "group px-5 py-4 cursor-pointer transition-colors",
-                    compareIds.includes(project.id) ? "bg-[#0D918C]/10 border-l-2 border-l-[#0D918C]" : "hover:bg-[#1A2544]"
+                    compareIds.includes(project.id) ? "bg-primary/10 border-l-2 border-l-primary" : "hover:bg-[#1A2544]"
                   )}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h4 className="text-sm font-semibold text-white truncate">{project.name}</h4>
-                        <ChevronRight className="w-3.5 h-3.5 text-[#3A4B68] group-hover:text-[#37BB26] transition-colors flex-shrink-0" />
+                        <ChevronRight className="w-3.5 h-3.5 text-[#3A4B68] group-hover:text-secondary transition-colors flex-shrink-0" />
                       </div>
                       <p className="text-[11px] text-[#5A6B88] mt-0.5">{project.esco} • {project.engineer}</p>
                     </div>
@@ -509,7 +509,7 @@ export function Dashboard() {
                         "px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider",
                         project.phase === 'Construction' ? "bg-amber-500/10 text-amber-400" :
                         project.phase === 'M&V' ? "bg-blue-500/10 text-blue-400" :
-                        project.phase === 'Audit' ? "bg-[#0D918C]/10 text-[#37BB26]" :
+                        project.phase === 'Audit' ? "bg-primary/10 text-secondary" :
                         "bg-cyan-500/10 text-cyan-400"
                       )}>
                         {project.phase}
@@ -518,7 +518,7 @@ export function Dashboard() {
                         "w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold",
                         project.riskScore > 60 ? 'bg-red-500/15 text-red-400' :
                         project.riskScore > 40 ? 'bg-amber-500/15 text-amber-400' :
-                        'bg-[#0D918C]/15 text-[#37BB26]'
+                        'bg-primary/15 text-secondary'
                       )} title={topRisk ? `Top risk: ${topRisk.description}` : 'No active risks'}>
                         {project.riskScore}
                       </div>
@@ -530,7 +530,7 @@ export function Dashboard() {
                     <div className="flex-1">
                       <div className="h-1.5 bg-[#1E2A45] rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-[#0D918C]/60 rounded-full progress-bar-fill"
+                          className="h-full bg-primary/60 rounded-full progress-bar-fill"
                           style={{ width: `${progressPct}%` }}
                         />
                       </div>
@@ -599,7 +599,7 @@ export function Dashboard() {
                 workloadByPerson.map(([person, counts]) => (
                   <div key={person} className="px-5 py-3 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-6 h-6 rounded-full bg-[#0D918C]/15 text-[#37BB26] flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                      <div className="w-6 h-6 rounded-full bg-primary/15 text-secondary flex items-center justify-center text-[10px] font-bold flex-shrink-0">
                         {person.charAt(0)}
                       </div>
                       <span className="text-xs font-medium text-white truncate">{person}</span>
@@ -636,7 +636,7 @@ export function Dashboard() {
                   <div className={cn(
                     "mt-0.5 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold",
                     item.user === 'System' ? 'bg-amber-500/15 text-amber-400' :
-                    'bg-[#0D918C]/15 text-[#37BB26]'
+                    'bg-primary/15 text-secondary'
                   )}>
                     {item.user === 'System' ? <CircleDot className="w-3 h-3" /> : item.user.charAt(0)}
                   </div>

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 const roleColors: Record<UserRole, string> = {
   Engineer: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
   'Project Lead': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  Admin: 'bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20',
+  Admin: 'bg-primary/10 text-secondary border-primary/20',
 };
 
 export function UserRoleBadge({ role }: { role: UserRole }) {

@@ -1,11 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://mfcxzhughlpsgxvzvknu.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mY3h6aHVnaGxwc2d4dnp2a251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjkyMjEsImV4cCI6MjA4ODc0NTIyMX0.v6WoyPX3bLd-ZjbcLcRupyJ7L0tne7fmS_Qlzz5Th20';
+// ─── Supabase Client — env vars only, no fallbacks ──────────────────────────
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Missing Supabase environment variables. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file.'
+  );
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// ─── Table mapping: store key → Supabase table name ─────────────────────────
+// ─── Table mapping: store key (camelCase) → Supabase table (snake_case) ─────
+
 export const TABLE_MAP: Record<string, string> = {
   organizations:        'organizations',
   buildings:            'buildings',
@@ -33,72 +42,144 @@ export const TABLE_MAP: Record<string, string> = {
   timelineItems:        'timeline_items',
   teamContacts:         'team_contacts',
   auditTrail:           'audit_trail',
+  lockRecords:          'lock_records',
   importHistory:        'import_history',
+  profiles:             'profiles',
+  clientInvites:        'client_invites',
 };
 
-// ─── Load all data for a session ────────────────────────────────────────────
-export async function loadAllData(): Promise<Partial<Record<string, any[]>>> {
+// Tables loaded by loadAllData (excludes profiles — loaded separately in store)
+const LOADABLE_TABLES = Object.entries(TABLE_MAP).filter(
+  ([key]) => key !== 'profiles' && key !== 'clientInvites'
+);
+
+// ─── Lazy tenant ID accessor (avoids circular import at module eval time) ────
+
+function getTenantIdFromStore(): string {
+  const mod = (globalThis as any).__platformStore;
+  if (!mod) throw new Error('Store not initialized — cannot resolve tenant');
+  const tenantId = mod.getState().currentTenant?.id;
+  if (!tenantId) throw new Error('No tenant context — cannot write data without a tenant');
+  return tenantId;
+}
+
+// Called once by store.ts after useStore is created
+export function bindStore(store: any) {
+  (globalThis as any).__platformStore = store;
+}
+
+// ─── Load all data for a session (tenant-scoped) ────────────────────────────
+
+export async function loadAllData(tenantId: string): Promise<Partial<Record<string, any[]>>> {
   const result: Partial<Record<string, any[]>> = {};
 
   await Promise.all(
-    Object.entries(TABLE_MAP).map(async ([storeKey, table]) => {
-      if (table === 'audit_trail') {
-        // audit_trail has flat columns, not jsonb data
-        const { data } = await supabase
+    LOADABLE_TABLES.map(async ([storeKey, table]) => {
+      try {
+        if (table === 'audit_trail') {
+          // audit_trail has flat columns, not jsonb data
+          const { data, error } = await supabase
+            .from(table)
+            .select('*')
+            .eq('tenant_id', tenantId)
+            .order('created_at', { ascending: false })
+            .limit(500);
+          if (error) throw error;
+          result[storeKey] = data ?? [];
+          return;
+        }
+
+        if (table === 'lock_records') {
+          const { data, error } = await supabase
+            .from(table)
+            .select('*')
+            .eq('tenant_id', tenantId);
+          if (error) throw error;
+          result[storeKey] = data ?? [];
+          return;
+        }
+
+        // All other tables: jsonb data column pattern
+        const { data, error } = await supabase
           .from(table)
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(500);
-        result[storeKey] = data ?? [];
-        return;
+          .select('id, project_id, data, created_at')
+          .eq('tenant_id', tenantId)
+          .order('created_at', { ascending: true });
+        if (error) throw error;
+
+        // Flatten: merge data jsonb into the row
+        result[storeKey] = (data ?? []).map(row => ({
+          id: row.id,
+          ...row.data,
+          projectId: row.project_id ?? row.data?.projectId,
+        }));
+      } catch (err) {
+        console.error(`[loadAllData] Failed to load ${table}:`, err);
+        result[storeKey] = [];
       }
-      if (table === 'lock_records') {
-        const { data } = await supabase.from(table).select('*');
-        result[storeKey] = data ?? [];
-        return;
-      }
-      const { data } = await supabase
-        .from(table)
-        .select('id, project_id, data, created_at')
-        .order('created_at', { ascending: true });
-      // Flatten: merge data jsonb into the row
-      result[storeKey] = (data ?? []).map(row => ({ id: row.id, ...row.data, projectId: row.project_id ?? row.data?.projectId }));
     })
   );
 
   return result;
 }
 
-// ─── Upsert a single item ────────────────────────────────────────────────────
-export async function upsertItem(storeKey: string, item: any) {
+// ─── Upsert a single item (tenant-scoped) ───────────────────────────────────
+
+export async function upsertItem(storeKey: string, item: any, tenantId: string) {
   const table = TABLE_MAP[storeKey];
   if (!table) return;
 
   const { id, projectId, ...rest } = item;
-  await supabase.from(table).upsert({
-    id,
-    project_id: projectId ?? null,
-    data: rest,
-    updated_at: new Date().toISOString(),
-  });
+  await supabase.from(table).upsert(
+    {
+      id,
+      project_id: projectId ?? null,
+      data: rest,
+      tenant_id: tenantId,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'id' }
+  );
 }
 
-// ─── Delete a single item ────────────────────────────────────────────────────
+// ─── Delete a single item (tenant-scoped safety check) ──────────────────────
+
 export async function deleteItemRemote(storeKey: string, id: string) {
   const table = TABLE_MAP[storeKey];
   if (!table) return;
-  await supabase.from(table).delete().eq('id', id);
+
+  const tenantId = getTenantIdFromStore();
+  await supabase
+    .from(table)
+    .delete()
+    .eq('id', id)
+    .eq('tenant_id', tenantId);
 }
 
-// ─── Delete by import batch ──────────────────────────────────────────────────
+// ─── Delete by import batch (tenant-scoped safety check) ────────────────────
+
 export async function deleteBatchRemote(storeKey: string, importBatchId: string) {
   const table = TABLE_MAP[storeKey];
   if (!table) return;
-  await supabase.from(table).delete().eq('import_batch_id', importBatchId);
+
+  const tenantId = getTenantIdFromStore();
+  await supabase
+    .from(table)
+    .delete()
+    .eq('import_batch_id', importBatchId)
+    .eq('tenant_id', tenantId);
 }
 
-// ─── Upsert many items (batch import) ───────────────────────────────────────
-export async function upsertBatch(storeKey: string, items: any[], importBatchId: string) {
+// ─── Upsert many items (tenant-scoped, chunked at 100) ─────────────────────
+
+const BATCH_CHUNK_SIZE = 100;
+
+export async function upsertBatch(
+  storeKey: string,
+  items: any[],
+  importBatchId: string,
+  tenantId: string
+) {
   const table = TABLE_MAP[storeKey];
   if (!table) return;
 
@@ -109,12 +190,19 @@ export async function upsertBatch(storeKey: string, items: any[], importBatchId:
       project_id: projectId ?? null,
       import_batch_id: importBatchId,
       data: rest,
+      tenant_id: tenantId,
       updated_at: new Date().toISOString(),
     };
   });
 
-  // Chunk to avoid request size limits
-  for (let i = 0; i < rows.length; i += 200) {
-    await supabase.from(table).upsert(rows.slice(i, i + 200));
+  if (rows.length <= BATCH_CHUNK_SIZE) {
+    await supabase.from(table).upsert(rows, { onConflict: 'id' });
+  } else {
+    console.warn(
+      `[upsertBatch] ${table}: ${rows.length} rows exceeds chunk size ${BATCH_CHUNK_SIZE} — splitting into ${Math.ceil(rows.length / BATCH_CHUNK_SIZE)} chunks`
+    );
+    for (let i = 0; i < rows.length; i += BATCH_CHUNK_SIZE) {
+      await supabase.from(table).upsert(rows.slice(i, i + BATCH_CHUNK_SIZE), { onConflict: 'id' });
+    }
   }
 }

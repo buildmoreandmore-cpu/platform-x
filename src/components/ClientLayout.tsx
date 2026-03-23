@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import { TenantLogo } from '@/components/TenantLogo';
 
 export function ClientLayout() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export function ClientLayout() {
           </button>
           <div className="w-px h-5 bg-gray-200" />
           <div className="flex items-center gap-2.5">
-            <img src="/logo.webp" alt="2KB Energy" className="w-7 h-7 object-contain" />
+            <TenantLogo className="w-7 h-7" />
             <span className="font-semibold text-gray-900 text-sm">Client Dashboard</span>
           </div>
         </div>

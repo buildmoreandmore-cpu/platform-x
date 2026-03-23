@@ -177,7 +177,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                     <CalendarDays className="w-3 h-3" />
                   </button>
                 </div>
-                <button onClick={() => setImportSection('milestones')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                <button onClick={() => setImportSection('milestones')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
@@ -256,7 +256,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Risk Log</h3>
               <div className="flex items-center gap-2">
-                <button onClick={() => setImportSection('risks')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                <button onClick={() => setImportSection('risks')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
@@ -281,7 +281,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                             setSelectedRiskIds(new Set());
                           }
                         }}
-                        className="w-3.5 h-3.5 rounded border-[#2A3A5C] bg-[#0F1829] text-[#0D918C] focus:ring-[#0D918C]"
+                        className="w-3.5 h-3.5 rounded border-[#2A3A5C] bg-[#0F1829] text-primary focus:ring-primary"
                       />
                     </th>
                     <th className="px-6 py-4 font-medium">Description</th>
@@ -293,7 +293,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                 </thead>
                 <tbody className="divide-y divide-[#1E2A45]">
                   {risks.filter(r => r.projectId === selectedProjectId).map((risk) => (
-                    <tr key={risk.id} className={cn("hover:bg-[#1A2544] transition-colors", selectedRiskIds.has(risk.id) && "bg-[#0D918C]/5")}>
+                    <tr key={risk.id} className={cn("hover:bg-[#1A2544] transition-colors", selectedRiskIds.has(risk.id) && "bg-primary/5")}>
                       <td className="px-3 py-4">
                         <input
                           type="checkbox"
@@ -306,7 +306,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                               return next;
                             });
                           }}
-                          className="w-3.5 h-3.5 rounded border-[#2A3A5C] bg-[#0F1829] text-[#0D918C] focus:ring-[#0D918C]"
+                          className="w-3.5 h-3.5 rounded border-[#2A3A5C] bg-[#0F1829] text-primary focus:ring-primary"
                         />
                       </td>
                       <td className="px-6 py-4 font-medium text-white max-w-md">
@@ -371,7 +371,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => setImportSection('changeOrders')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                <button onClick={() => setImportSection('changeOrders')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
@@ -402,7 +402,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                       }}
                       className={cn(
                         "bg-[#0F1829] border rounded-xl p-4 min-h-[300px] transition-colors",
-                        dragOverCol === col ? "border-[#0D918C]/60 bg-[#0D918C]/5" : "border-[#1E2A45]"
+                        dragOverCol === col ? "border-primary/60 bg-primary/5" : "border-[#1E2A45]"
                       )}
                     >
                       <div className="flex items-center justify-between mb-4">
@@ -510,7 +510,7 @@ export function Governance({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Submittals</h3>
-              <button onClick={() => setImportSection('submittals')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+              <button onClick={() => setImportSection('submittals')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                 <FileSpreadsheet className="w-3.5 h-3.5" />
                 Import
               </button>
@@ -653,7 +653,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                 <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-white">All Obligations</h3>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => setImportSection('contractObligations')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-xs font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150">
+                    <button onClick={() => setImportSection('contractObligations')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                       <FileSpreadsheet className="w-3.5 h-3.5" />
                       Import
                     </button>

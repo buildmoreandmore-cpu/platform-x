@@ -44,7 +44,7 @@ export function KnowledgeBase() {
             />
             <button
               onClick={() => setShowImportModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
             >
               <FileSpreadsheet className="w-4 h-4" />
               Import from SharePoint
@@ -58,7 +58,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'benchmarks' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -70,7 +70,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'lessons' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -82,7 +82,7 @@ export function KnowledgeBase() {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'templates' 
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -139,7 +139,7 @@ export function KnowledgeBase() {
                         />
                       </td>
                       <td className="px-6 py-4 text-[#9AA5B8]">{benchmark.unit}</td>
-                      <td className="px-6 py-4 text-right text-[#37BB26] font-mono">
+                      <td className="px-6 py-4 text-right text-secondary font-mono">
                         <EditableField
                           value={benchmark.savingsMid}
                           entityType="benchmark"
@@ -182,10 +182,10 @@ export function KnowledgeBase() {
         {activeTab === 'lessons' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {lessonsLearned.filter(l => l.title.toLowerCase().includes(searchQuery.toLowerCase())).map((lesson) => (
-              <div key={lesson.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-[#0D918C]/50 transition-colors group">
+              <div key={lesson.id} className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col hover:border-primary/50 transition-colors group">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-white group-hover:text-[#37BB26] transition-colors">{lesson.title}</h3>
+                    <h3 className="text-lg font-semibold text-white group-hover:text-secondary transition-colors">{lesson.title}</h3>
                     <p className="text-sm text-[#7A8BA8] mt-1">Project: {useStore.getState().projects.find(p => p.id === lesson.projectId)?.name}</p>
                   </div>
                   <span className="px-2.5 py-1 rounded bg-[#1E2A45] text-xs font-medium text-[#9AA5B8] border border-[#2A3A5C]">
@@ -207,7 +207,7 @@ export function KnowledgeBase() {
                   </div>
                   <div>
                     <h4 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1">Recommendation</h4>
-                    <p className="text-sm text-[#37BB26] leading-relaxed bg-[#0D918C]/10 p-3 rounded-lg border border-[#0D918C]/20">
+                    <p className="text-sm text-secondary leading-relaxed bg-primary/10 p-3 rounded-lg border border-primary/20">
                       <EditableField
                         value={lesson.recommendation}
                         entityType="lesson"

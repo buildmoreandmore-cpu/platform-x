@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useStore, UserRole } from '@/store';
 import { supabase } from '@/lib/supabase';
 import { UserRoleBadge } from '@/components/UserRoleBadge';
@@ -25,10 +25,17 @@ import {
   History,
   Lock,
   CheckCircle,
+  Palette,
 } from 'lucide-react';
 import { Icon } from '@iconify/react';
+import {
+  useTenantBranding,
+  validateLogoFile,
+  DEFAULT_PRIMARY,
+  DEFAULT_SECONDARY,
+} from '@/hooks/useTenantBranding';
 
-const tabs = [
+const baseTabs = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'users', label: 'User Management', icon: Users },
   { id: 'data', label: 'Data Management', icon: Database },
@@ -36,12 +43,13 @@ const tabs = [
   { id: 'notifications', label: 'Notifications', icon: Bell },
 ] as const;
 
-type TabId = (typeof tabs)[number]['id'];
+type TabId = (typeof baseTabs)[number]['id'] | 'branding';
 
 export function Settings() {
   const [activeTab, setActiveTab] = useState<TabId>('profile');
 
   const currentUserId = useStore(s => s.currentUserId);
+  const currentUserRole = useStore(s => s.currentUserRole);
   const users = useStore(s => s.users);
   const projects = useStore(s => s.projects);
   const setCurrentUser = useStore(s => s.setCurrentUser);
@@ -53,6 +61,11 @@ export function Settings() {
 
   const currentUser = users.find(u => u.id === currentUserId);
   const currentRole = currentUser?.defaultRole || 'Engineer';
+
+  const isOwner = currentUserRole === 'owner';
+  const tabs = isOwner
+    ? [...baseTabs, { id: 'branding' as const, label: 'Branding', icon: Palette }]
+    : [...baseTabs];
 
   return (
     <div className="flex flex-col h-full">
@@ -73,7 +86,7 @@ export function Settings() {
               className={cn(
                 'flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors -mb-px',
                 activeTab === tab.id
-                  ? 'border-[#0D918C] text-white'
+                  ? 'border-primary text-white'
                   : 'border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]'
               )}
             >
@@ -114,6 +127,7 @@ export function Settings() {
             onToggle={toggleNotificationPreference}
           />
         )}
+        {activeTab === 'branding' && isOwner && <BrandingTab />}
       </div>
     </div>
   );
@@ -164,8 +178,8 @@ function ProfileTab({
       <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Your Profile</h2>
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center flex-shrink-0">
-            <span className="text-lg font-semibold text-[#37BB26]">{currentUser.initials}</span>
+          <div className="w-14 h-14 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center flex-shrink-0">
+            <span className="text-lg font-semibold text-secondary">{currentUser.initials}</span>
           </div>
           <div className="flex-1">
             <p className="text-lg font-medium text-white">{currentUser.name}</p>
@@ -206,7 +220,7 @@ function ProfileTab({
               onChange={e => setCurrentPw(e.target.value)}
               required
               placeholder="Enter current password"
-              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent transition-colors"
+              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
             />
           </div>
           <div>
@@ -217,7 +231,7 @@ function ProfileTab({
               onChange={e => setNewPw(e.target.value)}
               required
               placeholder="At least 8 characters"
-              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent transition-colors"
+              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
             />
           </div>
           <div>
@@ -228,7 +242,7 @@ function ProfileTab({
               onChange={e => setConfirmPw(e.target.value)}
               required
               placeholder="Repeat new password"
-              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent transition-colors"
+              className="w-full px-3 py-2.5 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
             />
           </div>
           {pwError && (
@@ -237,14 +251,14 @@ function ProfileTab({
             </p>
           )}
           {pwSuccess && (
-            <p className="text-xs text-[#37BB26] flex items-center gap-1.5">
+            <p className="text-xs text-secondary flex items-center gap-1.5">
               <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />Password updated successfully
             </p>
           )}
           <button
             type="submit"
             disabled={pwLoading}
-            className="px-4 py-2 bg-[#0D918C] hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
           >
             {pwLoading ? 'Updating...' : 'Update Password'}
           </button>
@@ -297,8 +311,8 @@ function UserManagementTab({
               <tr key={user.id} className="border-b border-[#1E2A45]/50 hover:bg-[#0F1829] transition-colors">
                 <td className="px-6 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#0D918C]/15 border border-[#0D918C]/25 flex items-center justify-center">
-                      <span className="text-xs font-semibold text-[#37BB26]">{user.initials}</span>
+                    <div className="w-8 h-8 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center">
+                      <span className="text-xs font-semibold text-secondary">{user.initials}</span>
                     </div>
                     <span className="text-sm font-medium text-white">{user.name}</span>
                   </div>
@@ -377,7 +391,7 @@ function DataManagementTab({
       {/* Import History */}
       <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
         <div className="px-6 py-4 border-b border-[#1E2A45] flex items-center gap-2">
-          <Download className="w-4 h-4 text-[#37BB26]" />
+          <Download className="w-4 h-4 text-secondary" />
           <h2 className="text-base font-semibold text-white">Import History</h2>
         </div>
         <div className="overflow-x-auto">
@@ -402,7 +416,7 @@ function DataManagementTab({
                 </td>
                 <td className="px-6 py-3 text-sm text-[#9AA5B8] font-mono">{imp.records}</td>
                 <td className="px-6 py-3">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-[#0D918C]/10 text-[#37BB26] border border-[#0D918C]/20">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-secondary border border-primary/20">
                     {imp.status}
                   </span>
                 </td>
@@ -468,13 +482,13 @@ function DataManagementTab({
                   value={auditFilter}
                   onChange={e => setAuditFilter(e.target.value)}
                   placeholder="Search..."
-                  className="bg-[#0F1829] border border-[#1E2A45] text-white text-xs rounded-lg pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-[#0D918C] focus:border-transparent placeholder-[#5A6B88]"
+                  className="bg-[#0F1829] border border-[#1E2A45] text-white text-xs rounded-lg pl-8 pr-3 py-1.5 w-40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-[#5A6B88]"
                 />
               </div>
               <select
                 value={entityFilter}
                 onChange={e => setEntityFilter(e.target.value)}
-                className="bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-[#0D918C] focus:border-[#0D918C]"
+                className="bg-[#0F1829] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary"
               >
                 {entityTypes.map(t => (
                   <option key={t} value={t}>{t}</option>
@@ -510,7 +524,7 @@ function DataManagementTab({
                 <p className="text-xs text-[#9AA5B8]">
                   Changed <span className="font-medium text-[#CBD2DF]">{entry.field}</span>{' '}
                   from <span className="font-mono text-red-400">{entry.oldValue || '(empty)'}</span>{' '}
-                  to <span className="font-mono text-[#37BB26]">{entry.newValue || '(empty)'}</span>
+                  to <span className="font-mono text-secondary">{entry.newValue || '(empty)'}</span>
                 </p>
                 {entry.reason && (
                   <p className="text-[10px] text-[#5A6B88] italic mt-1">"{entry.reason}"</p>
@@ -612,7 +626,7 @@ function NotificationsTab({
             onClick={() => onToggle(ch.key)}
             className={cn(
               'relative w-11 h-6 rounded-full transition-colors flex-shrink-0',
-              preferences[ch.key] ? 'bg-[#0D918C]' : 'bg-[#1E2A45]'
+              preferences[ch.key] ? 'bg-primary' : 'bg-[#1E2A45]'
             )}
           >
             <span
@@ -624,6 +638,222 @@ function NotificationsTab({
           </button>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ─── Branding Tab (Owner only) ─── */
+function BrandingTab() {
+  const currentTenant = useStore(s => s.currentTenant);
+  const { saving, error, setError, saveBranding } = useTenantBranding();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [name, setName] = useState(currentTenant?.name || '');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>(currentTenant?.logo_url || '');
+  const [primaryColor, setPrimaryColor] = useState(currentTenant?.primary_color || DEFAULT_PRIMARY);
+  const [secondaryColor, setSecondaryColor] = useState(currentTenant?.secondary_color || DEFAULT_SECONDARY);
+  const [dragOver, setDragOver] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleLogoSelect = (file: File) => {
+    setError('');
+    const result = validateLogoFile(file);
+    if (!result.valid) {
+      setError(result.error!);
+      return;
+    }
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleLogoSelect(file);
+  };
+
+  const handleSave = async () => {
+    setSuccess(false);
+    const ok = await saveBranding(
+      {
+        name,
+        logo_url: logoPreview || null,
+        primary_color: primaryColor,
+        secondary_color: secondaryColor,
+      },
+      logoFile,
+    );
+    if (ok) {
+      setLogoFile(null);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 4000);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl space-y-6">
+      {/* Company Name */}
+      <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+        <h2 className="text-base font-semibold text-white mb-4">Company Name</h2>
+        <input
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="e.g. Acme Energy Services"
+          className="w-full px-4 py-3 bg-[#0F1829] border border-[#1E2A45] rounded-xl text-sm text-white placeholder:text-[#5A6B88] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+        />
+        <p className="text-xs text-[#5A6B88] mt-2">
+          Used in the header, emails, reports, and client portal.
+        </p>
+      </div>
+
+      {/* Logo Upload */}
+      <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+        <h2 className="text-base font-semibold text-white mb-4">Logo</h2>
+        <div
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
+            dragOver
+              ? 'border-primary bg-primary/10'
+              : 'border-[#1E2A45] hover:border-[#2A3A5C]'
+          }`}
+        >
+          {logoPreview ? (
+            <div className="flex flex-col items-center gap-3">
+              <img src={logoPreview} alt="Logo preview" className="w-16 h-16 object-contain rounded-lg" />
+              <p className="text-xs text-[#7A8BA8]">Click or drag to replace</p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <Upload className="w-8 h-8 text-[#5A6B88]" />
+              <div>
+                <p className="text-sm text-[#7A8BA8]">Drop your logo here or click to browse</p>
+                <p className="text-xs text-[#5A6B88] mt-1">PNG, JPG, or SVG — max 2MB</p>
+              </div>
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".png,.jpg,.jpeg,.svg"
+            onChange={e => { const f = e.target.files?.[0]; if (f) handleLogoSelect(f); }}
+            className="hidden"
+          />
+        </div>
+      </div>
+
+      {/* Brand Colors */}
+      <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+        <h2 className="text-base font-semibold text-white mb-4">Brand Colors</h2>
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div>
+            <label className="block text-xs text-[#7A8BA8] mb-1.5">Primary Color</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={primaryColor}
+                onChange={e => setPrimaryColor(e.target.value)}
+                className="w-10 h-10 rounded-lg border border-[#1E2A45] cursor-pointer bg-transparent"
+              />
+              <input
+                type="text"
+                value={primaryColor}
+                onChange={e => setPrimaryColor(e.target.value)}
+                className="flex-1 px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs text-[#7A8BA8] mb-1.5">Secondary Color</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={secondaryColor}
+                onChange={e => setSecondaryColor(e.target.value)}
+                className="w-10 h-10 rounded-lg border border-[#1E2A45] cursor-pointer bg-transparent"
+              />
+              <input
+                type="text"
+                value={secondaryColor}
+                onChange={e => setSecondaryColor(e.target.value)}
+                className="flex-1 px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Live preview */}
+        <div>
+          <p className="text-xs text-[#7A8BA8] mb-3">Preview</p>
+          <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-4 space-y-3">
+            <div className="flex items-center gap-3">
+              {logoPreview && (
+                <img src={logoPreview} alt="Logo" className="w-8 h-8 object-contain rounded" />
+              )}
+              <span className="text-sm font-bold" style={{ color: primaryColor }}>
+                {name || 'Your Company'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-4 py-2 rounded-lg text-xs font-semibold text-white" style={{ backgroundColor: primaryColor }}>
+                Primary Button
+              </span>
+              <span className="px-4 py-2 rounded-lg text-xs font-semibold text-white" style={{ backgroundColor: secondaryColor }}>
+                Secondary Button
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium text-white" style={{ backgroundColor: primaryColor }}>
+                Active
+              </span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium text-white" style={{ backgroundColor: secondaryColor }}>
+                Completed
+              </span>
+              <span className="text-xs" style={{ color: primaryColor }}>
+                Link text
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Error / Success */}
+      {error && (
+        <div className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <Icon icon="solar:danger-triangle-bold-duotone" className="w-4 h-4 text-red-400 flex-shrink-0" />
+          <span className="text-xs text-red-300">{error}</span>
+        </div>
+      )}
+      {success && (
+        <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/20 rounded-lg">
+          <CheckCircle className="w-4 h-4 text-secondary flex-shrink-0" />
+          <span className="text-xs text-secondary">Branding updated successfully</span>
+        </div>
+      )}
+
+      {/* Save */}
+      <button
+        onClick={handleSave}
+        disabled={saving || !name.trim()}
+        className="px-6 py-2.5 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+      >
+        {saving ? (
+          <>
+            <Icon icon="svg-spinners:ring-resize" className="w-4 h-4" />
+            Saving...
+          </>
+        ) : (
+          <>
+            <CheckCircle className="w-4 h-4" />
+            Save Branding
+          </>
+        )}
+      </button>
     </div>
   );
 }

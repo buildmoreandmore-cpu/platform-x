@@ -3,11 +3,14 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useStore } from '@/store';
 import { supabase } from '@/lib/supabase';
+import { TenantLogo } from '@/components/TenantLogo';
+import { useTenantName } from '@/hooks/useTenantName';
 
 export function Login() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const login = useStore(state => state.login);
+  const { name, company } = useTenantName();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -68,13 +71,12 @@ export function Login() {
       {/* Center content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         <div className="relative mb-6">
-          <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-[#0D918C]/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
-          <img src="/logo.webp" alt="2KB Energy" className="relative w-24 h-24 object-contain" />
+          <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-primary/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
+          <TenantLogo className="relative w-24 h-24" />
         </div>
 
         <h1 className="text-2xl tracking-tight mb-1" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-          <span className="text-white font-extrabold">2KB</span>{' '}
-          <span className="text-[#37BB26] font-light tracking-[0.15em]">Intelligence</span>
+          <span className="text-white font-extrabold">{name}</span>
         </h1>
         <p className="text-sm text-white/40 mb-8">Sign in to continue</p>
 
@@ -85,9 +87,9 @@ export function Login() {
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="name@2kbco.com"
+              placeholder="you@company.com"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
             />
           </div>
 
@@ -99,7 +101,7 @@ export function Login() {
               onChange={e => setPassword(e.target.value)}
               placeholder="Enter password"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
             />
           </div>
 
@@ -113,7 +115,7 @@ export function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#0D918C] text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -132,7 +134,7 @@ export function Login() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/forgot-password')}
-            className="text-xs text-[#37BB26] hover:text-[#0D918C] transition-colors"
+            className="text-xs text-secondary hover:text-primary transition-colors"
           >
             Forgot password?
           </button>
@@ -149,7 +151,7 @@ export function Login() {
       {/* Footer */}
       <footer className="relative z-10 py-6 text-center">
         <div className="text-xs text-white/20">
-          &copy; {new Date().getFullYear()} 2KB Energy Services, LLC
+          &copy; {new Date().getFullYear()} {company}
         </div>
       </footer>
     </div>

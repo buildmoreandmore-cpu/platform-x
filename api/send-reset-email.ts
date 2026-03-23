@@ -1,10 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
-import { transporter, FROM } from './_mailer';
+import { transporter, FROM, FROM_NAME } from './_mailer';
 
-const SITE_URL = process.env.SITE_URL || 'https://2kb-intelligence.vercel.app';
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://mfcxzhughlpsgxvzvknu.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const SITE_URL = process.env.SITE_URL;
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SITE_URL || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  throw new Error('Missing required environment variables: SITE_URL, VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY');
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -38,13 +42,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#ffffff;font-size:24px;font-weight:800;margin:0;">
-        2KB <span style="color:#37BB26;font-weight:300;letter-spacing:0.15em;">Intelligence</span>
+        ${FROM_NAME}
       </h1>
     </div>
     <div style="background:#121C35;border:1px solid #1E2A45;border-radius:16px;padding:32px;margin-bottom:24px;">
       <h2 style="color:#ffffff;font-size:20px;margin:0 0 8px;">Reset Your Password</h2>
       <p style="color:#7A8BA8;font-size:14px;line-height:1.6;margin:0 0 24px;">
-        We received a request to reset the password for your 2KB Intelligence account. Click the button below to create a new password.
+        We received a request to reset the password for your ${FROM_NAME} account. Click the button below to create a new password.
       </p>
       <div style="text-align:center;margin:24px 0;">
         <a href="${resetUrl}" style="display:inline-block;background:#0D918C;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:14px;font-weight:600;">
@@ -57,7 +61,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </div>
     <div style="text-align:center;">
       <p style="color:#3A4860;font-size:11px;margin:0;">
-        &copy; ${new Date().getFullYear()} 2KB Energy Services, LLC
+        &copy; ${new Date().getFullYear()} ${FROM_NAME}
       </p>
     </div>
   </div>
@@ -67,7 +71,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await transporter.sendMail({
       from: FROM,
       to: email,
-      subject: 'Reset your password — 2KB Intelligence',
+      subject: `Reset your password — ${FROM_NAME}`,
       html,
     });
 

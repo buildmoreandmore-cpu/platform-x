@@ -63,7 +63,7 @@ export function Construction({ projectId }: { projectId?: string }) {
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-[#0D918C] focus:border-[#0D918C] block w-64 p-2.5"
+                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-primary focus:border-primary block w-64 p-2.5"
               >
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
@@ -71,7 +71,7 @@ export function Construction({ projectId }: { projectId?: string }) {
               </select>
               <button
                 onClick={() => setShowImportModal(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C]/10 border border-[#0D918C]/30 rounded-lg text-sm font-medium text-[#0D918C] hover:bg-[#0D918C]/20 transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-lg text-sm font-medium text-primary hover:bg-primary/20 transition-colors duration-150"
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Import from SharePoint
@@ -92,7 +92,7 @@ export function Construction({ projectId }: { projectId?: string }) {
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                 activeTab === 'tracker' 
-                  ? "border-[#0D918C] text-[#37BB26]"
+                  ? "border-primary text-secondary"
                   : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
               )}
           >
@@ -104,7 +104,7 @@ export function Construction({ projectId }: { projectId?: string }) {
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               activeTab === 'inspections'
-                ? "border-[#0D918C] text-[#37BB26]"
+                ? "border-primary text-secondary"
                 : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
@@ -134,7 +134,7 @@ export function Construction({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
             <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Scope Deviations</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-2xl md:text-4xl font-bold ${scopeDeviations > 0 ? 'text-red-500' : 'text-[#37BB26]'}`}>
+              <span className={`text-2xl md:text-4xl font-bold ${scopeDeviations > 0 ? 'text-red-500' : 'text-secondary'}`}>
                 {scopeDeviations}
               </span>
             </div>
@@ -174,7 +174,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                           <div className="flex items-center gap-3">
                             <div className="w-32 h-2 bg-[#1E2A45] rounded-full overflow-hidden">
                               <div 
-                                className={`h-full rounded-full ${progress === 100 ? 'bg-[#0D918C]' : progress > 0 ? 'bg-blue-500' : 'bg-transparent'}`}
+                                className={`h-full rounded-full ${progress === 100 ? 'bg-primary' : progress > 0 ? 'bg-blue-500' : 'bg-transparent'}`}
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
@@ -184,7 +184,7 @@ export function Construction({ projectId }: { projectId?: string }) {
                         <td className="px-6 py-4">
                           <span className={cn(
                             "px-2.5 py-1 rounded text-xs font-medium border",
-                            status === 'Complete' ? "bg-[#0D918C]/10 text-[#37BB26] border-[#0D918C]/20" :
+                            status === 'Complete' ? "bg-primary/10 text-secondary border-primary/20" :
                             status === 'In Progress' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
                             "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
                           )}>

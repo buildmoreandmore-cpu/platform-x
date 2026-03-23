@@ -3,7 +3,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { supabase } from '@/lib/supabase';
 import { getInviteByToken, acceptInvite, type ClientInvite } from '@/lib/clientInvites';
+import { TenantLogo } from '@/components/TenantLogo';
 import { useStore } from '@/store';
+import { useTenantName } from '@/hooks/useTenantName';
 
 export function ClientAccept() {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ export function ClientAccept() {
   const [success, setSuccess] = useState(false);
 
   const projects = useStore(s => s.projects);
+  const { name: tenantName } = useTenantName();
   const token = searchParams.get('token');
 
   useEffect(() => {
@@ -141,7 +144,7 @@ export function ClientAccept() {
     return (
       <div className="h-screen bg-[#041E1D] text-white flex items-center justify-center">
         <div className="text-center">
-          <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-[#0D918C] mx-auto mb-4" />
+          <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-primary mx-auto mb-4" />
           <p className="text-sm text-white/60">Loading invite...</p>
         </div>
       </div>
@@ -157,7 +160,7 @@ export function ClientAccept() {
           <p className="text-white/60 mb-6">{error}</p>
           <button
             onClick={() => navigate('/login')}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0D918C] text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] transition-colors"
           >
             Go to Sign In
           </button>
@@ -170,8 +173,8 @@ export function ClientAccept() {
     return (
       <div className="h-screen bg-[#041E1D] text-white flex items-center justify-center">
         <div className="text-center max-w-md">
-          <Icon icon="solar:check-circle-bold-duotone" className="w-16 h-16 text-[#37BB26] mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-2">Welcome to 2KB Intelligence!</h1>
+          <Icon icon="solar:check-circle-bold-duotone" className="w-16 h-16 text-secondary mx-auto mb-4" />
+          <h1 className="text-2xl font-bold mb-2">Welcome to {tenantName}!</h1>
           <p className="text-white/60 mb-6">
             Your account has been created successfully. You now have access to the {projects.find(p => p.id === invite?.project_id)?.name} project portal.
           </p>
@@ -202,13 +205,13 @@ export function ClientAccept() {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="relative mb-6">
-              <div className="absolute inset-0 m-auto w-20 h-20 rounded-full bg-[#0D918C]/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
-              <img src="/logo.webp" alt="2KB Energy" className="relative w-20 h-20 object-contain mx-auto" />
+              <div className="absolute inset-0 m-auto w-20 h-20 rounded-full bg-primary/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
+              <TenantLogo className="relative w-20 h-20 mx-auto" />
             </div>
             
             <h1 className="text-2xl font-bold mb-2">Client Portal Access</h1>
             <p className="text-sm text-white/60">
-              You've been invited to access the <span className="text-[#37BB26] font-medium">{project?.name}</span> project portal
+              You've been invited to access the <span className="text-secondary font-medium">{project?.name}</span> project portal
             </p>
           </div>
 
@@ -221,7 +224,7 @@ export function ClientAccept() {
                   type="text"
                   value={formData.name}
                   onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
                   required
                 />
               </div>
@@ -242,7 +245,7 @@ export function ClientAccept() {
                   type="password"
                   value={formData.password}
                   onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
                   placeholder="At least 6 characters"
                   required
                   minLength={6}
@@ -255,7 +258,7 @@ export function ClientAccept() {
                   type="password"
                   value={formData.confirmPassword}
                   onChange={e => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#0D918C]/60 focus:ring-1 focus:ring-[#0D918C]/30 transition-colors"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
                   placeholder="Confirm your password"
                   required
                 />
@@ -271,7 +274,7 @@ export function ClientAccept() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-[#0D918C] text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -289,7 +292,7 @@ export function ClientAccept() {
 
             <div className="mt-4 pt-4 border-t border-white/10 text-center">
               <p className="text-xs text-white/40">
-                Already have an account? <button onClick={() => navigate('/login')} className="text-[#37BB26] hover:text-[#0D918C] transition-colors">Sign in</button>
+                Already have an account? <button onClick={() => navigate('/login')} className="text-secondary hover:text-primary transition-colors">Sign in</button>
               </p>
             </div>
           </div>
