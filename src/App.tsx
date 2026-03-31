@@ -10,6 +10,13 @@ import { ClientLayout } from './components/ClientLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PageSkeleton } from './components/Skeleton';
 import { TenantThemeProvider } from './providers/TenantThemeProvider';
+import { MarketingLayout } from './components/marketing/MarketingLayout';
+
+// Marketing pages (eager — small, SEO-critical)
+import { Home } from './pages/marketing/Home';
+import { Services } from './pages/marketing/Services';
+import { HowItWorks } from './pages/marketing/HowItWorks';
+import { Contact } from './pages/marketing/Contact';
 
 // Eager-loaded (always needed)
 import { Landing } from './pages/Landing';
@@ -48,8 +55,16 @@ export default function App() {
     <TenantThemeProvider>
     <BrowserRouter>
       <Routes>
-        {/* Landing — portal selector */}
-        <Route path="/" element={<Landing />} />
+        {/* Marketing site (public) */}
+        <Route element={<MarketingLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/contact" element={<Contact />} />
+        </Route>
+
+        {/* Portal gateway — dashboard entry */}
+        <Route path="/portal" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -88,7 +103,7 @@ export default function App() {
           <Route index element={<Suspense fallback={<PageSkeleton />}><ClientPortal /></Suspense>} />
         </Route>
 
-        {/* Redirect legacy root paths */}
+        {/* Redirect unknown paths */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
