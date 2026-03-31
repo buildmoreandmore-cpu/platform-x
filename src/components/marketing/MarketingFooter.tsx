@@ -19,9 +19,7 @@ export function MarketingFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="text-xl font-bold tracking-tight mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="text-[#C9A84C]">V</span>ANTAGE
-            </div>
+            <img src="/logo.svg" alt="Vantage Infrastructure Group" className="h-7 mb-3" />
             <p className="text-sm text-[#888888] leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Infrastructure Managed.<br />Performance Guaranteed.
             </p>

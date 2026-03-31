@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" fill="none">
+  <!-- V Mark — engineered, precise, architectural -->
+  <g transform="translate(0, 4)">
+    <!-- Primary V stroke -->
+    <path d="M8 8 L32 64 L56 8" stroke="#C9A84C" stroke-width="4" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+    <!-- Secondary inner V (depth) -->
+    <path d="M18 16 L32 52 L46 16" stroke="#C9A84C" stroke-width="1" fill="none" opacity="0.25" stroke-linejoin="miter"/>
+    <!-- Crossbar — the engineering line -->
+    <line x1="16" y1="30" x2="48" y2="30" stroke="#C9A84C" stroke-width="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- VANTAGE wordmark -->
+  <text x="72" y="42" font-family="'Playfair Display', Georgia, 'Times New Roman', serif" font-weight="700" font-size="34" letter-spacing="4">
+    <tspan fill="#C9A84C">V</tspan><tspan fill="#F5F5F0">ANTAGE</tspan>
+  </text>
+
+  <!-- INFRASTRUCTURE GROUP -->
+  <text x="74" y="62" font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" font-weight="400" font-size="10.5" letter-spacing="4.8" fill="#888888">
+    INFRASTRUCTURE GROUP
+  </text>
+</svg>

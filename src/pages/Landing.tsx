@@ -14,12 +14,9 @@ export function Landing() {
 
       {/* Portal header */}
       <header className="relative z-10 py-5 px-6 flex items-center justify-between border-b border-[#222222]">
-        <Link to="/" className="flex items-baseline gap-1.5">
-          <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="text-[#C9A84C]">V</span>
-            <span className="text-[#F5F5F0]">ANTAGE</span>
-          </span>
-          <span className="text-[9px] tracking-[0.2em] uppercase text-[#888888] hidden sm:inline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/logo.svg" alt="Vantage Infrastructure Group" className="h-7" />
+          <span className="text-[9px] tracking-[0.2em] uppercase text-[#888888] hidden sm:inline border-l border-[#222222] pl-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Client Portal
           </span>
         </Link>
@@ -31,9 +28,7 @@ export function Landing() {
       {/* Center content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <div className="relative mb-6">
-          <div className="w-20 h-20 border border-[#C9A84C]/30 flex items-center justify-center mx-auto">
-            <TenantLogo className="relative w-16 h-16" />
-          </div>
+          <img src="/logo-icon.svg" alt="Vantage" className="w-20 h-20 mx-auto" />
         </div>
         <h1 className="text-4xl md:text-5xl tracking-tight mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-white font-bold">{name}</span>

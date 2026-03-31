@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" fill="#0A0A0A"/>
+  <!-- Primary V -->
+  <path d="M12 12 L32 52 L52 12" stroke="#C9A84C" stroke-width="4" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+  <!-- Inner V -->
+  <path d="M19 18 L32 44 L45 18" stroke="#C9A84C" stroke-width="1" fill="none" opacity="0.25" stroke-linejoin="miter"/>
+  <!-- Crossbar -->
+  <line x1="18" y1="26" x2="46" y2="26" stroke="#C9A84C" stroke-width="1.5" opacity="0.5"/>
+</svg>

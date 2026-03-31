@@ -30,14 +30,8 @@ export function MarketingNavbar() {
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-baseline gap-1.5">
-          <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="text-[#C9A84C]">V</span>
-            <span className="text-[#F5F5F0]">ANTAGE</span>
-          </span>
-          <span className="text-[10px] tracking-[0.25em] uppercase text-[#888888] hidden sm:inline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Infrastructure Group
-          </span>
+        <Link to="/" className="flex items-center">
+          <img src="/logo.svg" alt="Vantage Infrastructure Group" className="h-8 sm:h-9" />
         </Link>
 
         {/* Desktop Links */}
