@@ -90,7 +90,7 @@ export function TenantOnboarding() {
   };
 
   return (
-    <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 hero-gradient-bg">
         <div className="energy-blob energy-blob-1" />
@@ -117,7 +117,7 @@ export function TenantOnboarding() {
                   onClick={() => { if (i < step) setStep(i); }}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                     i === step
-                      ? 'bg-primary text-white'
+                      ? 'bg-primary text-[#0A0A0A]'
                       : i < step
                         ? 'bg-primary/20 text-primary cursor-pointer hover:bg-primary/30'
                         : 'bg-white/5 text-white/30'
@@ -329,7 +329,7 @@ export function TenantOnboarding() {
                   <button
                     onClick={() => { setError(''); setStep(step + 1); }}
                     disabled={!canAdvance()}
-                    className="px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                    className="px-6 py-2.5 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                   >
                     Next
                     <Icon icon="solar:arrow-right-bold" className="w-4 h-4" />
@@ -339,7 +339,7 @@ export function TenantOnboarding() {
                 <button
                   onClick={handleComplete}
                   disabled={saving || !canAdvance()}
-                  className="px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                  className="px-6 py-2.5 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                 >
                   {saving ? (
                     <>

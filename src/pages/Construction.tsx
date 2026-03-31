@@ -209,7 +209,7 @@ export function Construction({ projectId }: { projectId?: string }) {
           <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
             <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Inspection Log</h3>
-              <button onClick={() => setShowFindingModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0B7A76] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#096A66] transition-colors">
+              <button onClick={() => setShowFindingModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#B8972F] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
                 <Plus className="w-3.5 h-3.5" />
                 Log Finding
               </button>
@@ -306,7 +306,7 @@ export function Construction({ projectId }: { projectId?: string }) {
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowFindingModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { if (!findingForm.description) { setErrors({ findDesc: 'Description is required' }); return; } addInspectionFinding({ ...findingForm, date: findingForm.date || new Date().toISOString().split('T')[0], projectId: selectedProjectId, status: 'Open' }); setFindingForm({ date: '', ecm: '', type: 'Quality Issue', severity: 'Medium', description: '' }); setShowFindingModal(false); setErrors({}); addToast('Finding logged'); }} className="px-4 py-2 bg-[#0B7A76] text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">Add</button>
+              <button onClick={() => { if (!findingForm.description) { setErrors({ findDesc: 'Description is required' }); return; } addInspectionFinding({ ...findingForm, date: findingForm.date || new Date().toISOString().split('T')[0], projectId: selectedProjectId, status: 'Open' }); setFindingForm({ date: '', ecm: '', type: 'Quality Issue', severity: 'Medium', description: '' }); setShowFindingModal(false); setErrors({}); addToast('Finding logged'); }} className="px-4 py-2 bg-[#B8972F] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
             </div>
           </div>
         </div>

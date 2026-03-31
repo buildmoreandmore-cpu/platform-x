@@ -147,7 +147,7 @@ export function Projects() {
             </button>
             <button
               onClick={() => { setFormStep('type'); setShowNewProject(true); }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors"
             >
               <Plus className="w-4 h-4" />
               New Project
@@ -468,7 +468,7 @@ export function Projects() {
                 <button
                   disabled={!newProject.name.trim()}
                   onClick={handleCreate}
-                  className="px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+                  className="px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
                 >
                   Create Project
                 </button>

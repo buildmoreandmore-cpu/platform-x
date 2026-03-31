@@ -181,7 +181,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowMilestoneModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowMilestoneModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Milestone
                 </button>
@@ -260,7 +260,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowRiskModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowRiskModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Log Risk
                 </button>
@@ -375,7 +375,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowCOModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 border border-transparent rounded-lg text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={() => setShowCOModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Change Order
                 </button>
@@ -745,7 +745,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             <input placeholder="Assigned to" value={milestoneForm.assignedTo} onChange={e => setMilestoneForm(f => ({ ...f, assignedTo: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowMilestoneModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!milestoneForm.name) e.msName = 'Name is required'; if (!milestoneForm.dueDate) e.msDue = 'Due date is required'; if (Object.keys(e).length) { setErrors(e); return; } addMilestone({ ...milestoneForm, projectId: selectedProjectId }); setMilestoneForm({ name: '', dueDate: '', status: 'pending', assignedTo: '' }); setShowMilestoneModal(false); setErrors({}); addToast('Milestone added'); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!milestoneForm.name) e.msName = 'Name is required'; if (!milestoneForm.dueDate) e.msDue = 'Due date is required'; if (Object.keys(e).length) { setErrors(e); return; } addMilestone({ ...milestoneForm, projectId: selectedProjectId }); setMilestoneForm({ name: '', dueDate: '', status: 'pending', assignedTo: '' }); setShowMilestoneModal(false); setErrors({}); addToast('Milestone added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
             </div>
           </div>
         </div>
@@ -769,7 +769,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             <input placeholder="Risk owner" value={riskForm.owner} onChange={e => setRiskForm(f => ({ ...f, owner: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowRiskModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { if (!riskForm.description) { setErrors({ riskDesc: 'Description is required' }); return; } addRisk({ ...riskForm, projectId: selectedProjectId, status: 'Open' }); setRiskForm({ description: '', category: 'Schedule', severity: 'Medium', owner: '' }); setShowRiskModal(false); setErrors({}); addToast('Risk logged'); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+              <button onClick={() => { if (!riskForm.description) { setErrors({ riskDesc: 'Description is required' }); return; } addRisk({ ...riskForm, projectId: selectedProjectId, status: 'Open' }); setRiskForm({ description: '', category: 'Schedule', severity: 'Medium', owner: '' }); setShowRiskModal(false); setErrors({}); addToast('Risk logged'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
             </div>
           </div>
         </div>
@@ -791,7 +791,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowCOModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!coForm.number) e.coNum = 'CO number is required'; if (!coForm.description) e.coDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addChangeOrder({ ...coForm, cost: Number(coForm.cost) || 0, days: Number(coForm.days) || 0, projectId: selectedProjectId, status: 'Pending' }); setCoForm({ number: '', description: '', requestedBy: '', cost: '', days: '' }); setShowCOModal(false); setErrors({}); addToast('Change order added'); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!coForm.number) e.coNum = 'CO number is required'; if (!coForm.description) e.coDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addChangeOrder({ ...coForm, cost: Number(coForm.cost) || 0, days: Number(coForm.days) || 0, projectId: selectedProjectId, status: 'Pending' }); setCoForm({ number: '', description: '', requestedBy: '', cost: '', days: '' }); setShowCOModal(false); setErrors({}); addToast('Change order added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
             </div>
           </div>
         </div>

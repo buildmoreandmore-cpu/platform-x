@@ -201,7 +201,7 @@ export function Dashboard() {
             onClick={() => { setCompareMode(!compareMode); setCompareIds([]); }}
             className={cn(
               "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
-              compareMode ? "bg-primary text-white" : "bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
+              compareMode ? "bg-primary text-[#0A0A0A]" : "bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
             )}
           >
             <GitCompare className="w-3.5 h-3.5" />

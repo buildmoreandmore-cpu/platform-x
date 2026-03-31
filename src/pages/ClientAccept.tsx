@@ -142,7 +142,7 @@ export function ClientAccept() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-[#041E1D] text-white flex items-center justify-center">
+      <div className="h-screen bg-[#0A0A0A] text-white flex items-center justify-center">
         <div className="text-center">
           <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-primary mx-auto mb-4" />
           <p className="text-sm text-white/60">Loading invite...</p>
@@ -153,14 +153,14 @@ export function ClientAccept() {
 
   if (error && !invite) {
     return (
-      <div className="h-screen bg-[#041E1D] text-white flex items-center justify-center">
+      <div className="h-screen bg-[#0A0A0A] text-white flex items-center justify-center">
         <div className="text-center max-w-md">
           <Icon icon="solar:danger-triangle-bold-duotone" className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">Invalid Invite</h1>
           <p className="text-white/60 mb-6">{error}</p>
           <button
             onClick={() => navigate('/login')}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-[#0B7A76] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-lg hover:bg-[#B8972F] transition-colors"
           >
             Go to Sign In
           </button>
@@ -171,7 +171,7 @@ export function ClientAccept() {
 
   if (success) {
     return (
-      <div className="h-screen bg-[#041E1D] text-white flex items-center justify-center">
+      <div className="h-screen bg-[#0A0A0A] text-white flex items-center justify-center">
         <div className="text-center max-w-md">
           <Icon icon="solar:check-circle-bold-duotone" className="w-16 h-16 text-secondary mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">Welcome to {tenantName}!</h1>
@@ -190,7 +190,7 @@ export function ClientAccept() {
   const project = projects.find(p => p.id === invite?.project_id);
 
   return (
-    <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 hero-gradient-bg">
         <div className="energy-blob energy-blob-1" />
@@ -274,7 +274,7 @@ export function ClientAccept() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>

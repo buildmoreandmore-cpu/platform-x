@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0D918C;
-  --color-secondary: #37BB26;
-  --color-bg: #0B1120;
-  --color-card: #121C35;
-  --color-hover: #1A2544;
-  --color-input: #0F1829;
-  --color-border: #1E2A45;
-  --color-border-light: #2A3A5C;
-  --color-text-main: #CBD2DF;
-  --color-text-muted: #7A8BA8;
-  --color-text-heading: #FFFFFF;
-  --color-accent: #2563EB;
-  --color-green: #37BB26;
+  --color-primary: #C9A84C;
+  --color-secondary: #A68B3A;
+  --color-bg: #0A0A0A;
+  --color-card: #111111;
+  --color-hover: #1A1A1A;
+  --color-input: #0E0E0E;
+  --color-border: #222222;
+  --color-border-light: #333333;
+  --color-text-main: #D4D4D4;
+  --color-text-muted: #888888;
+  --color-text-heading: #F5F5F0;
+  --color-accent: #C9A84C;
+  --color-green: #4ADE80;
   --color-amber: #F59E0B;
   --color-red: #EF4444;
   --color-purple: #8B5CF6;
   --color-cyan: #06B6D4;
-  --color-sidebar: #080D1A;
+  --color-sidebar: #070707;
 }
 
 body {
@@ -322,10 +322,10 @@ body {
 
 /* Hero background gradient */
 .hero-gradient-bg {
-  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(13, 145, 140, 0.12) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(13, 145, 140, 0.08) 0%, transparent 50%),
-              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(13, 145, 140, 0.06) 0%, transparent 40%),
-              #041E1D;
+  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(201, 168, 76, 0.05) 0%, transparent 50%),
+              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(201, 168, 76, 0.04) 0%, transparent 40%),
+              #0A0A0A;
 }
 
 /* Energy blobs — slow floating organic shapes */
@@ -342,7 +342,7 @@ body {
   height: 600px;
   top: -15%;
   left: -5%;
-  background: radial-gradient(circle, rgba(13, 145, 140, 0.18) 0%, rgba(13, 145, 140, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.1) 0%, rgba(201, 168, 76, 0.02) 50%, transparent 70%);
   animation: blobFloat1 18s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -351,7 +351,7 @@ body {
   height: 500px;
   bottom: 5%;
   right: -8%;
-  background: radial-gradient(circle, rgba(13, 145, 140, 0.14) 0%, rgba(13, 145, 140, 0.03) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, rgba(201, 168, 76, 0.02) 50%, transparent 70%);
   animation: blobFloat2 22s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -360,7 +360,7 @@ body {
   height: 400px;
   top: 40%;
   left: 35%;
-  background: radial-gradient(circle, rgba(13, 145, 140, 0.04) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
   animation: blobFloat3 15s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -420,29 +420,29 @@ body {
   0% {
     opacity: 0;
     transform: translateY(12px);
-    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0.8);
+    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0.8);
   }
   60% {
     opacity: 1;
     transform: translateY(0);
-    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0.6);
+    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0.6);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    box-shadow: inset 3px 0 0 0 rgba(13, 145, 140, 0);
+    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0);
   }
 }
 
 /* Drop zone dashed border pulse on drag-over */
 @keyframes dropZonePulse {
   0%, 100% {
-    border-color: rgba(13, 145, 140, 0.4);
-    box-shadow: 0 0 0 0 rgba(13, 145, 140, 0);
+    border-color: rgba(201, 168, 76, 0.4);
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
   }
   50% {
-    border-color: rgba(13, 145, 140, 0.8);
-    box-shadow: 0 0 16px 2px rgba(13, 145, 140, 0.15);
+    border-color: rgba(201, 168, 76, 0.8);
+    box-shadow: 0 0 16px 2px rgba(201, 168, 76, 0.15);
   }
 }
 

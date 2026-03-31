@@ -191,7 +191,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               </button>
               <button
                 onClick={() => setShowManualEntry(true)}
-                className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66]"
+                className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A]"
               >
                 <Plus className="w-4 h-4" />
                 Add Manual Entry
@@ -585,7 +585,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-semibold text-white">5-Year Capital Outlook</h2>
-                <button onClick={() => { addToast('Capital plan report generation coming soon.', 'info'); }} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">
+                <button onClick={() => { addToast('Capital plan report generation coming soon.', 'info'); }} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">
                   <FileText className="w-4 h-4" />
                   Generate Capital Plan Report
                 </button>
@@ -884,7 +884,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   setManualBill({ month: '', year: new Date().getFullYear().toString(), electricKwh: '', electricCost: '', gasTherms: '', gasCost: '', peakKw: '' });
                   setShowManualEntry(false);
                 }}
-                className="px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+                className="px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
               >
                 Add Bill
               </button>

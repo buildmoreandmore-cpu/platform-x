@@ -60,7 +60,7 @@ export function EditReasonModal({ field, oldValue, newValue, onConfirm, onCancel
             disabled={!isValid}
             className={`px-4 py-2 text-sm font-medium rounded-lg border border-transparent transition-colors ${
               isValid
-                ? 'bg-[#0B7A76] text-white hover:bg-[#096A66]'
+                ? 'bg-[#B8972F] text-[#0A0A0A] hover:bg-[#A68B3A]'
                 : 'bg-[#1E2A45] text-[#5A6B88] cursor-not-allowed'
             }`}
           >

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useStore } from '@/store';
 import { supabase } from '@/lib/supabase';
-import { TenantLogo } from '@/components/TenantLogo';
 import { useTenantName } from '@/hooks/useTenantName';
 
 export function Login() {
@@ -23,16 +22,13 @@ export function Login() {
     setError('');
     setLoading(true);
 
-    // Small delay for UX
     await new Promise(r => setTimeout(r, 400));
 
     const success = await login(email.trim().toLowerCase(), password);
     if (success) {
-      // Check if the user is a client or engineer and redirect accordingly
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          // Try to get profile to determine role
           const { data: profile } = await supabase
             .from('profiles')
             .select('default_role')
@@ -48,7 +44,6 @@ export function Login() {
           navigate(redirect, { replace: true });
         }
       } catch (err) {
-        // If profile check fails, just use default redirect
         navigate(redirect, { replace: true });
       }
     } else {
@@ -58,8 +53,8 @@ export function Login() {
   };
 
   return (
-    <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
-      {/* Animated background */}
+    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col overflow-hidden">
+      {/* Subtle background */}
       <div className="absolute inset-0 hero-gradient-bg">
         <div className="energy-blob energy-blob-1" />
         <div className="energy-blob energy-blob-2" />
@@ -71,42 +66,41 @@ export function Login() {
       {/* Center content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         <div className="relative mb-6">
-          <div className="absolute inset-0 m-auto w-24 h-24 rounded-full bg-primary/20" style={{ animation: 'heroPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both' }} />
-          <TenantLogo className="relative w-24 h-24" />
+          <img src="/logo-icon.svg" alt="Vantage" className="w-20 h-20 mx-auto" />
         </div>
 
-        <h1 className="text-2xl tracking-tight mb-1" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-          <span className="text-white font-extrabold">{name}</span>
+        <h1 className="text-2xl tracking-tight mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <span className="text-white font-bold">{name}</span>
         </h1>
-        <p className="text-sm text-white/40 mb-8">Sign in to continue</p>
+        <p className="text-sm text-[#888888] mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sign in to continue</p>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
           <div>
-            <label className="block text-xs text-white/50 mb-1.5 ml-1">Email</label>
+            <label className="block text-xs text-[#888888] mb-1.5 ml-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>Email</label>
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@company.com"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
+              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#C9A84C]/50 focus:ring-1 focus:ring-[#C9A84C]/20 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-xs text-white/50 mb-1.5 ml-1">Password</label>
+            <label className="block text-xs text-[#888888] mb-1.5 ml-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>Password</label>
             <input
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Enter password"
               required
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
+              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#C9A84C]/50 focus:ring-1 focus:ring-[#C9A84C]/20 transition-colors"
             />
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/20 rounded-lg">
+            <div className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/20">
               <Icon icon="solar:danger-triangle-bold-duotone" className="w-4 h-4 text-red-400 flex-shrink-0" />
               <span className="text-xs text-red-300">{error}</span>
             </div>
@@ -115,7 +109,8 @@ export function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-[#C9A84C] text-[#0A0A0A] text-sm font-semibold hover:bg-[#D4B85E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             {loading ? (
               <>
@@ -134,23 +129,25 @@ export function Login() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/forgot-password')}
-            className="text-xs text-secondary hover:text-primary transition-colors"
+            className="text-xs text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             Forgot password?
           </button>
         </div>
 
-        <button
-          onClick={() => navigate('/')}
-          className="mt-6 text-xs text-white/30 hover:text-white/50 transition-colors"
+        <Link
+          to="/portal"
+          className="mt-6 text-xs text-[#888888]/50 hover:text-[#888888] transition-colors"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
-          Back to portal selection
-        </button>
+          Back to portal
+        </Link>
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 py-6 text-center">
-        <div className="text-xs text-white/20">
+      <footer className="relative z-10 py-6 text-center border-t border-[#222222]">
+        <div className="text-xs text-[#888888]/30" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           &copy; {new Date().getFullYear()} {company}
         </div>
       </footer>

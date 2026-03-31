@@ -258,7 +258,7 @@ function ProfileTab({
           <button
             type="submit"
             disabled={pwLoading}
-            className="px-4 py-2 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-primary hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
           >
             {pwLoading ? 'Updating...' : 'Update Password'}
           </button>
@@ -840,7 +840,7 @@ function BrandingTab() {
       <button
         onClick={handleSave}
         disabled={saving || !name.trim()}
-        className="px-6 py-2.5 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+        className="px-6 py-2.5 bg-primary hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
       >
         {saving ? (
           <>

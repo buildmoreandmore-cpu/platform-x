@@ -291,7 +291,7 @@ function OnePageSummary({ project, risks }: { project: any, risks: any[] }) {
       {/* Clean Executive Summary Card */}
       <div className="bg-white rounded-xl shadow-2xl overflow-hidden text-black max-w-3xl mx-auto">
         {/* Header bar */}
-        <div className="bg-[#096A66] text-white px-8 py-5">
+        <div className="bg-[#A68B3A] text-[#0A0A0A] px-8 py-5">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-widest text-secondary">One-Page Executive Summary</p>
@@ -568,7 +568,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                       addActivity({ user: currentUser?.name || 'System', description: `generated ${reportType} draft for ${selectedProject.name}` });
                       setActiveTab('history');
                     }}
-                    className="btn-primary w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66] disabled:opacity-40"
+                    className="btn-primary w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
                   >
                     <FileText className="w-4 h-4" />
                     Generate Draft
@@ -613,7 +613,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                   </div>
                   <div className="flex-1 p-8 bg-[#0B1120] overflow-y-auto">
                     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl min-h-[700px] p-12">
-                      <div className="border-b-4 border-[#0B7A76] pb-6 mb-8">
+                      <div className="border-b-4 border-[#B8972F] pb-6 mb-8">
                         <h1 className="text-3xl font-bold text-neutral-900 mb-2">{selectedProject?.name}</h1>
                         <h2 className="text-xl text-neutral-500">{reportType}</h2>
                         <p className="text-sm text-neutral-500 mt-4">Prepared by: {company}</p>
@@ -867,7 +867,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                               />
                               <button
                                 onClick={() => handleAddComment(report.id)}
-                                className="btn-primary p-2 bg-[#0B7A76] rounded-lg text-white hover:bg-[#096A66]"
+                                className="btn-primary p-2 bg-[#B8972F] rounded-lg text-white hover:bg-[#A68B3A]"
                               >
                                 <Send className="w-4 h-4" />
                               </button>
@@ -913,7 +913,7 @@ export function Reporting({ projectId }: { projectId?: string }) {
                           className={cn(
                             "btn-primary px-4 py-2 text-sm font-medium rounded-lg border border-transparent transition-all duration-150",
                             progress === 100
-                              ? "bg-[#0B7A76] text-white hover:bg-[#096A66]"
+                              ? "bg-[#B8972F] text-[#0A0A0A] hover:bg-[#A68B3A]"
                               : "bg-[#1E2A45] text-[#5A6B88] cursor-not-allowed border-[#1E2A45]"
                           )}
                           title={progress < 100 ? "Complete all QA items to approve" : "Approve and lock report"}

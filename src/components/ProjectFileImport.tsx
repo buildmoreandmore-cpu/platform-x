@@ -518,7 +518,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
               <div className="flex gap-3">
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-[#096A66] transition-colors"
+                  className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A] transition-colors"
                 >
                   Done
                 </button>

@@ -105,7 +105,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                 <Layers className="w-4 h-4" />
                 Import Workbook
               </button>
-              <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-emerald-700 transition-colors">
+              <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors">
                 <Plus className="w-4 h-4" />
                 Add ECM
               </button>
@@ -432,7 +432,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowEcmModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!ecmForm.number) e.ecmNum = 'ECM number is required'; if (!ecmForm.description) e.ecmDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addECM({ ...ecmForm, cost: Number(ecmForm.cost) || 0, savings: Number(ecmForm.savings) || 0, life: 15, projectId: selectedProjectId }); setEcmForm({ number: '', description: '', category: 'HVAC', cost: '', savings: '' }); setShowEcmModal(false); setErrors({}); addToast('ECM added'); }} className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700">Add</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!ecmForm.number) e.ecmNum = 'ECM number is required'; if (!ecmForm.description) e.ecmDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addECM({ ...ecmForm, cost: Number(ecmForm.cost) || 0, savings: Number(ecmForm.savings) || 0, life: 15, projectId: selectedProjectId }); setEcmForm({ number: '', description: '', category: 'HVAC', cost: '', savings: '' }); setShowEcmModal(false); setErrors({}); addToast('ECM added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ export function ForgotPassword() {
 
   if (success) {
     return (
-      <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
+      <div className="h-screen bg-[#0A0A0A] text-white flex flex-col overflow-hidden">
         <div className="absolute inset-0 hero-gradient-bg">
           <div className="energy-blob energy-blob-1" />
           <div className="energy-blob energy-blob-2" />
@@ -63,7 +63,7 @@ export function ForgotPassword() {
 
             <button
               onClick={() => navigate('/login')}
-              className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] transition-colors flex items-center justify-center gap-2"
             >
               <Icon icon="solar:arrow-left-bold" className="w-4 h-4" />
               Back to Sign In
@@ -75,7 +75,7 @@ export function ForgotPassword() {
   }
 
   return (
-    <div className="h-screen bg-[#041E1D] text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col overflow-hidden">
       <div className="absolute inset-0 hero-gradient-bg">
         <div className="energy-blob energy-blob-1" />
         <div className="energy-blob energy-blob-2" />
@@ -118,7 +118,7 @@ export function ForgotPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

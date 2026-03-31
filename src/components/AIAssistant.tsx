@@ -385,7 +385,7 @@ RULES:
             className={cn(
               "p-1.5 rounded-lg transition-colors",
               input.trim() && !isLoading
-                ? "bg-primary text-white hover:bg-primary"
+                ? "bg-primary text-[#0A0A0A] hover:bg-primary"
                 : "text-[#5A6B88]"
             )}
           >

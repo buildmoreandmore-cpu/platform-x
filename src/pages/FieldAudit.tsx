@@ -202,7 +202,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     if (fileInput) fileInput.click();
                   }, 100);
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#096A66] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors"
               >
                 <Camera className="w-4 h-4" />
                 New Capture
@@ -274,7 +274,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     <Filter className="w-4 h-4" />
                     Filter
                     {activeFilterCount > 0 && (
-                      <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold">{activeFilterCount}</span>
+                      <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary text-[#0A0A0A] text-[10px] font-bold">{activeFilterCount}</span>
                     )}
                   </button>
                   {showFilterPanel && (
@@ -322,7 +322,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                           ))}
                         </div>
                       </div>
-                      <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#0B7A76] text-white text-xs font-medium rounded-lg hover:bg-[#096A66] transition-colors">Apply</button>
+                      <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#B8972F] text-[#0A0A0A] text-xs font-medium rounded-lg hover:bg-[#A68B3A] transition-colors">Apply</button>
                     </div>
                   )}
                 </div>
@@ -496,7 +496,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   <button
                     onClick={runClaudeExtraction}
                     disabled={extracting}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-[#0B7A76] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
                   >
                     {extracting ? (
                       <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Extracting...</>

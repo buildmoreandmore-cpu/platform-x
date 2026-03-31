@@ -77,7 +77,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
               ))}
             </div>
           </div>
-          <button onClick={() => setShowUploadModal(true)} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#0B7A76] rounded-lg text-sm font-medium text-white hover:bg-[#096A66]">
+          <button onClick={() => setShowUploadModal(true)} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A]">
             <Upload className="w-4 h-4" />
             Upload Drawing
           </button>
@@ -224,7 +224,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
             </select>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { if (!drawingForm.filename) { setErrors({ drwFile: 'Filename is required' }); return; } addDrawing({ ...drawingForm, projectId, version: 'v1.0', date: new Date().toISOString().split('T')[0], by: 'Current User', annotations: 0 }); setDrawingForm({ filename: '', type: 'Floor Plan', buildingId: '' }); setShowUploadModal(false); setErrors({}); }} className="px-4 py-2 bg-[#0B7A76] text-white text-sm font-medium rounded-lg hover:bg-[#096A66]">Upload</button>
+              <button onClick={() => { if (!drawingForm.filename) { setErrors({ drwFile: 'Filename is required' }); return; } addDrawing({ ...drawingForm, projectId, version: 'v1.0', date: new Date().toISOString().split('T')[0], by: 'Current User', annotations: 0 }); setDrawingForm({ filename: '', type: 'Floor Plan', buildingId: '' }); setShowUploadModal(false); setErrors({}); }} className="px-4 py-2 bg-[#B8972F] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Upload</button>
             </div>
           </div>
         </div>
