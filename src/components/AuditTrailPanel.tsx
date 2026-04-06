@@ -23,11 +23,11 @@ export function AuditTrailPanel({ entityType, entityId, defaultOpen = false }: A
     <div className="mt-3">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 text-xs font-medium text-[#7A8BA8] hover:text-white transition-colors"
+        className="flex items-center gap-1.5 text-xs font-medium text-[#888888] hover:text-white transition-colors"
       >
         <History className="w-3 h-3" />
         <span>Edit History</span>
-        <span className="bg-[#1E2A45] text-[#7A8BA8] px-1.5 py-0.5 rounded border border-[#2A3A5C] font-mono text-[10px]">
+        <span className="bg-[#222222] text-[#888888] px-1.5 py-0.5 rounded border border-[#2A3A5C] font-mono text-[10px]">
           {entries.length}
         </span>
         <ChevronRight className={cn("w-3 h-3 transition-transform duration-200", isOpen && "rotate-90")} />
@@ -36,20 +36,20 @@ export function AuditTrailPanel({ entityType, entityId, defaultOpen = false }: A
       {isOpen && (
         <div className="mt-2 space-y-2 animate-slide-down">
           {entries.map(entry => (
-            <div key={entry.id} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-3 text-xs">
+            <div key={entry.id} className="bg-[#0F1829] border border-[#222222] rounded-lg p-3 text-xs">
               <div className="flex items-center justify-between mb-1">
                 <span className="font-medium text-white">{entry.userName}</span>
-                <span className="text-[#5A6B88] font-mono">
+                <span className="text-[#666666] font-mono">
                   {new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
               <p className="text-[#9AA5B8]">
-                Changed <span className="font-medium text-[#CBD2DF]">{entry.field}</span>{' '}
+                Changed <span className="font-medium text-[#D4D4D4]">{entry.field}</span>{' '}
                 from <span className="font-mono text-red-400">{entry.oldValue || '(empty)'}</span>{' '}
                 to <span className="font-mono text-secondary">{entry.newValue || '(empty)'}</span>
               </p>
               {entry.reason && (
-                <p className="text-[#5A6B88] italic mt-1">"{entry.reason}"</p>
+                <p className="text-[#666666] italic mt-1">"{entry.reason}"</p>
               )}
             </div>
           ))}

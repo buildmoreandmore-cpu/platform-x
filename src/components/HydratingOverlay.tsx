@@ -6,7 +6,7 @@ interface HydratingOverlayProps {
 
 export function HydratingOverlay({ message = 'Loading data...' }: HydratingOverlayProps) {
   return (
-    <div className="absolute inset-0 bg-[#0B1120]/95 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="absolute inset-0 bg-[#0A0A0A]/95 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="text-center space-y-4">
         <div className="relative">
           {/* Animated loading rings */}
@@ -40,12 +40,12 @@ export function LoadingSkeleton({ rows = 5, className = '' }: LoadingSkeletonPro
     <div className={`space-y-3 animate-pulse ${className}`}>
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-[#1E2A45] rounded-lg"></div>
+          <div className="w-10 h-10 bg-[#222222] rounded-lg"></div>
           <div className="flex-1 space-y-2">
-            <div className="h-4 bg-[#1E2A45] rounded w-3/4"></div>
-            <div className="h-3 bg-[#121C35] rounded w-1/2"></div>
+            <div className="h-4 bg-[#222222] rounded w-3/4"></div>
+            <div className="h-3 bg-[#1A1A1A] rounded w-1/2"></div>
           </div>
-          <div className="w-16 h-6 bg-[#1E2A45] rounded"></div>
+          <div className="w-16 h-6 bg-[#222222] rounded"></div>
         </div>
       ))}
     </div>

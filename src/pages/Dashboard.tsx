@@ -189,7 +189,7 @@ export function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-white tracking-tight">Portfolio Dashboard</h1>
-          <p className="text-xs text-[#5A6B88] mt-0.5">
+          <p className="text-xs text-[#666666] mt-0.5">
             {mode === 'Full' ? 'Executive overview — all active ESPC projects' :
              mode === 'Audit' ? 'Energy audit operations overview' :
              mode === 'OR' ? "Owner's representative oversight" :
@@ -201,7 +201,7 @@ export function Dashboard() {
             onClick={() => { setCompareMode(!compareMode); setCompareIds([]); }}
             className={cn(
               "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
-              compareMode ? "bg-primary text-[#0A0A0A]" : "bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
+              compareMode ? "bg-primary text-[#0A0A0A]" : "bg-[#222222] border border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]"
             )}
           >
             <GitCompare className="w-3.5 h-3.5" />
@@ -285,16 +285,16 @@ export function Dashboard() {
           { label: 'Carbon Avoided', value: '—', icon: Leaf, color: 'text-purple-400', trend: 'tCO2e', trendUp: true },
           { label: 'Open Tasks', value: openTasks, icon: Zap, color: 'text-cyan-400', trend: null, trendUp: true },
         ].map((kpi, i) => (
-          <div key={kpi.label} className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${i * 0.04}s` }}>
+          <div key={kpi.label} className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${i * 0.04}s` }}>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] font-medium text-[#5A6B88] uppercase tracking-wider">{kpi.label}</span>
+              <span className="text-[10px] font-medium text-[#666666] uppercase tracking-wider">{kpi.label}</span>
               <kpi.icon className={cn("w-3.5 h-3.5", kpi.color)} />
             </div>
             <p className={cn("text-2xl font-bold tracking-tight", kpi.color === 'text-red-400' ? 'text-red-400' : 'text-white')}>{kpi.value}</p>
             {kpi.trend && (
               <div className="flex items-center gap-1 mt-0.5">
                 {kpi.trendUp ? <TrendingUp className="w-3 h-3 text-secondary" /> : <TrendingDown className="w-3 h-3 text-amber-500" />}
-                <span className="text-[10px] text-[#5A6B88]">{kpi.trend}</span>
+                <span className="text-[10px] text-[#666666]">{kpi.trend}</span>
               </div>
             )}
           </div>
@@ -309,10 +309,10 @@ export function Dashboard() {
           { label: 'Reports Due', value: reportsDue, sub: 'Draft or in review', color: reportsDue > 0 ? 'text-amber-400' : 'text-secondary' },
           { label: 'Obligations Coming Due', value: contractObligations.filter(c => c.status === 'Coming Due').length, sub: 'Next 90 days', color: 'text-cyan-400' },
         ].map((kpi, i) => (
-          <div key={kpi.label} className="bg-[#121C35] border border-[#1E2A45] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${(i + 6) * 0.04}s` }}>
-            <span className="text-[10px] font-medium text-[#5A6B88] uppercase tracking-wider">{kpi.label}</span>
+          <div key={kpi.label} className="bg-[#1A1A1A] border border-[#222222] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${(i + 6) * 0.04}s` }}>
+            <span className="text-[10px] font-medium text-[#666666] uppercase tracking-wider">{kpi.label}</span>
             <p className={cn("text-2xl font-bold tracking-tight mt-0.5", kpi.color)}>{kpi.value}</p>
-            <span className="text-[10px] text-[#5A6B88]">{kpi.sub}</span>
+            <span className="text-[10px] text-[#666666]">{kpi.sub}</span>
           </div>
         ))}
       </div>
@@ -321,13 +321,13 @@ export function Dashboard() {
       {modeKpis && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {modeKpis.map((kpi, i) => (
-            <div key={kpi.label} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${(i + 10) * 0.04}s` }}>
+            <div key={kpi.label} className="bg-[#0F1829] border border-[#222222] rounded-lg px-4 py-3 animate-stat-pop" style={{ animationDelay: `${(i + 10) * 0.04}s` }}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-medium text-[#5A6B88] uppercase tracking-wider">{kpi.label}</span>
+                <span className="text-[10px] font-medium text-[#666666] uppercase tracking-wider">{kpi.label}</span>
                 <kpi.icon className={cn("w-3.5 h-3.5", kpi.color)} />
               </div>
               <p className="text-xl font-bold text-white tracking-tight">{kpi.value}</p>
-              {kpi.trend && <span className="text-[10px] text-[#5A6B88]">{kpi.trend}</span>}
+              {kpi.trend && <span className="text-[10px] text-[#666666]">{kpi.trend}</span>}
             </div>
           ))}
         </div>
@@ -339,7 +339,7 @@ export function Dashboard() {
           <p className="text-xs text-primary">
             <span className="font-semibold">Compare mode:</span> Select {2 - compareIds.length} project{compareIds.length === 0 ? 's' : ''} from the pipeline below
           </p>
-          <button onClick={() => { setCompareMode(false); setCompareIds([]); }} className="text-[#5A6B88] hover:text-white"><X className="w-3.5 h-3.5" /></button>
+          <button onClick={() => { setCompareMode(false); setCompareIds([]); }} className="text-[#666666] hover:text-white"><X className="w-3.5 h-3.5" /></button>
         </div>
       )}
 
@@ -371,26 +371,26 @@ export function Dashboard() {
         ];
 
         return (
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-[#222222] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Project Comparison</h3>
-              <button onClick={() => { setCompareIds([]); setCompareMode(false); }} className="text-[#5A6B88] hover:text-white transition-colors">
+              <button onClick={() => { setCompareIds([]); setCompareMode(false); }} className="text-[#666666] hover:text-white transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="bg-[#0F1829] border-b border-[#222222]">
                   <tr>
-                    <th className="px-5 py-3 text-left text-[10px] font-medium text-[#5A6B88] uppercase tracking-wider w-1/3">Metric</th>
+                    <th className="px-5 py-3 text-left text-[10px] font-medium text-[#666666] uppercase tracking-wider w-1/3">Metric</th>
                     <th className="px-5 py-3 text-center text-xs font-semibold text-white w-1/3">{a.name}</th>
                     <th className="px-5 py-3 text-center text-xs font-semibold text-white w-1/3">{b.name}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {rows.map(row => (
                     <tr key={row.label} className="hover:bg-[#1A2544] transition-colors">
-                      <td className="px-5 py-3 text-xs font-medium text-[#7A8BA8]">{row.label}</td>
+                      <td className="px-5 py-3 text-xs font-medium text-[#888888]">{row.label}</td>
                       <td className="px-5 py-3 text-center text-sm font-semibold text-white">{row.a}</td>
                       <td className="px-5 py-3 text-center text-sm font-semibold text-white">{row.b}</td>
                     </tr>
@@ -416,7 +416,7 @@ export function Dashboard() {
                   "w-1.5 h-1.5 rounded-full flex-shrink-0",
                   alert.severity === 'red' ? 'bg-red-500' : 'bg-amber-500'
                 )} />
-                <span className="text-xs font-medium text-[#CBD2DF] flex-1">{alert.project}: {alert.text}</span>
+                <span className="text-xs font-medium text-[#D4D4D4] flex-1">{alert.project}: {alert.text}</span>
               </div>
             ))}
           </div>
@@ -425,22 +425,22 @@ export function Dashboard() {
 
       {/* Data Health — stale module alerts */}
       {staleModules.length > 0 && (
-        <div className="bg-[#121C35] border border-[#1E2A45] rounded-lg overflow-hidden">
-          <div className="px-4 py-2 flex items-center gap-2 border-b border-[#1E2A45]">
+        <div className="bg-[#1A1A1A] border border-[#222222] rounded-lg overflow-hidden">
+          <div className="px-4 py-2 flex items-center gap-2 border-b border-[#222222]">
             <Database className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-wider">Data Health</span>
-            <span className="bg-[#1E2A45] text-[#7A8BA8] px-1.5 py-0.5 rounded border border-[#2A3A5C] font-mono text-[10px]">
+            <span className="bg-[#222222] text-[#888888] px-1.5 py-0.5 rounded border border-[#2A3A5C] font-mono text-[10px]">
               {staleModules.length}
             </span>
           </div>
-          <div className="divide-y divide-[#1E2A45]">
+          <div className="divide-y divide-[#222222]">
             {staleModules.slice(0, 5).map((item, i) => (
               <div key={i} className="px-4 py-2.5 flex items-center gap-3">
                 <div className={cn(
                   "w-1.5 h-1.5 rounded-full flex-shrink-0",
                   item.severity === 'red' ? 'bg-red-500' : 'bg-amber-500'
                 )} />
-                <span className="text-xs text-[#CBD2DF] flex-1">
+                <span className="text-xs text-[#D4D4D4] flex-1">
                   <span className="font-medium text-white">{item.projectName}</span>
                   {' — '}{item.module} data is {item.daysStale} days old
                 </span>
@@ -459,16 +459,16 @@ export function Dashboard() {
       {/* Main content grid: Pipeline + Actions + Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Project Pipeline — 7 cols */}
-        <div className="lg:col-span-7 bg-[#121C35] border border-[#1E2A45] rounded-lg">
-          <div className="px-5 py-4 border-b border-[#1E2A45] flex items-center justify-between">
+        <div className="lg:col-span-7 bg-[#1A1A1A] border border-[#222222] rounded-lg">
+          <div className="px-5 py-4 border-b border-[#222222] flex items-center justify-between">
             <h3 className="text-sm font-semibold text-white">Project Pipeline</h3>
             <button onClick={() => navigate('/app/projects')} className="text-[10px] text-secondary hover:text-secondary font-medium flex items-center gap-1">
               View all <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>
-          <div className="divide-y divide-[#1E2A45]">
+          <div className="divide-y divide-[#222222]">
             {projects.length === 0 && (
-              <div className="px-5 py-8 text-center text-xs text-[#5A6B88]">No projects yet. Import project data to get started.</div>
+              <div className="px-5 py-8 text-center text-xs text-[#666666]">No projects yet. Import project data to get started.</div>
             )}
             {projects.map(project => {
               const phaseIdx = PHASE_ORDER.indexOf(project.phase as any);
@@ -499,11 +499,11 @@ export function Dashboard() {
                         <h4 className="text-sm font-semibold text-white truncate">{project.name}</h4>
                         <ChevronRight className="w-3.5 h-3.5 text-[#3A4B68] group-hover:text-secondary transition-colors flex-shrink-0" />
                       </div>
-                      <p className="text-[11px] text-[#5A6B88] mt-0.5">{project.esco} • {project.engineer}</p>
+                      <p className="text-[11px] text-[#666666] mt-0.5">{project.esco} • {project.engineer}</p>
                     </div>
                     <div className="flex items-center gap-3 flex-shrink-0">
                       {project.value > 0 && (
-                        <span className="text-xs font-semibold text-[#CBD2DF] tabular-nums">${(project.value / 1000000).toFixed(1)}M</span>
+                        <span className="text-xs font-semibold text-[#D4D4D4] tabular-nums">${(project.value / 1000000).toFixed(1)}M</span>
                       )}
                       <span className={cn(
                         "px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider",
@@ -528,14 +528,14 @@ export function Dashboard() {
                   {/* Progress bar + savings */}
                   <div className="flex items-center gap-4">
                     <div className="flex-1">
-                      <div className="h-1.5 bg-[#1E2A45] rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-[#222222] rounded-full overflow-hidden">
                         <div
                           className="h-full bg-primary/60 rounded-full progress-bar-fill"
                           style={{ width: `${progressPct}%` }}
                         />
                       </div>
                     </div>
-                    <div className="flex items-center gap-4 text-[10px] text-[#5A6B88] flex-shrink-0">
+                    <div className="flex items-center gap-4 text-[10px] text-[#666666] flex-shrink-0">
                       {yearlyGuarantee > 0 && (
                         <span className="tabular-nums">${(yearlyGuarantee / 1000).toFixed(0)}K/yr guaranteed</span>
                       )}
@@ -551,13 +551,13 @@ export function Dashboard() {
         {/* Right column: Actions + Activity */}
         <div className="lg:col-span-5 space-y-5">
           {/* Action Required panel */}
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-lg">
-            <div className="px-5 py-3 border-b border-[#1E2A45]">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-lg">
+            <div className="px-5 py-3 border-b border-[#222222]">
               <h3 className="text-sm font-semibold text-white">Action Required</h3>
             </div>
-            <div className="divide-y divide-[#1E2A45]">
+            <div className="divide-y divide-[#222222]">
               {actionItems.length === 0 ? (
-                <div className="px-5 py-6 text-center text-xs text-[#5A6B88]">No pending actions</div>
+                <div className="px-5 py-6 text-center text-xs text-[#666666]">No pending actions</div>
               ) : (
                 actionItems.map(item => (
                   <div key={item.id} className="px-5 py-3 flex items-start gap-3">
@@ -579,7 +579,7 @@ export function Dashboard() {
                           {item.action}
                         </span>
                       </div>
-                      <p className="text-[10px] text-[#5A6B88] mt-0.5">{item.project} • {item.assignedTo}</p>
+                      <p className="text-[10px] text-[#666666] mt-0.5">{item.project} • {item.assignedTo}</p>
                     </div>
                   </div>
                 ))
@@ -588,13 +588,13 @@ export function Dashboard() {
           </div>
 
           {/* Team Workload — Next 4 Weeks */}
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-lg">
-            <div className="px-5 py-3 border-b border-[#1E2A45]">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-lg">
+            <div className="px-5 py-3 border-b border-[#222222]">
               <h3 className="text-sm font-semibold text-white">Team Workload — Next 4 Weeks</h3>
             </div>
-            <div className="divide-y divide-[#1E2A45]">
+            <div className="divide-y divide-[#222222]">
               {workloadByPerson.length === 0 ? (
-                <div className="px-5 py-6 text-center text-xs text-[#5A6B88]">All caught up</div>
+                <div className="px-5 py-6 text-center text-xs text-[#666666]">All caught up</div>
               ) : (
                 workloadByPerson.map(([person, counts]) => (
                   <div key={person} className="px-5 py-3 flex items-center justify-between gap-3">
@@ -605,7 +605,7 @@ export function Dashboard() {
                       <span className="text-xs font-medium text-white truncate">{person}</span>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-xs text-[#7A8BA8] tabular-nums">{counts.total} tasks</span>
+                      <span className="text-xs text-[#888888] tabular-nums">{counts.total} tasks</span>
                       {counts.high > 0 && (
                         <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
                           {counts.high} High
@@ -624,13 +624,13 @@ export function Dashboard() {
           </div>
 
           {/* Recent Activity Feed */}
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-lg">
-            <div className="px-5 py-3 border-b border-[#1E2A45]">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-lg">
+            <div className="px-5 py-3 border-b border-[#222222]">
               <h3 className="text-sm font-semibold text-white">Recent Activity</h3>
             </div>
-            <div className="divide-y divide-[#1E2A45]">
+            <div className="divide-y divide-[#222222]">
               {feedItems.length === 0 ? (
-                <div className="px-5 py-6 text-center text-xs text-[#5A6B88]">No recent activity</div>
+                <div className="px-5 py-6 text-center text-xs text-[#666666]">No recent activity</div>
               ) : feedItems.map(item => (
                 <div key={item.id} className="px-5 py-3 flex items-start gap-3">
                   <div className={cn(
@@ -641,11 +641,11 @@ export function Dashboard() {
                     {item.user === 'System' ? <CircleDot className="w-3 h-3" /> : item.user.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-[#CBD2DF]">
+                    <p className="text-xs text-[#D4D4D4]">
                       <span className="font-medium text-white">{item.user}</span>{' '}
                       {item.description}
                     </p>
-                    <span className="text-[10px] text-[#5A6B88]">{item.timeAgo}</span>
+                    <span className="text-[10px] text-[#666666]">{item.timeAgo}</span>
                   </div>
                 </div>
               ))}

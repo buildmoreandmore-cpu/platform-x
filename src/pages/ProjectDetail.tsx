@@ -24,7 +24,7 @@ export function ProjectDetail() {
   const [activeTab, setActiveTab] = useState<'audit' | 'drawings' | 'energy' | 'financial' | 'governance' | 'construction' | 'mv' | 'timeline' | 'clients'>('audit');
 
   if (!project) {
-    return <div className="p-8 text-[#7A8BA8]">Project not found</div>;
+    return <div className="p-8 text-[#888888]">Project not found</div>;
   }
 
   const tabs = [
@@ -40,11 +40,11 @@ export function ProjectDetail() {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-[#0B1120]">
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
+    <div className="flex flex-col h-full bg-[#0A0A0A]">
+      <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-8 py-6">
         <button 
           onClick={() => navigate('/app/projects')}
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#7A8BA8] hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#888888] hover:text-white transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Projects
@@ -54,7 +54,7 @@ export function ProjectDetail() {
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">{project.name}</h1>
             <div className="flex items-center gap-4 mt-1">
-              <p className="text-sm text-[#7A8BA8]">{org?.name} • {project.esco} • ${(project.value / 1000000).toFixed(1)}M</p>
+              <p className="text-sm text-[#888888]">{org?.name} • {project.esco} • ${(project.value / 1000000).toFixed(1)}M</p>
               <div className="w-32">
                 <CompletenessBar projectId={project.id} />
               </div>
@@ -70,7 +70,7 @@ export function ProjectDetail() {
           </span>
         </div>
 
-        <div className="flex space-x-6 border-b border-[#1E2A45]">
+        <div className="flex space-x-6 border-b border-[#222222]">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -79,7 +79,7 @@ export function ProjectDetail() {
                 "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                 activeTab === tab.id 
                   ? "border-primary text-secondary"
-                  : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                  : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
               <tab.icon className="w-4 h-4" />

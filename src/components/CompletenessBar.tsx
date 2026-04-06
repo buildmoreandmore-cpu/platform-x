@@ -84,15 +84,15 @@ export function CompletenessBar({ projectId, onClick }: CompletenessBarProps) {
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => { onClick?.(); setShowPopover(!showPopover); }}
       >
-        <div className="flex-1 h-1.5 bg-[#1E2A45] rounded-full overflow-hidden min-w-[60px]">
+        <div className="flex-1 h-1.5 bg-[#222222] rounded-full overflow-hidden min-w-[60px]">
           <div className={cn('h-full rounded-full transition-all', color)} style={{ width: `${percentage}%` }} />
         </div>
         <span className={cn('text-[10px] font-mono font-semibold', textColor)}>{percentage}%</span>
       </div>
 
       {showPopover && gaps.length > 0 && (
-        <div className="absolute top-full left-0 mt-2 bg-[#121C35] border border-[#1E2A45] rounded-lg p-3 shadow-xl z-40 min-w-[200px]">
-          <p className="text-[10px] font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Gaps</p>
+        <div className="absolute top-full left-0 mt-2 bg-[#1A1A1A] border border-[#222222] rounded-lg p-3 shadow-xl z-40 min-w-[200px]">
+          <p className="text-[10px] font-medium text-[#888888] uppercase tracking-wider mb-2">Gaps</p>
           <ul className="space-y-1">
             {gaps.map((gap, i) => (
               <li key={i} className="flex items-start gap-1.5 text-xs text-[#9AA5B8]">

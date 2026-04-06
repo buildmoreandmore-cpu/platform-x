@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
 
-export function Services() {
+export function CaseStudies() {
   return <Navigate to="/" replace />;
 }

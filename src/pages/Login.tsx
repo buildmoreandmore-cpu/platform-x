@@ -83,7 +83,7 @@ export function Login() {
               onChange={e => setEmail(e.target.value)}
               placeholder="you@company.com"
               required
-              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#C9A84C]/50 focus:ring-1 focus:ring-[#C9A84C]/20 transition-colors"
+              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#00ff88]/50 focus:ring-1 focus:ring-[#00ff88]/20 transition-colors"
             />
           </div>
 
@@ -95,7 +95,7 @@ export function Login() {
               onChange={e => setPassword(e.target.value)}
               placeholder="Enter password"
               required
-              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#C9A84C]/50 focus:ring-1 focus:ring-[#C9A84C]/20 transition-colors"
+              className="w-full px-4 py-3 bg-[#111111] border border-[#222222] text-sm text-white placeholder:text-[#888888]/40 focus:outline-none focus:border-[#00ff88]/50 focus:ring-1 focus:ring-[#00ff88]/20 transition-colors"
             />
           </div>
 
@@ -109,7 +109,7 @@ export function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#C9A84C] text-[#0A0A0A] text-sm font-semibold hover:bg-[#D4B85E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-[#00ff88] text-[#0A0A0A] text-sm font-semibold hover:bg-[#00cc6a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             {loading ? (
@@ -129,7 +129,7 @@ export function Login() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/forgot-password')}
-            className="text-xs text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors"
+            className="text-xs text-[#00ff88]/70 hover:text-[#00ff88] transition-colors"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             Forgot password?

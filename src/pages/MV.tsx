@@ -40,20 +40,20 @@ export function MV({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">Measurement & Verification</h1>
                 {projectId && <FreshnessBadge module="M&V" projectId={projectId} />}
               </div>
-              <p className="text-sm text-[#7A8BA8] mt-1">Track post-retrofit savings vs guarantee and detect performance drift.</p>
+              <p className="text-sm text-[#888888] mt-1">Track post-retrofit savings vs guarantee and detect performance drift.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-primary focus:border-primary block w-64 p-2.5"
+                className="bg-[#222222] border border-[#2A3A5C] text-[#D4D4D4] text-sm rounded-lg focus:ring-primary focus:border-primary block w-64 p-2.5"
               >
                 <option value="__portfolio__">All Projects (Portfolio)</option>
                 {projects.map(p => (
@@ -112,7 +112,7 @@ export function MV({ projectId }: { projectId?: string }) {
                 <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-red-500/20 text-red-500 text-sm font-medium rounded-lg hover:bg-red-500/30 transition-colors">
                   Acknowledge
                 </button>
-                <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-[#1E2A45] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors">
+                <button onClick={() => setShowDriftAlert(false)} className="px-4 py-2 bg-[#222222] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors">
                   Dismiss Alert
                 </button>
               </div>
@@ -121,15 +121,15 @@ export function MV({ projectId }: { projectId?: string }) {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-            <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Total Guaranteed</h3>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+            <h3 className="text-sm font-medium text-[#888888] uppercase tracking-wider mb-2">Total Guaranteed</h3>
             <div className="flex items-end gap-3">
               <span className="text-2xl md:text-4xl font-bold text-white">${totalGuaranteed.toLocaleString()}</span>
             </div>
           </div>
 
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-            <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Total Achieved</h3>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+            <h3 className="text-sm font-medium text-[#888888] uppercase tracking-wider mb-2">Total Achieved</h3>
             <div className="flex items-end gap-3">
               <span className={`text-2xl md:text-4xl font-bold ${totalCalculated >= totalGuaranteed ? 'text-secondary' : 'text-amber-500'}`}>
                 ${totalCalculated.toLocaleString()}
@@ -137,8 +137,8 @@ export function MV({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-            <h3 className="text-sm font-medium text-[#7A8BA8] uppercase tracking-wider mb-2">Achievement Rate</h3>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+            <h3 className="text-sm font-medium text-[#888888] uppercase tracking-wider mb-2">Achievement Rate</h3>
             <div className="flex items-end gap-3">
               <span className={`text-2xl md:text-4xl font-bold ${achievementRate >= 100 ? 'text-secondary' : 'text-amber-500'}`}>
                 {achievementRate.toFixed(1)}%
@@ -148,7 +148,7 @@ export function MV({ projectId }: { projectId?: string }) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
             <h3 className="text-sm font-semibold text-white mb-6">Savings vs Guarantee (Cumulative)</h3>
             <div className="h-64 flex items-end gap-4">
               {projectMvData.map((data) => {
@@ -177,12 +177,12 @@ export function MV({ projectId }: { projectId?: string }) {
                         </div>
                       </div>
                     </div>
-                    <span className="text-[10px] text-[#7A8BA8] font-mono">Year {data.year}</span>
+                    <span className="text-[10px] text-[#888888] font-mono">Year {data.year}</span>
                   </div>
                 );
               })}
             </div>
-            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-[#7A8BA8]">
+            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-[#888888]">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-[#2A3A5C] rounded-sm"></div>
                 <span>Guaranteed</span>
@@ -198,13 +198,13 @@ export function MV({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45]">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222]">
               <h3 className="text-sm font-semibold text-white">M&V Period Summary</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                   <tr>
                     <th className="px-6 py-4 font-medium">Period</th>
                     <th className="px-6 py-4 font-medium text-right">Guaranteed</th>
@@ -213,7 +213,7 @@ export function MV({ projectId }: { projectId?: string }) {
                     <th className="px-6 py-4 font-medium">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {projectMvData.map((data) => {
                     const variance = data.calculated - data.guaranteed;
                     const isShortfall = variance < 0;
@@ -265,7 +265,7 @@ export function MV({ projectId }: { projectId?: string }) {
                           <td className="px-2 py-4">
                             <button
                               onClick={async () => { if (await confirmDel('Delete M&V data?', 'This action cannot be undone.')) { deleteItem('mvData', data.id); addToast('M&V data deleted'); } }}
-                              className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                              className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                               title="Delete imported row"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -277,7 +277,7 @@ export function MV({ projectId }: { projectId?: string }) {
                   })}
                   {projectMvData.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="px-6 py-8 text-center text-[#7A8BA8]">No M&V data available for this project.</td>
+                      <td colSpan={5} className="px-6 py-8 text-center text-[#888888]">No M&V data available for this project.</td>
                     </tr>
                   )}
                 </tbody>

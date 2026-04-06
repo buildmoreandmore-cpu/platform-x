@@ -57,10 +57,10 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                 placeholder="Search drawings..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 w-72 transition-all duration-150"
+                className="pl-10 pr-4 py-2 bg-[#1A1A1A] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 w-72 transition-all duration-150"
               />
             </div>
-            <div className="flex items-center gap-1 bg-[#0F1829] border border-[#1E2A45] rounded-lg p-1">
+            <div className="flex items-center gap-1 bg-[#0F1829] border border-[#222222] rounded-lg p-1">
               {DRAWING_TYPES.map(type => (
                 <button
                   key={type}
@@ -68,8 +68,8 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                   className={cn(
                     "px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-150",
                     typeFilter === type
-                      ? "bg-[#1E2A45] text-white shadow-sm"
-                      : "text-[#7A8BA8] hover:text-[#CBD2DF]"
+                      ? "bg-[#222222] text-white shadow-sm"
+                      : "text-[#888888] hover:text-[#D4D4D4]"
                   )}
                 >
                   {type}
@@ -77,21 +77,21 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
               ))}
             </div>
           </div>
-          <button onClick={() => setShowUploadModal(true)} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A]">
+          <button onClick={() => setShowUploadModal(true)} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a]">
             <Upload className="w-4 h-4" />
             Upload Drawing
           </button>
         </div>
 
         {/* Drawings Table */}
-        <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-          <div className="p-5 border-b border-[#1E2A45] flex items-center justify-between">
+        <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+          <div className="p-5 border-b border-[#222222] flex items-center justify-between">
             <h3 className="text-sm font-semibold text-white">Facility Drawings & Plans</h3>
-            <span className="text-xs text-[#7A8BA8]">{filtered.length} drawing{filtered.length !== 1 ? 's' : ''}</span>
+            <span className="text-xs text-[#888888]">{filtered.length} drawing{filtered.length !== 1 ? 's' : ''}</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+              <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                 <tr>
                   <th className="px-6 py-4 font-medium">Filename</th>
                   <th className="px-6 py-4 font-medium">Type</th>
@@ -102,7 +102,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                   <th className="px-6 py-4 font-medium"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1E2A45] stagger-rows">
+              <tbody className="divide-y divide-[#222222] stagger-rows">
                 {filtered.map((d) => (
                   <>
                     <tr
@@ -114,7 +114,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                         {d.filename}
                       </td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-0.5 rounded bg-[#1E2A45] text-xs text-[#9AA5B8] border border-[#2A3A5C]">
+                        <span className="px-2 py-0.5 rounded bg-[#222222] text-xs text-[#9AA5B8] border border-[#2A3A5C]">
                           {d.type}
                         </span>
                       </td>
@@ -130,7 +130,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                                 e.stopPropagation();
                                 setShowVersionHistory(showVersionHistory === d.id ? null : d.id);
                               }}
-                              className="flex items-center gap-1 text-[10px] text-[#7A8BA8] hover:text-[#CBD2DF] transition-colors"
+                              className="flex items-center gap-1 text-[10px] text-[#888888] hover:text-[#D4D4D4] transition-colors"
                             >
                               <History className="w-3 h-3" />
                               {(d as any).versions.length} versions
@@ -139,9 +139,9 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-[#7A8BA8] font-mono text-xs">
+                      <td className="px-6 py-4 text-[#888888] font-mono text-xs">
                         {d.date}
-                        <span className="block text-[#7A8BA8] text-[10px]">by {d.by}</span>
+                        <span className="block text-[#888888] text-[10px]">by {d.by}</span>
                       </td>
                       <td className="px-6 py-4">
                         {d.annotations > 0 ? (
@@ -150,13 +150,13 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                             {d.annotations} pins
                           </span>
                         ) : (
-                          <span className="text-[#5A6B88] text-xs">No pins</span>
+                          <span className="text-[#666666] text-xs">No pins</span>
                         )}
                       </td>
                       <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => setSelectedDrawing(d.id)}
-                          className="p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded-lg transition-colors duration-150"
+                          className="p-1.5 text-[#888888] hover:text-white hover:bg-[#222222] rounded-lg transition-colors duration-150"
                         >
                           <Maximize2 className="w-4 h-4" />
                         </button>
@@ -164,10 +164,10 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                     </tr>
                     {/* Version History Row */}
                     {showVersionHistory === d.id && (
-                      <tr key={`${d.id}-versions`} className="bg-[#0B1120]">
+                      <tr key={`${d.id}-versions`} className="bg-[#0A0A0A]">
                         <td colSpan={7} className="px-6 py-3 animate-slide-down">
                           <div className="flex items-center gap-4 pl-4">
-                            <span className="text-[10px] text-[#7A8BA8] uppercase tracking-wider flex-shrink-0">Version History</span>
+                            <span className="text-[10px] text-[#888888] uppercase tracking-wider flex-shrink-0">Version History</span>
                             <div className="flex items-center gap-3">
                               {(d as any).versions?.map((v: any, idx: number) => (
                                 <div key={v.v} className="flex items-center gap-2">
@@ -175,13 +175,13 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                                     "px-2 py-0.5 rounded text-[10px] font-semibold border",
                                     v.v === d.version
                                       ? "bg-primary/10 text-secondary border-primary/20"
-                                      : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
+                                      : "bg-[#222222] text-[#888888] border-[#2A3A5C]"
                                   )}>
                                     {v.v}
                                     {v.v === d.version && <span className="ml-1">current</span>}
                                   </span>
-                                  <span className="text-[10px] text-[#5A6B88]">{v.date}</span>
-                                  {idx < (d as any).versions.length - 1 && <span className="text-[#5A6B88]">→</span>}
+                                  <span className="text-[10px] text-[#666666]">{v.date}</span>
+                                  {idx < (d as any).versions.length - 1 && <span className="text-[#666666]">→</span>}
                                 </div>
                               ))}
                             </div>
@@ -194,9 +194,9 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                 {filtered.length === 0 && (
                   <tr>
                     <td colSpan={7} className="px-6 py-12 text-center">
-                      <Upload className="w-8 h-8 text-[#5A6B88] mx-auto mb-3" />
-                      <p className="text-[#7A8BA8] font-medium">No drawings found</p>
-                      <p className="text-[#5A6B88] text-sm mt-1">Upload your first drawing or adjust your filters</p>
+                      <Upload className="w-8 h-8 text-[#666666] mx-auto mb-3" />
+                      <p className="text-[#888888] font-medium">No drawings found</p>
+                      <p className="text-[#666666] text-sm mt-1">Upload your first drawing or adjust your filters</p>
                     </td>
                   </tr>
                 )}
@@ -209,22 +209,22 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
       {/* ─── UPLOAD DRAWING MODAL ─── */}
       {showUploadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Upload Drawing</h3><button onClick={() => setShowUploadModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Upload Drawing</h3><button onClick={() => setShowUploadModal(false)} className="text-[#888888] hover:text-white"><X className="w-4 h-4" /></button></div>
             <div>
-              <input placeholder="Filename (e.g. Main-Building-L1.pdf)" value={drawingForm.filename} onChange={e => { setDrawingForm(f => ({ ...f, filename: e.target.value })); setErrors(e2 => ({ ...e2, drwFile: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.drwFile ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <input placeholder="Filename (e.g. Main-Building-L1.pdf)" value={drawingForm.filename} onChange={e => { setDrawingForm(f => ({ ...f, filename: e.target.value })); setErrors(e2 => ({ ...e2, drwFile: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.drwFile ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.drwFile && <p className="text-[10px] text-red-400 mt-1">{errors.drwFile}</p>}
             </div>
-            <select value={drawingForm.type} onChange={e => setDrawingForm(f => ({ ...f, type: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={drawingForm.type} onChange={e => setDrawingForm(f => ({ ...f, type: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               {DRAWING_TYPES.filter(t => t !== 'All').map(t => <option key={t}>{t}</option>)}
             </select>
-            <select value={drawingForm.buildingId} onChange={e => setDrawingForm(f => ({ ...f, buildingId: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={drawingForm.buildingId} onChange={e => setDrawingForm(f => ({ ...f, buildingId: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               <option value="">Select building...</option>
               {buildings.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
             </select>
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { if (!drawingForm.filename) { setErrors({ drwFile: 'Filename is required' }); return; } addDrawing({ ...drawingForm, projectId, version: 'v1.0', date: new Date().toISOString().split('T')[0], by: 'Current User', annotations: 0 }); setDrawingForm({ filename: '', type: 'Floor Plan', buildingId: '' }); setShowUploadModal(false); setErrors({}); }} className="px-4 py-2 bg-[#B8972F] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Upload</button>
+              <button onClick={() => setShowUploadModal(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!drawingForm.filename) { setErrors({ drwFile: 'Filename is required' }); return; } addDrawing({ ...drawingForm, projectId, version: 'v1.0', date: new Date().toISOString().split('T')[0], by: 'Current User', annotations: 0 }); setDrawingForm({ filename: '', type: 'Floor Plan', buildingId: '' }); setShowUploadModal(false); setErrors({}); }} className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">Upload</button>
             </div>
           </div>
         </div>
@@ -233,24 +233,24 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
       {/* Drawing Detail Modal */}
       {selectedDrawing && drawing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6 modal-backdrop">
-          <div className="modal-panel bg-[#121C35] border border-[#1E2A45] rounded-2xl w-full h-full max-w-7xl flex flex-col overflow-hidden shadow-2xl">
+          <div className="modal-panel bg-[#1A1A1A] border border-[#222222] rounded-2xl w-full h-full max-w-7xl flex flex-col overflow-hidden shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-[#1E2A45] bg-[#0F1829] flex-shrink-0">
+            <div className="flex items-center justify-between p-4 border-b border-[#222222] bg-[#0F1829] flex-shrink-0">
               <div>
                 <h2 className="text-base font-bold text-white">{drawing.filename}</h2>
-                <p className="text-xs text-[#7A8BA8] mt-0.5">
+                <p className="text-xs text-[#888888] mt-0.5">
                   {drawing.type} • {drawing.version} • {buildings.find(b => b.id === drawing.buildingId)?.name}
-                  <span className="ml-2 text-[#5A6B88]">• {drawing.annotations} annotation{drawing.annotations !== 1 ? 's' : ''}</span>
+                  <span className="ml-2 text-[#666666]">• {drawing.annotations} annotation{drawing.annotations !== 1 ? 's' : ''}</span>
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <button className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150">
+                <button className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#222222] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150">
                   <Filter className="w-3.5 h-3.5" />
                   Annotation Filter
                 </button>
                 <button
                   onClick={() => setSelectedDrawing(null)}
-                  className="p-2 text-[#7A8BA8] hover:text-white hover:bg-[#1E2A45] rounded-lg transition-colors duration-150 ml-1"
+                  className="p-2 text-[#888888] hover:text-white hover:bg-[#222222] rounded-lg transition-colors duration-150 ml-1"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -259,7 +259,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
 
             {/* Drawing Canvas */}
             <div className="flex-1 bg-[#080B10] relative overflow-hidden flex items-center justify-center p-6">
-              <div className="relative w-full max-w-5xl aspect-[4/3] bg-[#121C35] rounded-xl shadow-2xl border border-neutral-200 overflow-hidden">
+              <div className="relative w-full max-w-5xl aspect-[4/3] bg-[#1A1A1A] rounded-xl shadow-2xl border border-neutral-200 overflow-hidden">
                 <img
                   src="/assets/floor-plan.jpg"
                   alt={`${drawing.name} Floor Plan`}
@@ -295,13 +295,13 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                     </div>
 
                     {/* Tooltip */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl p-3 w-52 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-30"
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl p-3 w-52 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-30"
                       style={{ transform: 'translateX(-50%) translateY(4px)', transition: 'opacity 0.2s ease, transform 0.2s ease' }}
                     >
                       <p className="text-xs font-bold text-white mb-1">{pin.label}</p>
                       {pin.asset && (
                         <div className="space-y-1">
-                          <p className="text-[10px] text-[#7A8BA8]">
+                          <p className="text-[10px] text-[#888888]">
                             {pin.asset.manufacturer} {pin.asset.model}
                           </p>
                           <div className="flex items-center gap-1.5">
@@ -313,7 +313,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                             )}>
                               {pin.asset.condition}
                             </span>
-                            <span className="text-[10px] text-[#7A8BA8]">Year {pin.asset.year}</span>
+                            <span className="text-[10px] text-[#888888]">Year {pin.asset.year}</span>
                           </div>
                           <p className="text-[10px] text-secondary font-semibold">
                             Replacement: ${pin.asset.replacementCost?.toLocaleString()}
@@ -327,8 +327,8 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
             </div>
 
             {/* Bottom Legend */}
-            <div className="flex-shrink-0 border-t border-[#1E2A45] bg-[#0F1829] px-6 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-4 text-xs text-[#7A8BA8]">
+            <div className="flex-shrink-0 border-t border-[#222222] bg-[#0F1829] px-6 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-4 text-xs text-[#888888]">
                 <span className="flex items-center gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-primary" />
                   Good condition
@@ -346,7 +346,7 @@ export function Drawings({ projectId: propProjectId }: { projectId?: string } = 
                   Mechanical
                 </span>
               </div>
-              <span className="text-xs text-[#5A6B88]">Hover pins to see asset details</span>
+              <span className="text-xs text-[#666666]">Hover pins to see asset details</span>
             </div>
           </div>
         </div>

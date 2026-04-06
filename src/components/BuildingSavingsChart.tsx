@@ -105,7 +105,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
                   onClick={() => setExpandedBuilding(expandedBuilding === b.id ? null : b.id)}
                 >
                   <div className="w-full flex items-end justify-center gap-1.5 h-full">
-                    <div className="w-2/5 bg-[#CBD2DF] rounded-t relative group" style={{ height: `${baseH}%` }}>
+                    <div className="w-2/5 bg-[#D4D4D4] rounded-t relative group" style={{ height: `${baseH}%` }}>
                       <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] py-1.5 px-2.5 rounded whitespace-nowrap z-10 pointer-events-none">
                         <p className="font-semibold mb-0.5">{b.buildingName}</p>
                         <p>Baseline: {b.baselineAnnualKwh.toLocaleString()} kWh</p>
@@ -136,7 +136,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
           </div>
         </div>
         <div className="mt-4 flex items-center justify-center gap-5 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-[#CBD2DF] rounded-sm inline-block" />Baseline</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-[#D4D4D4] rounded-sm inline-block" />Baseline</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-[#10B981] rounded-sm inline-block" />Current (Saving)</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-2 bg-[#EF4444] rounded-sm inline-block" />Current (Over Baseline)</span>
         </div>
@@ -166,7 +166,7 @@ export function BuildingSavingsChart({ projectId, projectPhase }: Props) {
                 return (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
                     <div className="w-full flex items-end justify-center gap-1 h-full">
-                      <div className="w-2/5 bg-[#CBD2DF] rounded-t relative group" style={{ height: `${baseH}%` }}>
+                      <div className="w-2/5 bg-[#D4D4D4] rounded-t relative group" style={{ height: `${baseH}%` }}>
                         <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] py-1 px-2 rounded whitespace-nowrap z-10 pointer-events-none">
                           Baseline: {baseline.toLocaleString()} kWh
                         </div>

@@ -118,14 +118,14 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight inline-flex items-center gap-3">
                 Facility Assessment & Benchmarking
                 {projectId && <FreshnessBadge projectId={projectId} module="Utility Bills" showTimestamp />}
               </h1>
-              <p className="text-sm text-[#7A8BA8] mt-1">Ingest utility data, normalize for weather, calculate EUI and capital exposure.</p>
+              <p className="text-sm text-[#888888] mt-1">Ingest utility data, normalize for weather, calculate EUI and capital exposure.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
@@ -157,14 +157,14 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               />
               <button
                 onClick={() => { setImportModal('drive'); setImportStatus('idle'); }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#222222] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150"
               >
                 <HardDrive className="w-4 h-4" />
                 Import from Google Drive
               </button>
               <button
                 onClick={() => { setImportModal('energystar'); setImportStatus('idle'); }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#222222] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors duration-150"
               >
                 <Leaf className="w-4 h-4" />
                 Import from ENERGY STAR
@@ -191,7 +191,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               </button>
               <button
                 onClick={() => setShowManualEntry(true)}
-                className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A]"
+                className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a]"
               >
                 <Plus className="w-4 h-4" />
                 Add Manual Entry
@@ -211,7 +211,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   "tab-btn px-4 pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                   activeTab === tab.id
                     ? "border-emerald-500 text-emerald-600 active"
-                    : "border-transparent text-[#7A8BA8] hover:text-white"
+                    : "border-transparent text-[#888888] hover:text-white"
                 )}
               >
                 <tab.icon className="w-4 h-4" />
@@ -228,7 +228,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
           <select
             value={selectedBuilding?.id}
             onChange={(e) => setSelectedBuildingId(e.target.value)}
-            className="bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5 transition-colors duration-150"
+            className="bg-[#1A1A1A] border border-[#222222] text-[#D4D4D4] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5 transition-colors duration-150"
           >
             {displayBuildings.map(b => (
               <option key={b.id} value={b.id}>{b.name}</option>
@@ -245,15 +245,15 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
         {activeTab === 'energy' && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
-              <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-                <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-3">Energy Use Intensity (EUI)</h3>
+              <div className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+                <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider mb-3">Energy Use Intensity (EUI)</h3>
                 <div className="flex items-end gap-2">
                   <span className="text-4xl font-bold text-white animate-stat-pop">{eui}</span>
-                  <span className="text-sm text-[#7A8BA8] mb-1">kBtu/sqft/yr</span>
+                  <span className="text-sm text-[#888888] mb-1">kBtu/sqft/yr</span>
                 </div>
-                <div className="mt-4 pt-4 border-t border-[#1E2A45] space-y-2">
+                <div className="mt-4 pt-4 border-t border-[#222222] space-y-2">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-[#7A8BA8]">Building Size</span>
+                    <span className="text-[#888888]">Building Size</span>
                     {editingSqft ? (
                       <div className="flex items-center gap-1">
                         <input
@@ -284,32 +284,32 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   </div>
                   {buildingBills.length > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#7A8BA8]">Months of Data</span>
+                      <span className="text-[#888888]">Months of Data</span>
                       <span className="text-[#9AA5B8] font-medium">{buildingBills.length}</span>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-                <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-3">Annual Energy Cost</h3>
+              <div className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+                <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider mb-3">Annual Energy Cost</h3>
                 <div className="flex items-end gap-2">
                   <span className="text-4xl font-bold text-white animate-stat-pop">${totalCost.toLocaleString()}</span>
                 </div>
-                <div className="mt-4 pt-4 border-t border-[#1E2A45] space-y-2">
+                <div className="mt-4 pt-4 border-t border-[#222222] space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#7A8BA8]">Cost per SqFt</span>
+                    <span className="text-[#888888]">Cost per SqFt</span>
                     <span className="text-white font-medium">${costPerSqft}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#7A8BA8]">Building Size</span>
+                    <span className="text-[#888888]">Building Size</span>
                     <span className="text-white font-medium">{selectedBuilding?.sqft.toLocaleString()} sqft</span>
                   </div>
                 </div>
               </div>
 
-              <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
-                <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-3">Weather Normalization</h3>
+              <div className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
+                <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider mb-3">Weather Normalization</h3>
                 {hasUtilityData && rSquared !== null ? (
                   <>
                     <div className="flex items-center gap-2 mb-4">
@@ -320,19 +320,19 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                       )}>
                         {rSquared >= 0.9 ? 'Good Fit' : rSquared >= 0.8 ? 'Fair Fit' : 'Poor Fit'}
                       </span>
-                      <span className="text-sm text-[#7A8BA8]">R² = {rSquared.toFixed(2)}</span>
+                      <span className="text-sm text-[#888888]">R² = {rSquared.toFixed(2)}</span>
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-[#7A8BA8]">Base Load</span>
+                        <span className="text-[#888888]">Base Load</span>
                         <span className="text-white font-mono">{baseLoad!.toLocaleString()} kWh</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#7A8BA8]">Cooling (CDD)</span>
+                        <span className="text-[#888888]">Cooling (CDD)</span>
                         <span className="text-white font-mono">{cddCoeff} kWh/DD</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#7A8BA8]">Heating (HDD)</span>
+                        <span className="text-[#888888]">Heating (HDD)</span>
                         <span className="text-white font-mono">{hddCoeff} kWh/DD</span>
                       </div>
                     </div>
@@ -340,14 +340,14 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 ) : (
                   <div className="flex flex-col items-center justify-center py-4 text-center">
                     <BarChart3 className="w-8 h-8 text-[#2A3A5C] mb-2" />
-                    <p className="text-xs text-[#5A6B88]">Import at least 6 months of utility data to calculate weather normalization.</p>
+                    <p className="text-xs text-[#666666]">Import at least 6 months of utility data to calculate weather normalization.</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Monthly Chart */}
-            <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+            <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
               <h3 className="text-sm font-semibold text-white mb-6">Monthly Consumption (kWh)</h3>
               {buildingBills.length > 0 ? (
                 <div className="h-56 flex items-end gap-2 pb-6 relative">
@@ -370,27 +370,27 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             {bill.electricKwh.toLocaleString()} kWh
                           </div>
                         </div>
-                        <span className="text-[10px] text-[#7A8BA8] uppercase absolute -bottom-6">{label}</span>
+                        <span className="text-[10px] text-[#888888] uppercase absolute -bottom-6">{label}</span>
                       </div>
                     );
                   })}
                 </div>
               ) : (
-                <div className="h-56 flex items-center justify-center text-[#7A8BA8] text-sm">
+                <div className="h-56 flex items-center justify-center text-[#888888] text-sm">
                   No utility data for this building.
                 </div>
               )}
             </div>
 
             {/* Utility Ledger */}
-            <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-              <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+            <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+              <div className="p-6 border-b border-[#222222] flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-white">Utility Bill Ledger</h3>
-                <span className="text-xs text-[#7A8BA8]">{buildingBills.length} months</span>
+                <span className="text-xs text-[#888888]">{buildingBills.length} months</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                     <tr>
                       <th className="px-6 py-4 font-medium">Period</th>
                       <th className="px-6 py-4 font-medium text-right">Electric (kWh)</th>
@@ -409,7 +409,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1E2A45] stagger-rows">
+                  <tbody className="divide-y divide-[#222222] stagger-rows">
                     {buildingBills.map((bill: any) => {
                       const lock = lockRecords.find(l => l.entityType === 'utilityBill' && l.entityId === bill.id);
                       const isImported = !!bill.importBatchId;
@@ -483,7 +483,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             <td className="px-2 py-4">
                               <button
                                 onClick={async () => { if (await confirm('Delete utility bill?', 'This action cannot be undone.')) { deleteItem('utilityBills', bill.id); addToast('Utility bill deleted'); } }}
-                                className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                                className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                                 title="Delete imported row"
                               >
                                 <X className="w-3.5 h-3.5" />
@@ -503,18 +503,18 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
               const spImports = importHistory.filter((r: any) => r.source === 'SharePoint');
               if (spImports.length === 0) return null;
               return (
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-                  <div className="p-6 border-b border-[#1E2A45]">
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+                  <div className="p-6 border-b border-[#222222]">
                     <h3 className="text-sm font-semibold text-white">SharePoint Import History</h3>
                   </div>
-                  <div className="divide-y divide-[#1E2A45]">
+                  <div className="divide-y divide-[#222222]">
                     {spImports.map((imp: any) => (
                       <div key={imp.id} className="px-6 py-4 flex items-center justify-between hover:bg-[#1A2544] transition-colors">
                         <div className="flex items-center gap-4">
                           <FileSpreadsheet className="w-4 h-4 text-primary" />
                           <div>
                             <p className="text-sm text-white font-medium">{imp.fileName || imp.type}</p>
-                            <p className="text-xs text-[#7A8BA8]">
+                            <p className="text-xs text-[#888888]">
                               {new Date(imp.date).toLocaleDateString()} — {imp.records} records — {imp.user}
                             </p>
                           </div>
@@ -525,7 +525,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             imp.status === 'Success' ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
                             imp.status === 'Rolled Back' ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
                             imp.status === 'Replaced' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" :
-                            "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
+                            "bg-[#222222] text-[#888888] border-[#2A3A5C]"
                           )}>
                             {imp.status}
                           </span>
@@ -553,7 +553,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                                 </button>
                                 <button
                                   onClick={() => setDeletingBatchId(null)}
-                                  className="text-[10px] text-[#7A8BA8] hover:text-white"
+                                  className="text-[10px] text-[#888888] hover:text-white"
                                 >
                                   Cancel
                                 </button>
@@ -561,7 +561,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                             ) : (
                               <button
                                 onClick={() => setDeletingBatchId(imp.batchId)}
-                                className="p-1.5 text-[#5A6B88] hover:text-red-400 transition-colors rounded hover:bg-red-500/10"
+                                className="p-1.5 text-[#666666] hover:text-red-400 transition-colors rounded hover:bg-red-500/10"
                                 title="Delete imported data"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -585,59 +585,59 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-semibold text-white">5-Year Capital Outlook</h2>
-                <button onClick={() => { addToast('Capital plan report generation coming soon.', 'info'); }} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">
+                <button onClick={() => { addToast('Capital plan report generation coming soon.', 'info'); }} className="btn-primary inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">
                   <FileText className="w-4 h-4" />
                   Generate Capital Plan Report
                 </button>
               </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
-                <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
+                <div className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <DollarSign className="w-4 h-4 text-amber-600" />
-                    <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider">5-Year Capital Need</h3>
+                    <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider">5-Year Capital Need</h3>
                   </div>
                   <span className="text-3xl font-bold text-white animate-stat-pop">
                     ${(total5YearCost / 1000).toFixed(0)}K
                   </span>
-                  <p className="text-xs text-[#7A8BA8] mt-1">Across {capitalTimeline.slice(0,5).reduce((s,t) => s + t.count, 0)} assets reaching EOL</p>
+                  <p className="text-xs text-[#888888] mt-1">Across {capitalTimeline.slice(0,5).reduce((s,t) => s + t.count, 0)} assets reaching EOL</p>
                 </div>
 
-                <div className="kpi-card bg-[#121C35] border border-red-900/30 rounded-xl p-5">
+                <div className="kpi-card bg-[#1A1A1A] border border-red-900/30 rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <AlertTriangle className="w-4 h-4 text-red-600" />
-                    <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider">Critical Assets (2yr)</h3>
+                    <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider">Critical Assets (2yr)</h3>
                   </div>
                   <span className="text-3xl font-bold text-red-600 animate-stat-pop">{critical2YearCount}</span>
-                  <p className="text-xs text-[#7A8BA8] mt-1">Immediate replacement priority</p>
+                  <p className="text-xs text-[#888888] mt-1">Immediate replacement priority</p>
                 </div>
 
-                <div className="kpi-card bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
+                <div className="kpi-card bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="w-4 h-4 text-[#7A8BA8]" />
-                    <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider">Highest Single Cost</h3>
+                    <TrendingUp className="w-4 h-4 text-[#888888]" />
+                    <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider">Highest Single Cost</h3>
                   </div>
                   <span className="text-3xl font-bold text-white animate-stat-pop">
                     ${highestCostAsset ? (highestCostAsset.replacementCost / 1000).toFixed(0) + 'K' : 'N/A'}
                   </span>
-                  <p className="text-xs text-[#7A8BA8] mt-1 truncate">{highestCostAsset?.type} — {highestCostAsset?.manufacturer}</p>
+                  <p className="text-xs text-[#888888] mt-1 truncate">{highestCostAsset?.type} — {highestCostAsset?.manufacturer}</p>
                 </div>
 
-                <div className="kpi-card bg-[#121C35] border border-emerald-900/30 rounded-xl p-5">
+                <div className="kpi-card bg-[#1A1A1A] border border-emerald-900/30 rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="w-4 h-4 text-emerald-600" />
-                    <h3 className="text-xs font-medium text-[#7A8BA8] uppercase tracking-wider">ESPC Potential</h3>
+                    <h3 className="text-xs font-medium text-[#888888] uppercase tracking-wider">ESPC Potential</h3>
                   </div>
                   <span className="text-3xl font-bold text-emerald-600 animate-stat-pop">High</span>
-                  <p className="text-xs text-[#7A8BA8] mt-1">{espcOverlapAssets.length} assets eligible for bundling</p>
+                  <p className="text-xs text-[#888888] mt-1">{espcOverlapAssets.length} assets eligible for bundling</p>
                 </div>
               </div>
             </div>
 
             {/* Equipment Replacement Timeline */}
-            <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+            <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-semibold text-white">Equipment Replacement Timeline</h3>
-                <div className="flex items-center gap-4 text-xs text-[#7A8BA8]">
+                <div className="flex items-center gap-4 text-xs text-[#888888]">
                   <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-red-500/40 border border-red-500/50" />Critical</span>
                   <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-amber-500/40 border border-amber-500/50" />Poor</span>
                   <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-500/40 border border-emerald-500/50" />Good</span>
@@ -652,13 +652,13 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   >
                     <div className={cn(
                       "w-12 text-sm font-mono text-right flex-shrink-0",
-                      t.year === currentYear ? "text-emerald-600 font-semibold" : "text-[#7A8BA8]"
+                      t.year === currentYear ? "text-emerald-600 font-semibold" : "text-[#888888]"
                     )}>
                       {t.year}
                     </div>
-                    <div className="flex-1 h-8 bg-[#0F1829] rounded-lg border border-[#1E2A45] flex items-center px-2 gap-1.5 overflow-hidden relative">
+                    <div className="flex-1 h-8 bg-[#0F1829] rounded-lg border border-[#222222] flex items-center px-2 gap-1.5 overflow-hidden relative">
                       {t.assets.length === 0 && (
-                        <span className="text-[10px] text-[#5A6B88] pl-1">—</span>
+                        <span className="text-[10px] text-[#666666] pl-1">—</span>
                       )}
                       {t.assets.map((a: any) => (
                         <div
@@ -682,7 +682,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                       "w-24 text-right text-sm font-mono flex-shrink-0",
                       t.cost > 200000 ? "text-red-600 font-semibold" :
                       t.cost > 50000 ? "text-amber-600" :
-                      t.cost > 0 ? "text-[#9AA5B8]" : "text-[#5A6B88]"
+                      t.cost > 0 ? "text-[#9AA5B8]" : "text-[#666666]"
                     )}>
                       {t.cost > 0 ? `$${t.cost.toLocaleString()}` : '—'}
                     </div>
@@ -692,17 +692,17 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
             </div>
 
             {/* Replacement Cost Summary Table */}
-            <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-              <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+            <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+              <div className="p-6 border-b border-[#222222] flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-white">Replacement Cost Summary</h3>
-                <button onClick={() => { addToast('CSV export coming soon.', 'info'); }} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] hover:text-white transition-colors duration-150">
+                <button onClick={() => { addToast('CSV export coming soon.', 'info'); }} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#222222] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] hover:text-white transition-colors duration-150">
                   <Download className="w-3.5 h-3.5" />
                   Export CSV
                 </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                     <tr>
                       <th className="px-6 py-4 font-medium">Year</th>
                       <th className="px-6 py-4 font-medium text-center">Assets Reaching EOL</th>
@@ -711,7 +711,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                       <th className="px-6 py-4 font-medium">Benchmark Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1E2A45] stagger-rows">
+                  <tbody className="divide-y divide-[#222222] stagger-rows">
                     {costSummaryRows.map((row) => (
                       <tr
                         key={row.year}
@@ -732,12 +732,12 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                               "px-2.5 py-1 rounded-full text-xs font-semibold border",
                               row.count >= 3 ? "bg-red-500/10 text-red-600 border-red-500/20" :
                               row.count >= 1 ? "bg-amber-500/10 text-amber-600 border-amber-500/20" :
-                              "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]"
+                              "bg-[#222222] text-[#888888] border-[#2A3A5C]"
                             )}>
                               {row.count} asset{row.count !== 1 ? 's' : ''}
                             </span>
                           ) : (
-                            <span className="text-[#5A6B88] text-xs">—</span>
+                            <span className="text-[#666666] text-xs">—</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-right font-mono">
@@ -750,7 +750,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                               ${row.cost.toLocaleString()}
                             </span>
                           ) : (
-                            <span className="text-[#5A6B88]">$0</span>
+                            <span className="text-[#666666]">$0</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-right font-mono text-[#9AA5B8] font-semibold">
@@ -760,10 +760,10 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                           {row.count > 0 ? (
                             <div className="flex items-center gap-1.5">
                               <ChevronRight className="w-3 h-3 text-emerald-600" />
-                              <span className="text-xs text-[#7A8BA8]">Benchmark available</span>
+                              <span className="text-xs text-[#888888]">Benchmark available</span>
                             </div>
                           ) : (
-                            <span className="text-xs text-[#5A6B88]">No replacements</span>
+                            <span className="text-xs text-[#666666]">No replacements</span>
                           )}
                         </td>
                       </tr>
@@ -779,20 +779,20 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
       {/* Import Info Modal (Drive / ENERGY STAR) */}
       {(importModal === 'drive' || importModal === 'energystar') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop" onClick={() => setImportModal(null)}>
-          <div className="modal-panel bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="modal-panel bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <div className="flex items-center gap-3">
-                {importModal === 'drive' ? <HardDrive className="w-5 h-5 text-[#7A8BA8]" /> : <Leaf className="w-5 h-5 text-emerald-400" />}
+                {importModal === 'drive' ? <HardDrive className="w-5 h-5 text-[#888888]" /> : <Leaf className="w-5 h-5 text-emerald-400" />}
                 <h3 className="text-base font-semibold text-white">
                   {importModal === 'drive' ? 'Import from Google Drive' : 'Import from ENERGY STAR'}
                 </h3>
               </div>
-              <button onClick={() => setImportModal(null)} className="text-[#5A6B88] hover:text-white transition-colors">
+              <button onClick={() => setImportModal(null)} className="text-[#666666] hover:text-white transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="p-6 space-y-4">
-              <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-4">
+              <div className="bg-[#0F1829] border border-[#222222] rounded-lg p-4">
                 <p className="text-sm text-[#9AA5B8]">
                   {importModal === 'drive'
                     ? 'Google Drive integration is not yet configured. To import utility data, use the SharePoint Import or Add Manual Entry options.'
@@ -808,7 +808,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                 </button>
                 <button
                   onClick={() => setImportModal(null)}
-                  className="px-4 py-2.5 bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
+                  className="px-4 py-2.5 bg-[#222222] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
                 >
                   Close
                 </button>
@@ -822,52 +822,52 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
       {showManualEntry && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setShowManualEntry(false)}>
           <div className="absolute inset-0 bg-black/60" />
-          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+          <div className="relative bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#222222]">
               <h2 className="text-lg font-bold text-white">Add Utility Bill</h2>
-              <button onClick={() => setShowManualEntry(false)} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+              <button onClick={() => setShowManualEntry(false)} className="text-[#666666] hover:text-white"><X className="w-5 h-5" /></button>
             </div>
             <div className="px-6 py-5 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Month</label>
-                  <select value={manualBill.month} onChange={e => setManualBill(prev => ({ ...prev, month: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Month</label>
+                  <select value={manualBill.month} onChange={e => setManualBill(prev => ({ ...prev, month: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">Select</option>
                     {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m, i) => <option key={m} value={String(i + 1)}>{m}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Year</label>
-                  <input type="number" value={manualBill.year} onChange={e => setManualBill(prev => ({ ...prev, year: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Year</label>
+                  <input type="number" value={manualBill.year} onChange={e => setManualBill(prev => ({ ...prev, year: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric (kWh)</label>
-                  <input type="number" value={manualBill.electricKwh} onChange={e => setManualBill(prev => ({ ...prev, electricKwh: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Electric (kWh)</label>
+                  <input type="number" value={manualBill.electricKwh} onChange={e => setManualBill(prev => ({ ...prev, electricKwh: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Electric Cost ($)</label>
-                  <input type="number" value={manualBill.electricCost} onChange={e => setManualBill(prev => ({ ...prev, electricCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Electric Cost ($)</label>
+                  <input type="number" value={manualBill.electricCost} onChange={e => setManualBill(prev => ({ ...prev, electricCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas (Therms)</label>
-                  <input type="number" value={manualBill.gasTherms} onChange={e => setManualBill(prev => ({ ...prev, gasTherms: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Gas (Therms)</label>
+                  <input type="number" value={manualBill.gasTherms} onChange={e => setManualBill(prev => ({ ...prev, gasTherms: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Gas Cost ($)</label>
-                  <input type="number" value={manualBill.gasCost} onChange={e => setManualBill(prev => ({ ...prev, gasCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Gas Cost ($)</label>
+                  <input type="number" value={manualBill.gasCost} onChange={e => setManualBill(prev => ({ ...prev, gasCost: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Peak Demand (kW)</label>
-                <input type="number" value={manualBill.peakKw} onChange={e => setManualBill(prev => ({ ...prev, peakKw: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Peak Demand (kW)</label>
+                <input type="number" value={manualBill.peakKw} onChange={e => setManualBill(prev => ({ ...prev, peakKw: e.target.value }))} placeholder="0" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
             </div>
-            <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
-              <button onClick={() => setShowManualEntry(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+            <div className="px-6 py-4 border-t border-[#222222] flex justify-end gap-3">
+              <button onClick={() => setShowManualEntry(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
               <button
                 disabled={!manualBill.month}
                 onClick={() => {
@@ -884,7 +884,7 @@ export function Benchmarking({ projectId }: { projectId?: string }) {
                   setManualBill({ month: '', year: new Date().getFullYear().toString(), electricKwh: '', electricCost: '', gasTherms: '', gasCost: '', peakKw: '' });
                   setShowManualEntry(false);
                 }}
-                className="px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
+                className="px-4 py-2 bg-[#00ff88] rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] disabled:opacity-40"
               >
                 Add Bill
               </button>

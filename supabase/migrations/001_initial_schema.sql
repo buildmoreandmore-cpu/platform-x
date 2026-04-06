@@ -3,6 +3,7 @@
 -- Row Level Security: see 002_multi_tenant.sql for tenant-scoped policies
 
 create extension if not exists "uuid-ossp";
+create extension if not exists "pgcrypto";
 
 -- Profiles (mirrors auth.users)
 create table if not exists public.profiles (
@@ -137,7 +138,7 @@ create table if not exists public.client_invites (
   project_id text not null,
   client_name text not null,
   client_email text not null,
-  invite_token text unique not null default encode(gen_random_bytes(32), 'hex'),
+  invite_token text unique not null default encode(extensions.gen_random_bytes(32), 'hex'),
   status text default 'pending',
   invited_by text not null,
   created_at timestamptz default now(),

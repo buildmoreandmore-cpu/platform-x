@@ -260,44 +260,44 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
     if (confidence >= 75) return { label: 'High', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' };
     if (confidence >= 50) return { label: 'Medium', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' };
     if (confidence >= 25) return { label: 'Low', color: 'bg-red-500/10 text-red-400 border-red-500/20' };
-    return { label: 'None', color: 'bg-[#1E2A45] text-[#5A6B88] border-[#2A3A5C]' };
+    return { label: 'None', color: 'bg-[#222222] text-[#666666] border-[#2A3A5C]' };
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop" onClick={onClose}>
       <div
         className={cn(
-          "modal-panel bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl mx-4 max-h-[85vh] overflow-hidden flex flex-col",
+          "modal-panel bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl mx-4 max-h-[85vh] overflow-hidden flex flex-col",
           step === 'upload' ? 'w-full max-w-md' : 'w-full max-w-4xl'
         )}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between flex-shrink-0">
+        <div className="p-6 border-b border-[#222222] flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-500/15 flex items-center justify-center">
               <Layers className="w-4 h-4 text-blue-400" />
             </div>
             <div>
               <h3 className="text-base font-semibold text-white">Import Project File</h3>
-              <p className="text-xs text-[#7A8BA8]">Multi-sheet auto-routing to sections</p>
+              <p className="text-xs text-[#888888]">Multi-sheet auto-routing to sections</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-[#5A6B88] hover:text-white transition-colors">
+          <button onClick={onClose} className="text-[#666666] hover:text-white transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Step Indicator */}
-        <div className="px-6 py-3 border-b border-[#1E2A45] flex-shrink-0">
+        <div className="px-6 py-3 border-b border-[#222222] flex-shrink-0">
           <div className="flex items-center gap-2 text-xs">
             {(['upload', 'detection', 'mapping', 'importing', 'success'] as Step[]).map((s, i) => (
               <div key={s} className="flex items-center gap-2">
-                {i > 0 && <ChevronRight className="w-3 h-3 text-[#5A6B88]" />}
+                {i > 0 && <ChevronRight className="w-3 h-3 text-[#666666]" />}
                 <span className={cn(
                   "px-2 py-0.5 rounded-full font-medium",
                   step === s ? "bg-blue-500/15 text-blue-400" :
-                  (['upload', 'detection', 'mapping', 'importing', 'success'].indexOf(step) > i) ? "text-emerald-400" : "text-[#5A6B88]"
+                  (['upload', 'detection', 'mapping', 'importing', 'success'].indexOf(step) > i) ? "text-emerald-400" : "text-[#666666]"
                 )}>
                   {s === 'upload' ? 'Upload' : s === 'detection' ? 'Detect' : s === 'mapping' ? 'Map' : s === 'importing' ? 'Import' : 'Done'}
                 </span>
@@ -323,12 +323,12 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                 )}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <Upload className={cn("w-10 h-10 mx-auto mb-3 transition-colors", dragOver ? "text-blue-400" : "text-[#5A6B88]")} />
+                <Upload className={cn("w-10 h-10 mx-auto mb-3 transition-colors", dragOver ? "text-blue-400" : "text-[#666666]")} />
                 <p className="text-sm font-medium text-white mb-1">
                   {dragOver ? 'Drop project file here' : 'Drag & drop your project workbook'}
                 </p>
-                <p className="text-xs text-[#7A8BA8] mb-3">Multi-tab Excel files will auto-route each sheet to the correct section</p>
-                <p className="text-[10px] text-[#5A6B88]">.xlsx, .xls, or .csv — max 10MB</p>
+                <p className="text-xs text-[#888888] mb-3">Multi-tab Excel files will auto-route each sheet to the correct section</p>
+                <p className="text-[10px] text-[#666666]">.xlsx, .xls, or .csv — max 10MB</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -349,12 +349,12 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
           {/* DETECTION */}
           {step === 'detection' && (
             <div className="space-y-4">
-              <div className="flex items-center gap-3 bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2">
-                <span className="text-xs text-[#7A8BA8] font-medium whitespace-nowrap">Assign to Project:</span>
+              <div className="flex items-center gap-3 bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2">
+                <span className="text-xs text-[#888888] font-medium whitespace-nowrap">Assign to Project:</span>
                 <select
                   value={selectedProjectId}
                   onChange={e => setSelectedProjectId(e.target.value)}
-                  className="flex-1 bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 bg-[#1A1A1A] border border-[#222222] text-[#D4D4D4] text-xs rounded-lg px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">All Projects (no grouping)</option>
                   {projects.map(p => (
@@ -363,17 +363,17 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                 </select>
               </div>
 
-              <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-3">
+              <div className="bg-[#0F1829] border border-[#222222] rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-3">
                   <FileSpreadsheet className="w-4 h-4 text-blue-400" />
                   <span className="text-xs font-semibold text-white">{fileName}</span>
-                  <span className="text-[10px] text-[#5A6B88] ml-auto">{sheets.length} sheet{sheets.length !== 1 ? 's' : ''} detected</span>
+                  <span className="text-[10px] text-[#666666] ml-auto">{sheets.length} sheet{sheets.length !== 1 ? 's' : ''} detected</span>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="border-b border-[#1E2A45] text-[#7A8BA8]">
+                      <tr className="border-b border-[#222222] text-[#888888]">
                         <th className="px-3 py-2 text-left font-medium">Sheet</th>
                         <th className="px-3 py-2 text-left font-medium">Detected Section</th>
                         <th className="px-3 py-2 text-center font-medium">Rows</th>
@@ -381,7 +381,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                         <th className="px-3 py-2 text-left font-medium w-10"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1E2A45]/50">
+                    <tbody className="divide-y divide-[#222222]/50">
                       {sheetMatches.map((match) => {
                         const badge = getConfidenceBadge(match.confidence);
                         const isExpanded = expandedSheet === match.sheetIndex;
@@ -393,7 +393,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                               <select
                                 value={match.sectionKey}
                                 onChange={(e) => updateSheetSection(match.sheetIndex, e.target.value)}
-                                className="bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
+                                className="bg-[#1A1A1A] border border-[#222222] text-[#D4D4D4] text-xs rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
                               >
                                 <option value="skip">Skip</option>
                                 {sectionKeys.map(key => (
@@ -413,7 +413,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                               {match.sectionKey !== 'skip' && (
                                 <button
                                   onClick={() => setExpandedSheet(isExpanded ? null : match.sheetIndex)}
-                                  className="p-1 text-[#5A6B88] hover:text-white transition-colors"
+                                  className="p-1 text-[#666666] hover:text-white transition-colors"
                                 >
                                   <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", isExpanded && "rotate-180")} />
                                 </button>
@@ -432,18 +432,18 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                   if (!match || match.sectionKey === 'skip') return null;
                   const config = SECTION_CONFIGS[match.sectionKey];
                   return (
-                    <div className="mt-3 pt-3 border-t border-[#1E2A45] space-y-2">
-                      <p className="text-[10px] text-[#7A8BA8] font-medium uppercase tracking-wider">
+                    <div className="mt-3 pt-3 border-t border-[#222222] space-y-2">
+                      <p className="text-[10px] text-[#888888] font-medium uppercase tracking-wider">
                         Column Mapping — {match.sheetName} → {config.sectionName}
                       </p>
                       {match.columnMappings.map((cm, ci) => (
                         <div key={ci} className="flex items-center gap-3">
                           <span className="text-[11px] font-mono text-[#9AA5B8] min-w-[120px] truncate">{cm.header}</span>
-                          <ChevronRight className="w-3 h-3 text-[#5A6B88] flex-shrink-0" />
+                          <ChevronRight className="w-3 h-3 text-[#666666] flex-shrink-0" />
                           <select
                             value={cm.mapping}
                             onChange={(e) => updateColumnMapping(match.sheetIndex, ci, e.target.value)}
-                            className="flex-1 bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-[11px] rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
+                            className="flex-1 bg-[#1A1A1A] border border-[#222222] text-[#D4D4D4] text-[11px] rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
                           >
                             <optgroup label="Known Fields">
                               {config.knownFields.map(f => (
@@ -478,7 +478,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                 />
               </div>
               {importProgress.currentSheet && (
-                <p className="text-xs text-[#7A8BA8]">
+                <p className="text-xs text-[#888888]">
                   Importing <span className="text-white font-medium">{importProgress.currentSheet}</span>...
                 </p>
               )}
@@ -487,7 +487,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                   <div key={i} className="flex items-center gap-3 px-3 py-2 bg-[#0F1829] rounded text-xs">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                     <span className="text-white font-medium">{r.section}</span>
-                    <span className="text-[#5A6B88]">{r.count} rows</span>
+                    <span className="text-[#666666]">{r.count} rows</span>
                   </div>
                 ))}
               </div>
@@ -504,7 +504,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
               <p className="text-sm text-[#9AA5B8] mb-1">
                 {importResults.reduce((s, r) => s + r.count, 0)} total records across {importResults.length} section{importResults.length !== 1 ? 's' : ''}
               </p>
-              <p className="text-xs text-[#5A6B88] mb-4 font-mono">{fileName}</p>
+              <p className="text-xs text-[#666666] mb-4 font-mono">{fileName}</p>
 
               <div className="w-full max-w-sm space-y-1.5 mb-6">
                 {importResults.map((r, i) => (
@@ -518,13 +518,13 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
               <div className="flex gap-3">
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A] transition-colors"
+                  className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a] transition-colors"
                 >
                   Done
                 </button>
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
+                  className="px-4 py-2 bg-[#222222] border border-[#2A3A5C] text-[#9AA5B8] text-sm font-medium rounded-lg hover:bg-[#2A3A5C] transition-colors"
                 >
                   Close
                 </button>
@@ -535,15 +535,15 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
 
         {/* Footer for detection step */}
         {step === 'detection' && (
-          <div className="px-6 py-4 border-t border-[#1E2A45] flex items-center justify-between flex-shrink-0">
+          <div className="px-6 py-4 border-t border-[#222222] flex items-center justify-between flex-shrink-0">
             <button
               onClick={() => { setStep('upload'); setSheets([]); setSheetMatches([]); setError(null); }}
-              className="text-xs text-[#7A8BA8] hover:text-white transition-colors"
+              className="text-xs text-[#888888] hover:text-white transition-colors"
             >
               Back
             </button>
             <div className="flex items-center gap-3">
-              <span className="text-xs text-[#5A6B88]">
+              <span className="text-xs text-[#666666]">
                 {activeSheets.length} of {sheetMatches.length} sheet{sheetMatches.length !== 1 ? 's' : ''} will be imported
               </span>
               {!selectedProjectId && activeSheets.length > 0 && (
@@ -556,7 +556,7 @@ export function ProjectFileImport({ onClose }: ProjectFileImportProps) {
                   "px-4 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeSheets.length > 0 && selectedProjectId
                     ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-[#1E2A45] text-[#5A6B88] cursor-not-allowed"
+                    : "bg-[#222222] text-[#666666] cursor-not-allowed"
                 )}
               >
                 Import {activeSheets.reduce((s, m) => s + m.rowCount, 0)} Rows from {activeSheets.length} Sheet{activeSheets.length !== 1 ? 's' : ''}

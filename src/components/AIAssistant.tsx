@@ -258,7 +258,7 @@ RULES:
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-xl bg-[#080D1A] border border-[#1E2A45] hover:border-primary/40 text-white shadow-lg shadow-black/40 flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-primary/10 hover:shadow-xl active:scale-95 group"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-xl bg-[#070707] border border-[#222222] hover:border-primary/40 text-white shadow-lg shadow-black/40 flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-primary/10 hover:shadow-xl active:scale-95 group"
       >
         <TenantLogo className="w-7 h-7 opacity-90 group-hover:opacity-100 transition-opacity" />
       </button>
@@ -267,13 +267,13 @@ RULES:
 
   return (
     <div className={cn(
-      "fixed z-50 bg-[#080D1A] border border-[#1E2A45] rounded-2xl shadow-2xl shadow-black/50 flex flex-col transition-all duration-300",
+      "fixed z-50 bg-[#070707] border border-[#222222] rounded-2xl shadow-2xl shadow-black/50 flex flex-col transition-all duration-300",
       isExpanded
         ? "bottom-4 right-4 left-4 top-4 md:left-auto md:w-[700px] md:top-4"
         : "bottom-6 right-6 w-[420px] h-[600px]"
     )}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E2A45]">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#222222]">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
             <Bot className="w-4 h-4 text-secondary" />
@@ -286,13 +286,13 @@ RULES:
         <div className="flex items-center gap-1">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-2 rounded-lg hover:bg-[#121C35] text-[#5A6B88] hover:text-white transition-colors"
+            className="p-2 rounded-lg hover:bg-[#1A1A1A] text-[#666666] hover:text-white transition-colors"
           >
             {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 rounded-lg hover:bg-[#121C35] text-[#5A6B88] hover:text-white transition-colors"
+            className="p-2 rounded-lg hover:bg-[#1A1A1A] text-[#666666] hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -315,7 +315,7 @@ RULES:
             <div className={cn(
               "max-w-[85%] rounded-xl px-4 py-3 text-sm leading-relaxed",
               msg.role === 'assistant'
-                ? "bg-[#0F1829] text-[#CBD2DF] border border-[#1E2A45]"
+                ? "bg-[#0F1829] text-[#D4D4D4] border border-[#222222]"
                 : "bg-sky-500/10 text-sky-100 border border-sky-500/20"
             )}>
               <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ 
@@ -332,14 +332,14 @@ RULES:
             <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center flex-shrink-0">
               <Bot className="w-3.5 h-3.5 text-secondary" />
             </div>
-            <div className="bg-[#0F1829] border border-[#1E2A45] rounded-xl px-4 py-3">
+            <div className="bg-[#0F1829] border border-[#222222] rounded-xl px-4 py-3">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
                   <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
                   <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
                   <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
-                <span className="text-xs text-[#5A6B88]">Analyzing portfolio data...</span>
+                <span className="text-xs text-[#666666]">Analyzing portfolio data...</span>
               </div>
             </div>
           </div>
@@ -348,13 +348,13 @@ RULES:
         {/* Suggestions — show only after welcome message */}
         {messages.length === 1 && (
           <div className="space-y-2 pt-2">
-            <p className="text-[11px] text-[#5A6B88] uppercase tracking-wider font-medium">Try asking</p>
+            <p className="text-[11px] text-[#666666] uppercase tracking-wider font-medium">Try asking</p>
             <div className="flex flex-wrap gap-2">
               {SUGGESTED_QUERIES.slice(0, 4).map((q) => (
                 <button
                   key={q}
                   onClick={() => handleSuggestion(q)}
-                  className="text-xs px-3 py-1.5 rounded-lg bg-[#121C35] border border-[#1E2A45] text-[#7A8BA8] hover:text-white hover:border-primary/30 transition-colors text-left"
+                  className="text-xs px-3 py-1.5 rounded-lg bg-[#1A1A1A] border border-[#222222] text-[#888888] hover:text-white hover:border-primary/30 transition-colors text-left"
                 >
                   {q}
                 </button>
@@ -368,7 +368,7 @@ RULES:
 
       {/* Input */}
       <div className="px-4 pb-4 pt-2">
-        <div className="flex items-center gap-2 bg-[#0F1829] border border-[#1E2A45] rounded-xl px-4 py-2 focus-within:border-primary/40 transition-colors">
+        <div className="flex items-center gap-2 bg-[#0F1829] border border-[#222222] rounded-xl px-4 py-2 focus-within:border-primary/40 transition-colors">
           <input
             ref={inputRef}
             type="text"
@@ -376,7 +376,7 @@ RULES:
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask about your portfolio..."
-            className="flex-1 bg-transparent text-sm text-white placeholder-[#5A6B88] outline-none"
+            className="flex-1 bg-transparent text-sm text-white placeholder-[#666666] outline-none"
             disabled={isLoading}
           />
           <button
@@ -386,7 +386,7 @@ RULES:
               "p-1.5 rounded-lg transition-colors",
               input.trim() && !isLoading
                 ? "bg-primary text-[#0A0A0A] hover:bg-primary"
-                : "text-[#5A6B88]"
+                : "text-[#666666]"
             )}
           >
             <Send className="w-4 h-4" />

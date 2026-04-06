@@ -90,22 +90,22 @@ export function Breadcrumbs() {
 
   return (
     <nav className="flex items-center space-x-1 text-sm mb-6 px-1" aria-label="Breadcrumb">
-      <Home className="w-3.5 h-3.5 text-[#5A6B88]" />
+      <Home className="w-3.5 h-3.5 text-[#666666]" />
       
       {breadcrumbs.map((item, index) => (
         <div key={index} className="flex items-center space-x-1">
-          <ChevronRight className="w-3.5 h-3.5 text-[#5A6B88] flex-shrink-0" />
+          <ChevronRight className="w-3.5 h-3.5 text-[#666666] flex-shrink-0" />
           
           {item.href && !item.active ? (
             <Link
               to={item.href}
-              className="text-[#7A8BA8] hover:text-secondary transition-colors font-medium truncate max-w-[200px]"
+              className="text-[#888888] hover:text-secondary transition-colors font-medium truncate max-w-[200px]"
             >
               {item.label}
             </Link>
           ) : (
             <span className={`font-medium truncate max-w-[200px] ${
-              item.active ? 'text-white' : 'text-[#7A8BA8]'
+              item.active ? 'text-white' : 'text-[#888888]'
             }`}>
               {item.label}
             </span>

@@ -2,7 +2,8 @@
 -- Run in Supabase SQL editor or via CLI migration
 
 INSERT INTO storage.buckets (id, name, public)
-VALUES ('tenant-logos', 'tenant-logos', true);
+VALUES ('tenant-logos', 'tenant-logos', true)
+ON CONFLICT (id) DO NOTHING;
 
 -- Allow authenticated users to upload to their tenant's folder
 CREATE POLICY "Tenant owners can upload logos"

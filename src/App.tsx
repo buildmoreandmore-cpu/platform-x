@@ -15,6 +15,7 @@ import { MarketingLayout } from './components/marketing/MarketingLayout';
 // Marketing pages (eager — small, SEO-critical)
 import { Home } from './pages/marketing/Home';
 import { Services } from './pages/marketing/Services';
+import { CaseStudies } from './pages/marketing/CaseStudies';
 import { HowItWorks } from './pages/marketing/HowItWorks';
 import { Contact } from './pages/marketing/Contact';
 
@@ -45,6 +46,7 @@ const Drawings = lazy(() => import('./pages/Drawings').then(m => ({ default: m.D
 const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.Settings })));
 const ClientPortal = lazy(() => import('./pages/ClientPortal').then(m => ({ default: m.ClientPortal })));
 const SuperAdmin = lazy(() => import('./pages/SuperAdmin').then(m => ({ default: m.SuperAdmin })));
+const Demo = lazy(() => import('./pages/Demo').then(m => ({ default: m.Demo })));
 
 export default function App() {
   useEffect(() => {
@@ -59,6 +61,7 @@ export default function App() {
         <Route element={<MarketingLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
@@ -68,6 +71,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/demo" element={<Suspense fallback={<PageSkeleton />}><Demo /></Suspense>} />
 
         {/* Internal team platform (protected) */}
         <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>

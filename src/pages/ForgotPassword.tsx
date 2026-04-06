@@ -63,7 +63,7 @@ export function ForgotPassword() {
 
             <button
               onClick={() => navigate('/login')}
-              className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#00ff88] transition-colors flex items-center justify-center gap-2"
             >
               <Icon icon="solar:arrow-left-bold" className="w-4 h-4" />
               Back to Sign In
@@ -118,7 +118,7 @@ export function ForgotPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#00ff88] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

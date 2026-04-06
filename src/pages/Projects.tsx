@@ -54,7 +54,7 @@ const TYPE_BADGE_STYLES: Record<string, string> = {
 const STATUS_BADGE_STYLES: Record<string, string> = {
   'Active': 'bg-secondary/10 text-secondary border-secondary/20',
   'Complete': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  'Archived': 'bg-[#5A6B88]/10 text-[#5A6B88] border-[#5A6B88]/20',
+  'Archived': 'bg-[#666666]/10 text-[#666666] border-[#666666]/20',
 };
 
 export function Projects() {
@@ -131,11 +131,11 @@ export function Projects() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-8 py-6">
+      <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-8 py-6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Projects</h1>
-            <p className="text-sm text-[#7A8BA8] mt-1">Manage projects across all service lines and phases.</p>
+            <p className="text-sm text-[#888888] mt-1">Manage projects across all service lines and phases.</p>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -147,7 +147,7 @@ export function Projects() {
             </button>
             <button
               onClick={() => { setFormStep('type'); setShowNewProject(true); }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] transition-colors"
             >
               <Plus className="w-4 h-4" />
               New Project
@@ -167,7 +167,7 @@ export function Projects() {
 
         {/* Status filter pills */}
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs text-[#5A6B88] font-medium uppercase tracking-wider w-14">Status</span>
+          <span className="text-xs text-[#666666] font-medium uppercase tracking-wider w-14">Status</span>
           <div className="flex gap-1.5 flex-wrap">
             {STATUS_OPTIONS.map(opt => (
               <button
@@ -177,7 +177,7 @@ export function Projects() {
                   "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                   statusFilter === opt
                     ? "bg-primary/20 text-secondary border-primary/40"
-                    : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
+                    : "bg-[#222222] text-[#888888] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
                 )}
               >
                 {opt}
@@ -188,7 +188,7 @@ export function Projects() {
 
         {/* Type filter pills */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#5A6B88] font-medium uppercase tracking-wider w-14">Type</span>
+          <span className="text-xs text-[#666666] font-medium uppercase tracking-wider w-14">Type</span>
           <div className="flex gap-1.5 flex-wrap">
             {TYPE_OPTIONS.map(opt => (
               <button
@@ -198,7 +198,7 @@ export function Projects() {
                   "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
                   typeFilter === opt
                     ? "bg-primary/20 text-secondary border-primary/40"
-                    : "bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
+                    : "bg-[#222222] text-[#888888] border-[#2A3A5C] hover:text-white hover:bg-[#2A3A5C]"
                 )}
               >
                 {opt}
@@ -228,19 +228,19 @@ export function Projects() {
               <div
                 key={project.id}
                 onClick={() => navigate(`/app/projects/${project.id}`)}
-                className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col"
+                className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6 hover:border-primary/50 transition-colors cursor-pointer group flex flex-col"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#1E2A45] rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <div className="w-10 h-10 bg-[#222222] rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <FolderOpen className="w-5 h-5 text-neutral-400 group-hover:text-secondary transition-colors" />
                   </div>
                   <div className="flex items-center gap-2 flex-wrap justify-end">
                     {projType && (
-                      <span className={cn("px-2 py-0.5 rounded text-[10px] font-medium border", TYPE_BADGE_STYLES[projType] || 'bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]')}>
+                      <span className={cn("px-2 py-0.5 rounded text-[10px] font-medium border", TYPE_BADGE_STYLES[projType] || 'bg-[#222222] text-[#888888] border-[#2A3A5C]')}>
                         {projType}
                       </span>
                     )}
-                    <span className={cn("px-2 py-0.5 rounded text-[10px] font-medium border", STATUS_BADGE_STYLES[projStatus] || 'bg-[#1E2A45] text-[#7A8BA8] border-[#2A3A5C]')}>
+                    <span className={cn("px-2 py-0.5 rounded text-[10px] font-medium border", STATUS_BADGE_STYLES[projStatus] || 'bg-[#222222] text-[#888888] border-[#2A3A5C]')}>
                       {projStatus}
                     </span>
                     <span className={cn(
@@ -255,16 +255,16 @@ export function Projects() {
                 </div>
 
                 <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-secondary transition-colors">{project.name}</h3>
-                <p className="text-sm text-[#7A8BA8] mb-4">{org?.name}</p>
+                <p className="text-sm text-[#888888] mb-4">{org?.name}</p>
 
-                <div className="mt-auto pt-4 border-t border-[#1E2A45] space-y-3">
+                <div className="mt-auto pt-4 border-t border-[#222222] space-y-3">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1">ESCO</span>
+                      <span className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1">ESCO</span>
                       <span className="text-sm text-[#9AA5B8]">{project.esco}</span>
                     </div>
                     <div>
-                      <span className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1">Value</span>
+                      <span className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1">Value</span>
                       <span className="text-sm text-[#9AA5B8] font-mono">${(project.value / 1000000).toFixed(1)}M</span>
                     </div>
                   </div>
@@ -284,7 +284,7 @@ export function Projects() {
                           "px-1.5 py-0.5 rounded text-[10px] font-medium border",
                           item.has
                             ? "bg-secondary/10 text-secondary border-secondary/20"
-                            : "bg-[#1E2A45] text-[#3A4B68] border-[#2A3A5C]"
+                            : "bg-[#222222] text-[#3A4B68] border-[#2A3A5C]"
                         )}
                         title={item.has ? `${item.label}: data present` : `${item.label}: no data`}
                       >
@@ -309,11 +309,11 @@ export function Projects() {
       {showNewProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/60" onClick={resetForm} />
-          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+          <div className="relative bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#222222]">
               <div className="flex items-center gap-2">
                 {formStep === 'details' && (
-                  <button onClick={() => setFormStep('type')} className="text-[#5A6B88] hover:text-white mr-1">
+                  <button onClick={() => setFormStep('type')} className="text-[#666666] hover:text-white mr-1">
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                 )}
@@ -321,12 +321,12 @@ export function Projects() {
                   {formStep === 'type' ? 'Choose Project Type' : 'Project Details'}
                 </h2>
               </div>
-              <button onClick={resetForm} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+              <button onClick={resetForm} className="text-[#666666] hover:text-white"><X className="w-5 h-5" /></button>
             </div>
 
             {formStep === 'type' ? (
               <div className="px-6 py-5 space-y-3">
-                <p className="text-sm text-[#7A8BA8] mb-4">Select the project type to get started.</p>
+                <p className="text-sm text-[#888888] mb-4">Select the project type to get started.</p>
                 {PROJECT_TYPE_CARDS.map(card => (
                   <button
                     key={card.type}
@@ -340,7 +340,7 @@ export function Projects() {
                       <div className={cn("w-2.5 h-2.5 rounded-full flex-shrink-0", card.dotColor)} />
                       <div>
                         <p className={cn("text-sm font-semibold", card.iconColor)}>{card.label}</p>
-                        <p className="text-xs text-[#7A8BA8] mt-0.5">{card.description}</p>
+                        <p className="text-xs text-[#888888] mt-0.5">{card.description}</p>
                       </div>
                     </div>
                   </button>
@@ -357,13 +357,13 @@ export function Projects() {
 
                 {/* Project Name — always required */}
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Project Name <span className="text-red-400">*</span></label>
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Project Name <span className="text-red-400">*</span></label>
                   <input
                     type="text"
                     value={newProject.name}
                     onChange={e => setNewProject(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="e.g. Fort Worth ISD ESPC"
-                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
 
@@ -371,23 +371,23 @@ export function Projects() {
                 {newProject.projectType === 'ESPC' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">ESCO Partner</label>
-                      <input type="text" value={newProject.esco} onChange={e => setNewProject(prev => ({ ...prev, esco: e.target.value }))} placeholder="e.g. Trane" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">ESCO Partner</label>
+                      <input type="text" value={newProject.esco} onChange={e => setNewProject(prev => ({ ...prev, esco: e.target.value }))} placeholder="e.g. Trane" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Lead Engineer</label>
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                        <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                        <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Phase</label>
+                        <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                           {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Contract Value ($)</label>
-                        <input type="number" value={newProject.value} onChange={e => setNewProject(prev => ({ ...prev, value: e.target.value }))} placeholder="e.g. 5000000" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                        <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Contract Value ($)</label>
+                        <input type="number" value={newProject.value} onChange={e => setNewProject(prev => ({ ...prev, value: e.target.value }))} placeholder="e.g. 5000000" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                       </div>
                     </div>
                   </>
@@ -397,12 +397,12 @@ export function Projects() {
                 {newProject.projectType === 'Energy Audit' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Lead Engineer</label>
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">ASHRAE Level</label>
-                      <select value={newProject.ashraeLevel} onChange={e => setNewProject(prev => ({ ...prev, ashraeLevel: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">ASHRAE Level</label>
+                      <select value={newProject.ashraeLevel} onChange={e => setNewProject(prev => ({ ...prev, ashraeLevel: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         <option value="">Select level...</option>
                         <option value="Level I — Walk-Through">Level I — Walk-Through</option>
                         <option value="Level II — Energy Survey">Level II — Energy Survey</option>
@@ -410,8 +410,8 @@ export function Projects() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Phase</label>
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -422,12 +422,12 @@ export function Projects() {
                 {newProject.projectType === 'Energy Program Management' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Program Manager</label>
-                      <input type="text" value={newProject.pm} onChange={e => setNewProject(prev => ({ ...prev, pm: e.target.value }))} placeholder="e.g. John Doe" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Program Manager</label>
+                      <input type="text" value={newProject.pm} onChange={e => setNewProject(prev => ({ ...prev, pm: e.target.value }))} placeholder="e.g. John Doe" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Phase</label>
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -438,12 +438,12 @@ export function Projects() {
                 {newProject.projectType === 'EV Planning' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Lead Engineer</label>
-                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Lead Engineer</label>
+                      <input type="text" value={newProject.engineer} onChange={e => setNewProject(prev => ({ ...prev, engineer: e.target.value }))} placeholder="e.g. Jane Smith" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Phase</label>
-                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                      <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Phase</label>
+                      <select value={newProject.phase} onChange={e => setNewProject(prev => ({ ...prev, phase: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                         {['Prospect','Audit','IGEA','RFP','Contract','Construction','M&V','Closeout'].map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
                     </div>
@@ -452,8 +452,8 @@ export function Projects() {
 
                 {/* Status — all types */}
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Status</label>
-                  <select value={newProject.status} onChange={e => setNewProject(prev => ({ ...prev, status: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Status</label>
+                  <select value={newProject.status} onChange={e => setNewProject(prev => ({ ...prev, status: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="Active">Active</option>
                     <option value="Complete">Complete</option>
                     <option value="Archived">Archived</option>
@@ -463,12 +463,12 @@ export function Projects() {
             )}
 
             {formStep === 'details' && (
-              <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
-                <button onClick={() => setFormStep('type')} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Back</button>
+              <div className="px-6 py-4 border-t border-[#222222] flex justify-end gap-3">
+                <button onClick={() => setFormStep('type')} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Back</button>
                 <button
                   disabled={!newProject.name.trim()}
                   onClick={handleCreate}
-                  className="px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
+                  className="px-4 py-2 bg-[#00ff88] rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] disabled:opacity-40"
                 >
                   Create Project
                 </button>

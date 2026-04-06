@@ -96,7 +96,7 @@ export function ClientPortal() {
   // Show loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0B1120] text-white">
+      <div className="flex items-center justify-center min-h-screen bg-[#0A0A0A] text-white">
         <div className="text-center">
           <Icon icon="svg-spinners:ring-resize" className="w-8 h-8 text-primary mx-auto mb-4" />
           <p className="text-sm text-white/60">Loading your projects...</p>
@@ -108,15 +108,15 @@ export function ClientPortal() {
   // Show no access message if no projects
   if (clientProjects.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0B1120] text-white">
+      <div className="flex items-center justify-center min-h-screen bg-[#0A0A0A] text-white">
         <div className="text-center max-w-md">
           <Icon icon="solar:shield-cross-bold-duotone" className="w-16 h-16 text-amber-400 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">No Project Access</h2>
-          <p className="text-[#7A8BA8] text-sm mb-4">
+          <p className="text-[#888888] text-sm mb-4">
             You don't have access to any projects yet. Please contact your project administrator to request access.
           </p>
           {userEmail && (
-            <p className="text-xs text-[#5A6B88] bg-[#121C35] px-3 py-2 rounded-lg border border-[#1E2A45]">
+            <p className="text-xs text-[#666666] bg-[#1A1A1A] px-3 py-2 rounded-lg border border-[#222222]">
               Logged in as: {userEmail}
             </p>
           )}

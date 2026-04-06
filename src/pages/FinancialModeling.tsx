@@ -72,14 +72,14 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight inline-flex items-center gap-3">
                 Financial Modeling & ESPC Structuring
                 {projectId && <FreshnessBadge projectId={projectId} module="Financial" showTimestamp />}
               </h1>
-              <p className="text-sm text-[#7A8BA8] mt-1">Build ECM bundles, model cash flows, and analyze guarantee risk.</p>
+              <p className="text-sm text-[#888888] mt-1">Build ECM bundles, model cash flows, and analyze guarantee risk.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
@@ -105,7 +105,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                 <Layers className="w-4 h-4" />
                 Import Workbook
               </button>
-              <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#C9A84C] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors">
+              <button onClick={() => setShowEcmModal(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] transition-colors">
                 <Plus className="w-4 h-4" />
                 Add ECM
               </button>
@@ -122,7 +122,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                 onClick={() => setSubTab(t.id as any)}
                 className={cn(
                   'pb-2 text-sm font-medium border-b-2 transition-colors',
-                  subTab === t.id ? 'border-emerald-500 text-emerald-600' : 'border-transparent text-[#7A8BA8] hover:text-white'
+                  subTab === t.id ? 'border-emerald-500 text-emerald-600' : 'border-transparent text-[#888888] hover:text-white'
                 )}
               >
                 {t.label}
@@ -135,17 +135,17 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
       <div className="flex-1 overflow-y-auto p-3 md:p-8 max-w-7xl mx-auto w-full space-y-8">
         {subTab === 'ecm' && (<>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="lg:col-span-2 bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">ECM Bundle Builder</h3>
               <div className="flex items-center gap-4 text-sm">
-                <span className="text-[#7A8BA8]">Total Cost: <span className="text-white font-mono">${totalCost.toLocaleString()}</span></span>
-                <span className="text-[#7A8BA8]">Total Savings: <span className="text-emerald-600 font-mono">${totalSavings.toLocaleString()}/yr</span></span>
+                <span className="text-[#888888]">Total Cost: <span className="text-white font-mono">${totalCost.toLocaleString()}</span></span>
+                <span className="text-[#888888]">Total Savings: <span className="text-emerald-600 font-mono">${totalSavings.toLocaleString()}/yr</span></span>
               </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                   <tr>
                     <th className="px-6 py-4 font-medium">ECM</th>
                     <th className="px-6 py-4 font-medium">Category</th>
@@ -154,17 +154,17 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                     <th className="px-6 py-4 font-medium text-right">Payback</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {projectEcms.map((ecm) => (
                     <tr key={ecm.id} className="hover:bg-[#1A2544] transition-colors">
                       <td className="px-6 py-4 font-medium text-white">
                         <div className="flex flex-col">
                           <span>{ecm.number}</span>
-                          <span className="text-xs text-[#7A8BA8] font-normal">{ecm.description}</span>
+                          <span className="text-xs text-[#888888] font-normal">{ecm.description}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-[#9AA5B8]">
-                        <span className="px-2.5 py-1 rounded bg-[#1E2A45] text-xs font-medium border border-[#2A3A5C]">
+                        <span className="px-2.5 py-1 rounded bg-[#222222] text-xs font-medium border border-[#2A3A5C]">
                           {ecm.category}
                         </span>
                       </td>
@@ -181,7 +181,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                         <td className="px-2 py-4">
                           <button
                             onClick={async () => { if (await confirm('Delete ECM?', 'This action cannot be undone.')) { deleteItem('ecms', ecm.id); addToast('ECM deleted'); } }}
-                            className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                            className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                             title="Delete imported row"
                           >
                             <X className="w-3.5 h-3.5" />
@@ -195,12 +195,12 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6 flex flex-col">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6 flex flex-col">
             <h3 className="text-sm font-semibold text-white mb-6">Financial Assumptions</h3>
             <div className="space-y-6 flex-1">
               <div>
                 <div className="flex justify-between mb-2">
-                  <label className="text-sm font-medium text-[#7A8BA8]">Contract Term (Years)</label>
+                  <label className="text-sm font-medium text-[#888888]">Contract Term (Years)</label>
                   <span className="text-sm text-white font-mono">{term}</span>
                 </div>
                 <input 
@@ -209,13 +209,13 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                   max="25" 
                   value={term} 
                   onChange={(e) => setTerm(parseInt(e.target.value))}
-                  className="w-full h-2 bg-[#1E2A45] rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-2 bg-[#222222] rounded-lg appearance-none cursor-pointer accent-emerald-500"
                 />
               </div>
               
               <div>
                 <div className="flex justify-between mb-2">
-                  <label className="text-sm font-medium text-[#7A8BA8]">Interest Rate (%)</label>
+                  <label className="text-sm font-medium text-[#888888]">Interest Rate (%)</label>
                   <span className="text-sm text-white font-mono">{interestRate.toFixed(2)}%</span>
                 </div>
                 <input 
@@ -225,13 +225,13 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                   step="0.1"
                   value={interestRate} 
                   onChange={(e) => setInterestRate(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-[#1E2A45] rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-2 bg-[#222222] rounded-lg appearance-none cursor-pointer accent-emerald-500"
                 />
               </div>
 
               <div>
                 <div className="flex justify-between mb-2">
-                  <label className="text-sm font-medium text-[#7A8BA8]">Electric Escalation (%)</label>
+                  <label className="text-sm font-medium text-[#888888]">Electric Escalation (%)</label>
                   <span className="text-sm text-white font-mono">{elecEscalation.toFixed(2)}%</span>
                 </div>
                 <input 
@@ -241,7 +241,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                   step="0.1"
                   value={elecEscalation} 
                   onChange={(e) => setElecEscalation(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-[#1E2A45] rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-2 bg-[#222222] rounded-lg appearance-none cursor-pointer accent-emerald-500"
                 />
                 {elecEscalation > 3.5 && (
                   <div className="mt-2 flex items-start gap-2 text-xs text-amber-500 bg-amber-500/10 p-2 rounded border border-amber-500/20">
@@ -252,15 +252,15 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
               </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-[#1E2A45] grid grid-cols-2 gap-4">
+            <div className="mt-6 pt-6 border-t border-[#222222] grid grid-cols-2 gap-4">
               <div>
-                <span className="block text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">NPV (5%)</span>
+                <span className="block text-xs text-[#888888] uppercase tracking-wider mb-1">NPV (5%)</span>
                 <span className={`text-lg font-bold font-mono ${npv >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
                   ${Math.round(npv).toLocaleString()}
                 </span>
               </div>
               <div>
-                <span className="block text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">DSCR</span>
+                <span className="block text-xs text-[#888888] uppercase tracking-wider mb-1">DSCR</span>
                 <span className={`text-lg font-bold font-mono ${parseFloat(dscr.toString()) >= 1.0 ? 'text-emerald-600' : 'text-red-600'}`}>
                   {dscr}x
                 </span>
@@ -269,7 +269,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
           </div>
         </div>
 
-        <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+        <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
           <h3 className="text-sm font-semibold text-white mb-6">Cash Flow Projection</h3>
           <div className="h-64 flex items-end gap-1">
             {cashFlows.map((cf) => {
@@ -286,7 +286,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                       Year {cf.year}: ${Math.round(cf.net).toLocaleString()}
                     </div>
                   </div>
-                  <span className="text-[10px] text-[#7A8BA8] font-mono">{cf.year}</span>
+                  <span className="text-[10px] text-[#888888] font-mono">{cf.year}</span>
                 </div>
               );
             })}
@@ -317,38 +317,38 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
             <div className="space-y-6">
               {/* Summary stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Total Proposed</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Total Proposed</p>
                   <p className="text-xl font-bold text-white font-mono">${totalEsco.toLocaleString()}</p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Benchmark Mid</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Benchmark Mid</p>
                   <p className="text-xl font-bold text-white font-mono">${totalBenchMid.toLocaleString()}</p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Overall Variance</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Overall Variance</p>
                   <p className={cn('text-xl font-bold font-mono', overallVariance > 10 ? 'text-red-600' : overallVariance > 5 ? 'text-amber-600' : 'text-emerald-600')}>
                     {overallVariance > 0 ? '+' : ''}{overallVariance.toFixed(1)}%
                   </p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Flagged Items</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Flagged Items</p>
                   <p className={cn('text-xl font-bold', flagged > 0 ? 'text-amber-600' : 'text-emerald-600')}>{flagged}</p>
                 </div>
               </div>
 
               {/* Pricing table */}
-              <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+              <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-[#222222] flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-white">Line Item Pricing Review</h3>
-                  <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
+                  <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#222222] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                     <Icon icon="solar:export-bold-duotone" className="w-3.5 h-3.5" />
                     Export Pricing Review
                   </button>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                    <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                       <tr>
                         <th className="px-6 py-4 font-medium">ECM Description</th>
                         <th className="px-6 py-4 font-medium text-right">ESCO Proposed</th>
@@ -359,7 +359,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                         <th className="px-6 py-4 font-medium">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1E2A45]">
+                    <tbody className="divide-y divide-[#222222]">
                       {items.map(item => {
                         const status = getStatus(item);
                         const variance = ((item.escoCost - item.benchMid) / item.benchMid) * 100;
@@ -368,7 +368,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                           <tr key={item.id} className="hover:bg-[#1A2544] transition-colors">
                             <td className="px-6 py-4">
                               <p className="font-medium text-white">{item.description}</p>
-                              <p className="text-xs text-[#5A6B88] mt-1 italic">{item.internalNote}</p>
+                              <p className="text-xs text-[#666666] mt-1 italic">{item.internalNote}</p>
                             </td>
                             <td className="px-6 py-4 text-right font-mono text-white">
                               {pricingLock ? (
@@ -380,9 +380,9 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                                 <EditableField value={item.escoCost} entityType="pricingReview" entityId={item.id} field="escoCost" projectId={selectedProjectId} type="number" formatter={(v) => `$${Number(v).toLocaleString()}`} />
                               )}
                             </td>
-                            <td className="px-6 py-4 text-right font-mono text-[#7A8BA8]">${item.benchLow.toLocaleString()}</td>
-                            <td className="px-6 py-4 text-right font-mono text-[#7A8BA8]">${item.benchMid.toLocaleString()}</td>
-                            <td className="px-6 py-4 text-right font-mono text-[#7A8BA8]">${item.benchHigh.toLocaleString()}</td>
+                            <td className="px-6 py-4 text-right font-mono text-[#888888]">${item.benchLow.toLocaleString()}</td>
+                            <td className="px-6 py-4 text-right font-mono text-[#888888]">${item.benchMid.toLocaleString()}</td>
+                            <td className="px-6 py-4 text-right font-mono text-[#888888]">${item.benchHigh.toLocaleString()}</td>
                             <td className={cn('px-6 py-4 text-right font-mono', variance > 15 ? 'text-red-600' : variance > 5 ? 'text-amber-600' : 'text-emerald-600')}>
                               {variance > 0 ? '+' : ''}{variance.toFixed(1)}%
                             </td>
@@ -399,7 +399,7 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
                         );
                       })}
                       {items.length === 0 && (
-                        <tr><td colSpan={7} className="px-6 py-8 text-center text-[#7A8BA8]">No pricing review data for this project.</td></tr>
+                        <tr><td colSpan={7} className="px-6 py-8 text-center text-[#888888]">No pricing review data for this project.</td></tr>
                       )}
                     </tbody>
                   </table>
@@ -413,26 +413,26 @@ export function FinancialModeling({ projectId }: { projectId?: string }) {
       {/* ─── ADD ECM MODAL ─── */}
       {showEcmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add ECM</h3><button onClick={() => setShowEcmModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add ECM</h3><button onClick={() => setShowEcmModal(false)} className="text-[#888888] hover:text-white"><X className="w-4 h-4" /></button></div>
             <div>
-              <input placeholder="ECM Number (e.g. ECM-005)" value={ecmForm.number} onChange={e => { setEcmForm(f => ({ ...f, number: e.target.value })); setErrors(e2 => ({ ...e2, ecmNum: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.ecmNum ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <input placeholder="ECM Number (e.g. ECM-005)" value={ecmForm.number} onChange={e => { setEcmForm(f => ({ ...f, number: e.target.value })); setErrors(e2 => ({ ...e2, ecmNum: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.ecmNum ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.ecmNum && <p className="text-[10px] text-red-400 mt-1">{errors.ecmNum}</p>}
             </div>
             <div>
-              <input placeholder="Description" value={ecmForm.description} onChange={e => { setEcmForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, ecmDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.ecmDesc ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <input placeholder="Description" value={ecmForm.description} onChange={e => { setEcmForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, ecmDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.ecmDesc ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.ecmDesc && <p className="text-[10px] text-red-400 mt-1">{errors.ecmDesc}</p>}
             </div>
-            <select value={ecmForm.category} onChange={e => setEcmForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={ecmForm.category} onChange={e => setEcmForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               <option>HVAC</option><option>Lighting</option><option>Building Envelope</option><option>Controls</option><option>Water</option><option>Renewable</option>
             </select>
             <div className="grid grid-cols-2 gap-3">
-              <input type="number" placeholder="Cost ($)" value={ecmForm.cost} onChange={e => setEcmForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
-              <input type="number" placeholder="Annual Savings ($)" value={ecmForm.savings} onChange={e => setEcmForm(f => ({ ...f, savings: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+              <input type="number" placeholder="Cost ($)" value={ecmForm.cost} onChange={e => setEcmForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
+              <input type="number" placeholder="Annual Savings ($)" value={ecmForm.savings} onChange={e => setEcmForm(f => ({ ...f, savings: e.target.value }))} className="bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowEcmModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!ecmForm.number) e.ecmNum = 'ECM number is required'; if (!ecmForm.description) e.ecmDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addECM({ ...ecmForm, cost: Number(ecmForm.cost) || 0, savings: Number(ecmForm.savings) || 0, life: 15, projectId: selectedProjectId }); setEcmForm({ number: '', description: '', category: 'HVAC', cost: '', savings: '' }); setShowEcmModal(false); setErrors({}); addToast('ECM added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
+              <button onClick={() => setShowEcmModal(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!ecmForm.number) e.ecmNum = 'ECM number is required'; if (!ecmForm.description) e.ecmDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addECM({ ...ecmForm, cost: Number(ecmForm.cost) || 0, savings: Number(ecmForm.savings) || 0, life: 15, projectId: selectedProjectId }); setEcmForm({ number: '', description: '', category: 'HVAC', cost: '', savings: '' }); setShowEcmModal(false); setErrors({}); addToast('ECM added'); }} className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">Add</button>
             </div>
           </div>
         </div>

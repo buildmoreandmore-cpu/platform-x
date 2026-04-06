@@ -30,7 +30,7 @@ export function Landing() {
         <div className="relative mb-6">
           <img src="/logo-icon.svg" alt="Vantage" className="w-20 h-20 mx-auto" />
         </div>
-        <h1 className="text-4xl md:text-5xl tracking-tight mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="text-4xl md:text-5xl tracking-tight mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>
           <span className="text-white font-bold">{name}</span>
         </h1>
 
@@ -42,7 +42,7 @@ export function Landing() {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <button
             onClick={() => navigate('/login?redirect=/app')}
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-[#C9A84C] text-[#0A0A0A] text-sm font-semibold hover:bg-[#D4B85E] transition-colors duration-200 min-w-[200px] justify-center"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-[#00ff88] text-[#0A0A0A] text-sm font-semibold hover:bg-[#00cc6a] transition-colors duration-200 min-w-[200px] justify-center"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             <Icon icon="solar:login-3-bold-duotone" className="w-5 h-5" />
@@ -50,7 +50,7 @@ export function Landing() {
           </button>
           <button
             onClick={() => navigate('/login?redirect=/client')}
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent text-[#F5F5F0] text-sm font-semibold border border-[#F5F5F0]/20 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all duration-200 min-w-[200px] justify-center"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent text-[#F5F5F0] text-sm font-semibold border border-[#F5F5F0]/20 hover:border-[#00ff88] hover:text-[#00ff88] transition-all duration-200 min-w-[200px] justify-center"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             <Icon icon="solar:monitor-bold-duotone" className="w-5 h-5" />

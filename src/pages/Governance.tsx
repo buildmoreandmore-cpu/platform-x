@@ -58,11 +58,11 @@ export function Governance({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <h1 className="text-lg md:text-xl md:text-2xl font-bold text-white tracking-tight">Owner's Rep Governance</h1>
-              <p className="text-sm text-[#7A8BA8] mt-1">Track project phases, milestones, documents, and risks.</p>
+              <p className="text-sm text-[#888888] mt-1">Track project phases, milestones, documents, and risks.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <ExportButton
@@ -79,7 +79,7 @@ export function Governance({ projectId }: { projectId?: string }) {
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-[#1E2A45] border border-[#2A3A5C] text-[#CBD2DF] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5"
+                className="bg-[#222222] border border-[#2A3A5C] text-[#D4D4D4] text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-2.5"
               >
                 {projects.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
@@ -95,7 +95,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="flex space-x-6 border-b border-[#1E2A45] overflow-x-auto">
+          <div className="flex space-x-6 border-b border-[#222222] overflow-x-auto">
             {[
               { id: 'pipeline', label: 'Pipeline', icon: GitPullRequest },
               { id: 'milestones', label: 'Milestones', icon: Calendar },
@@ -111,7 +111,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                 "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
                 activeTab === tab.id 
                   ? "border-emerald-500 text-emerald-600"
-                  : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                  : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -129,10 +129,10 @@ export function Governance({ projectId }: { projectId?: string }) {
               {phases.map(phase => {
                 const phaseProjects = projects.filter(p => p.phase === phase);
                 return (
-                  <div key={phase} className="flex-shrink-0 w-80 bg-[#121C35] border border-[#1E2A45] rounded-xl flex flex-col h-[calc(100vh-250px)]">
-                    <div className="p-4 border-b border-[#1E2A45] flex items-center justify-between bg-[#0F1829] rounded-t-xl">
+                  <div key={phase} className="flex-shrink-0 w-80 bg-[#1A1A1A] border border-[#222222] rounded-xl flex flex-col h-[calc(100vh-250px)]">
+                    <div className="p-4 border-b border-[#222222] flex items-center justify-between bg-[#0F1829] rounded-t-xl">
                       <h3 className="text-sm font-semibold text-white uppercase tracking-wider">{phase}</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-[#1E2A45] text-xs font-medium text-[#7A8BA8]">
+                      <span className="px-2 py-0.5 rounded-full bg-[#222222] text-xs font-medium text-[#888888]">
                         {phaseProjects.length}
                       </span>
                     </div>
@@ -149,7 +149,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                               {project.riskScore}
                             </div>
                           </div>
-                          <div className="text-xs text-[#7A8BA8] space-y-1">
+                          <div className="text-xs text-[#888888] space-y-1">
                             <p>ESCO: <span className="text-[#9AA5B8]">{project.esco}</span></p>
                             <p>Value: <span className="text-[#9AA5B8] font-mono">${(project.value / 1000000).toFixed(1)}M</span></p>
                             <p>Lead: <span className="text-[#9AA5B8]">{project.engineer}</span></p>
@@ -165,15 +165,15 @@ export function Governance({ projectId }: { projectId?: string }) {
         )}
 
         {activeTab === 'milestones' && (
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Project Milestones</h3>
               <div className="flex items-center gap-2">
-                <div className="flex items-center bg-[#0F1829] border border-[#1E2A45] rounded-lg p-0.5">
-                  <button onClick={() => setMilestoneCalendarView(false)} className={cn("px-2.5 py-1 text-[10px] font-medium rounded-md transition-colors", !milestoneCalendarView ? "bg-[#1E2A45] text-white" : "text-[#7A8BA8] hover:text-white")}>
+                <div className="flex items-center bg-[#0F1829] border border-[#222222] rounded-lg p-0.5">
+                  <button onClick={() => setMilestoneCalendarView(false)} className={cn("px-2.5 py-1 text-[10px] font-medium rounded-md transition-colors", !milestoneCalendarView ? "bg-[#222222] text-white" : "text-[#888888] hover:text-white")}>
                     <LayoutGrid className="w-3 h-3" />
                   </button>
-                  <button onClick={() => setMilestoneCalendarView(true)} className={cn("px-2.5 py-1 text-[10px] font-medium rounded-md transition-colors", milestoneCalendarView ? "bg-[#1E2A45] text-white" : "text-[#7A8BA8] hover:text-white")}>
+                  <button onClick={() => setMilestoneCalendarView(true)} className={cn("px-2.5 py-1 text-[10px] font-medium rounded-md transition-colors", milestoneCalendarView ? "bg-[#222222] text-white" : "text-[#888888] hover:text-white")}>
                     <CalendarDays className="w-3 h-3" />
                   </button>
                 </div>
@@ -181,7 +181,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowMilestoneModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
+                <button onClick={() => setShowMilestoneModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00ff88] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#00cc6a] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Milestone
                 </button>
@@ -194,7 +194,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                   <tr>
                     <th className="px-6 py-4 font-medium">Milestone</th>
                     <th className="px-6 py-4 font-medium">Due Date</th>
@@ -203,7 +203,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                     <th className="px-6 py-4 font-medium w-10"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {milestones.filter(m => m.projectId === selectedProjectId).map((milestone) => (
                     <tr key={milestone.id} className="hover:bg-[#1A2544] transition-colors">
                       <td className="px-6 py-4 font-medium text-white">
@@ -221,7 +221,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => downloadICS(milestone.name, milestone.dueDate, `Milestone: ${milestone.name} — Assigned to: ${milestone.assignedTo}`)}
-                            className="p-1 text-[#5A6B88] hover:text-emerald-400 transition-colors"
+                            className="p-1 text-[#666666] hover:text-emerald-400 transition-colors"
                             title="Add to Calendar"
                           >
                             <CalendarPlus className="w-4 h-4" />
@@ -229,7 +229,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                           {milestone.importBatchId && (
                             <button
                               onClick={async () => { if (await confirm('Delete milestone?', 'This action cannot be undone.')) { deleteItem('milestones', milestone.id); addToast('Milestone deleted'); } }}
-                              className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                              className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                               title="Delete imported row"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -252,15 +252,15 @@ export function Governance({ projectId }: { projectId?: string }) {
         )}
 
         {activeTab === 'risks' && (
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Risk Log</h3>
               <div className="flex items-center gap-2">
                 <button onClick={() => setImportSection('risks')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowRiskModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
+                <button onClick={() => setShowRiskModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00ff88] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#00cc6a] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Log Risk
                 </button>
@@ -268,7 +268,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                   <tr>
                     <th className="px-3 py-4 w-10">
                       <input
@@ -291,7 +291,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                     <th className="px-6 py-4 font-medium">Owner</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {risks.filter(r => r.projectId === selectedProjectId).map((risk) => (
                     <tr key={risk.id} className={cn("hover:bg-[#1A2544] transition-colors", selectedRiskIds.has(risk.id) && "bg-primary/5")}>
                       <td className="px-3 py-4">
@@ -325,7 +325,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                         <td className="px-2 py-4">
                           <button
                             onClick={async () => { if (await confirm('Delete risk?', 'This action cannot be undone.')) { deleteItem('risks', risk.id); addToast('Risk deleted'); } }}
-                            className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                            className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                             title="Delete imported row"
                           >
                             <X className="w-3.5 h-3.5" />
@@ -357,15 +357,15 @@ export function Governance({ projectId }: { projectId?: string }) {
         )}
 
         {activeTab === 'co' && (
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <h3 className="text-sm font-semibold text-white">Change Orders</h3>
-                <div className="flex items-center bg-[#0F1829] rounded-lg border border-[#1E2A45] p-0.5">
-                  <button onClick={() => setCoKanbanView(false)} className={cn("px-2 py-1 rounded text-xs font-medium transition-colors", !coKanbanView ? "bg-[#1E2A45] text-white" : "text-[#5A6B88] hover:text-white")}>
+                <div className="flex items-center bg-[#0F1829] rounded-lg border border-[#222222] p-0.5">
+                  <button onClick={() => setCoKanbanView(false)} className={cn("px-2 py-1 rounded text-xs font-medium transition-colors", !coKanbanView ? "bg-[#222222] text-white" : "text-[#666666] hover:text-white")}>
                     <LayoutGrid className="w-3.5 h-3.5" />
                   </button>
-                  <button onClick={() => setCoKanbanView(true)} className={cn("px-2 py-1 rounded text-xs font-medium transition-colors", coKanbanView ? "bg-[#1E2A45] text-white" : "text-[#5A6B88] hover:text-white")}>
+                  <button onClick={() => setCoKanbanView(true)} className={cn("px-2 py-1 rounded text-xs font-medium transition-colors", coKanbanView ? "bg-[#222222] text-white" : "text-[#666666] hover:text-white")}>
                     <Columns3 className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -375,7 +375,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                   <FileSpreadsheet className="w-3.5 h-3.5" />
                   Import
                 </button>
-                <button onClick={() => setShowCOModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C9A84C] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#A68B3A] transition-colors">
+                <button onClick={() => setShowCOModal(true)} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00ff88] border border-transparent rounded-lg text-xs font-medium text-white hover:bg-[#00cc6a] transition-colors">
                   <Plus className="w-3.5 h-3.5" />
                   Add Change Order
                 </button>
@@ -402,7 +402,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                       }}
                       className={cn(
                         "bg-[#0F1829] border rounded-xl p-4 min-h-[300px] transition-colors",
-                        dragOverCol === col ? "border-primary/60 bg-primary/5" : "border-[#1E2A45]"
+                        dragOverCol === col ? "border-primary/60 bg-primary/5" : "border-[#222222]"
                       )}
                     >
                       <div className="flex items-center justify-between mb-4">
@@ -413,7 +413,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                           )} />
                           <h4 className="text-xs font-semibold text-white uppercase tracking-wider">{col}</h4>
                         </div>
-                        <span className="text-[10px] font-medium text-[#5A6B88] bg-[#1E2A45] px-1.5 py-0.5 rounded">{colOrders.length}</span>
+                        <span className="text-[10px] font-medium text-[#666666] bg-[#222222] px-1.5 py-0.5 rounded">{colOrders.length}</span>
                       </div>
                       <div className="space-y-2">
                         {colOrders.map(co => (
@@ -421,16 +421,16 @@ export function Governance({ projectId }: { projectId?: string }) {
                             key={co.id}
                             draggable
                             onDragStart={(e) => { e.dataTransfer.setData('text/plain', co.id); e.dataTransfer.effectAllowed = 'move'; }}
-                            className="bg-[#121C35] border border-[#1E2A45] rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-[#2A3A5C] transition-colors group"
+                            className="bg-[#1A1A1A] border border-[#222222] rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-[#2A3A5C] transition-colors group"
                           >
                             <div className="flex items-start gap-2">
-                              <GripVertical className="w-3.5 h-3.5 text-[#3A4B68] mt-0.5 flex-shrink-0 group-hover:text-[#5A6B88]" />
+                              <GripVertical className="w-3.5 h-3.5 text-[#3A4B68] mt-0.5 flex-shrink-0 group-hover:text-[#666666]" />
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-mono text-[10px] text-[#5A6B88]">{co.number}</span>
+                                  <span className="font-mono text-[10px] text-[#666666]">{co.number}</span>
                                 </div>
                                 <p className="text-xs font-medium text-white truncate">{co.description}</p>
-                                <div className="flex items-center gap-3 mt-2 text-[10px] text-[#5A6B88]">
+                                <div className="flex items-center gap-3 mt-2 text-[10px] text-[#666666]">
                                   <span>${co.cost.toLocaleString()}</span>
                                   <span>{co.days}d</span>
                                   <span>{co.requestedBy}</span>
@@ -440,7 +440,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                           </div>
                         ))}
                         {colOrders.length === 0 && (
-                          <div className="text-center py-8 text-[10px] text-[#5A6B88]">Drop here</div>
+                          <div className="text-center py-8 text-[10px] text-[#666666]">Drop here</div>
                         )}
                       </div>
                     </div>
@@ -450,7 +450,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                  <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                     <tr>
                       <th className="px-6 py-4 font-medium">CO #</th>
                       <th className="px-6 py-4 font-medium">Description</th>
@@ -460,7 +460,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                       <th className="px-6 py-4 font-medium">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1E2A45]">
+                  <tbody className="divide-y divide-[#222222]">
                     {changeOrders.filter(co => co.projectId === selectedProjectId).map((co) => {
                       const coLock = lockRecords.find(l => l.entityType === 'changeOrder' && l.entityId === co.id);
                       return (
@@ -507,8 +507,8 @@ export function Governance({ projectId }: { projectId?: string }) {
 
         {/* ─── SUBMITTALS TAB ─── */}
         {activeTab === 'submittals' && (
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-            <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+            <div className="p-6 border-b border-[#222222] flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white">Submittals</h3>
               <button onClick={() => setImportSection('submittals')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
                 <FileSpreadsheet className="w-3.5 h-3.5" />
@@ -517,7 +517,7 @@ export function Governance({ projectId }: { projectId?: string }) {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                   <tr>
                     <th className="px-6 py-4 font-medium">Number</th>
                     <th className="px-6 py-4 font-medium">Description</th>
@@ -525,7 +525,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                     <th className="px-6 py-4 font-medium">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2A45]">
+                <tbody className="divide-y divide-[#222222]">
                   {submittals.filter(s => s.projectId === selectedProjectId).map((s) => (
                     <tr key={s.id} className="hover:bg-[#1A2544] transition-colors">
                       <td className="px-6 py-4 font-mono text-[#9AA5B8]">{s.number}</td>
@@ -571,26 +571,26 @@ export function Governance({ projectId }: { projectId?: string }) {
             <div className="space-y-6">
               {/* Compliance summary */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Total Obligations</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Total Obligations</p>
                   <p className="text-lg md:text-xl md:text-2xl font-bold text-white">{total}</p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Completed</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Completed</p>
                   <p className="text-lg md:text-xl md:text-2xl font-bold text-emerald-600">{completed}</p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Coming Due</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Coming Due</p>
                   <p className="text-lg md:text-xl md:text-2xl font-bold text-amber-600">{comingDue}</p>
                 </div>
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-5">
-                  <p className="text-xs text-[#7A8BA8] uppercase tracking-wider mb-1">Overdue</p>
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-5">
+                  <p className="text-xs text-[#888888] uppercase tracking-wider mb-1">Overdue</p>
                   <p className={cn('text-lg md:text-xl md:text-2xl font-bold', overdue > 0 ? 'text-red-600' : 'text-emerald-600')}>{overdue}</p>
                 </div>
               </div>
 
               {/* Compliance donut */}
-              <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl p-6">
+              <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl p-6">
                 <h3 className="text-sm font-semibold text-white mb-4">Compliance Summary</h3>
                 <div className="flex items-center gap-8">
                   <div className="relative w-32 h-32 flex-shrink-0">
@@ -614,27 +614,27 @@ export function Governance({ projectId }: { projectId?: string }) {
                     <div className="flex items-center gap-2"><span className="w-3 h-3 bg-emerald-500 rounded-full" /><span className="text-[#9AA5B8]">{completed} Completed on time</span></div>
                     <div className="flex items-center gap-2"><span className="w-3 h-3 bg-amber-400 rounded-full" /><span className="text-[#9AA5B8]">{comingDue} Coming due</span></div>
                     <div className="flex items-center gap-2"><span className="w-3 h-3 bg-red-500 rounded-full" /><span className="text-[#9AA5B8]">{overdue} Overdue</span></div>
-                    <div className="flex items-center gap-2"><span className="w-3 h-3 bg-[#1E2A45] rounded-full" /><span className="text-[#9AA5B8]">{total - completed - comingDue - overdue} Not yet due</span></div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 bg-[#222222] rounded-full" /><span className="text-[#9AA5B8]">{total - completed - comingDue - overdue} Not yet due</span></div>
                   </div>
                 </div>
               </div>
 
               {/* Upcoming obligations */}
               {upcoming90.length > 0 && (
-                <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-                  <div className="p-6 border-b border-[#1E2A45]">
+                <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+                  <div className="p-6 border-b border-[#222222]">
                     <h3 className="text-sm font-semibold text-white">Upcoming & Overdue Obligations</h3>
                   </div>
-                  <div className="divide-y divide-[#1E2A45]">
+                  <div className="divide-y divide-[#222222]">
                     {upcoming90.map(o => (
                       <div key={o.id} className="px-6 py-4">
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             <p className="text-sm font-medium text-white">{o.description}</p>
-                            <p className="text-xs text-[#7A8BA8] mt-1">
+                            <p className="text-xs text-[#888888] mt-1">
                               {o.category} &middot; {o.responsibleParty} {o.dueDate ? `\u00B7 Due: ${o.dueDate}` : ''}
                             </p>
-                            <p className="text-xs text-[#5A6B88] mt-1 italic">Ref: {o.contractRef}</p>
+                            <p className="text-xs text-[#666666] mt-1 italic">Ref: {o.contractRef}</p>
                             {o.internalNote && <p className="text-xs text-amber-600 mt-1">{o.internalNote}</p>}
                           </div>
                           <span className={cn('px-2.5 py-1 rounded text-xs font-medium border flex-shrink-0',
@@ -649,8 +649,8 @@ export function Governance({ projectId }: { projectId?: string }) {
               )}
 
               {/* Full obligations table */}
-              <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+              <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-[#222222] flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-white">All Obligations</h3>
                   <div className="flex items-center gap-2">
                     <button onClick={() => setImportSection('contractObligations')} className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-lg text-xs font-medium text-primary hover:bg-primary/20 transition-colors duration-150">
@@ -662,7 +662,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                         key={c}
                         onClick={() => setCatFilter(c)}
                         className={cn('px-3 py-1.5 text-xs font-medium rounded-lg transition-colors',
-                          catFilter === c ? 'bg-emerald-50 text-emerald-700' : 'text-[#7A8BA8] hover:bg-[#1A2544]'
+                          catFilter === c ? 'bg-emerald-50 text-emerald-700' : 'text-[#888888] hover:bg-[#1A2544]'
                         )}
                       >
                         {c}
@@ -672,7 +672,7 @@ export function Governance({ projectId }: { projectId?: string }) {
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+                    <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                       <tr>
                         <th className="px-6 py-4 font-medium">Description</th>
                         <th className="px-6 py-4 font-medium">Category</th>
@@ -682,29 +682,29 @@ export function Governance({ projectId }: { projectId?: string }) {
                         <th className="px-6 py-4 font-medium">Ref</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1E2A45]">
+                    <tbody className="divide-y divide-[#222222]">
                       {filtered.map(o => (
                         <tr key={o.id} className="hover:bg-[#1A2544] transition-colors">
                           <td className="px-6 py-4">
                             <p className="font-medium text-white max-w-sm">{o.description}</p>
-                            <div className="text-[10px] text-[#5A6B88] mt-0.5">
+                            <div className="text-[10px] text-[#666666] mt-0.5">
                               <EditableField value={o.evidence || ''} entityType="contractObligation" entityId={o.id} field="evidence" projectId={selectedProjectId} />
                             </div>
                             <AuditTrailPanel entityType="contractObligation" entityId={o.id} />
                           </td>
-                          <td className="px-6 py-4"><span className="px-2.5 py-1 rounded bg-[#1E2A45] text-xs font-medium border border-[#2A3A5C]">{o.category}</span></td>
+                          <td className="px-6 py-4"><span className="px-2.5 py-1 rounded bg-[#222222] text-xs font-medium border border-[#2A3A5C]">{o.category}</span></td>
                           <td className="px-6 py-4 text-[#9AA5B8]">{o.responsibleParty}</td>
                           <td className="px-6 py-4 text-[#9AA5B8] font-mono text-xs">{o.dueDate || 'Ongoing'}</td>
                           <td className="px-6 py-4">
                             <EditableField value={o.status} entityType="contractObligation" entityId={o.id} field="status" projectId={selectedProjectId} type="select" options={['On Track', 'At Risk', 'Overdue', 'Complete']} />
                           </td>
-                          <td className="px-6 py-4 text-xs text-[#5A6B88]">
+                          <td className="px-6 py-4 text-xs text-[#666666]">
                             <div className="flex items-center gap-1">
                               {o.contractRef}
                               {o.importBatchId && (
                                 <button
                                   onClick={async () => { if (await confirm('Delete obligation?', 'This action cannot be undone.')) { deleteItem(SECTION_CONFIGS[activeTab === 'obligations' ? 'contractObligations' : 'milestones']?.storeKey || 'contractObligations', o.id); addToast('Obligation deleted'); } }}
-                                  className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                                  className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                                   title="Delete imported row"
                                 >
                                   <X className="w-3.5 h-3.5" />
@@ -729,23 +729,23 @@ export function Governance({ projectId }: { projectId?: string }) {
       {/* ─── ADD MILESTONE MODAL ─── */}
       {showMilestoneModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Milestone</h3><button onClick={() => setShowMilestoneModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Milestone</h3><button onClick={() => setShowMilestoneModal(false)} className="text-[#888888] hover:text-white"><X className="w-4 h-4" /></button></div>
             <div>
-              <input placeholder="Milestone name" value={milestoneForm.name} onChange={e => { setMilestoneForm(f => ({ ...f, name: e.target.value })); setErrors(e2 => ({ ...e2, msName: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.msName ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <input placeholder="Milestone name" value={milestoneForm.name} onChange={e => { setMilestoneForm(f => ({ ...f, name: e.target.value })); setErrors(e2 => ({ ...e2, msName: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.msName ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.msName && <p className="text-[10px] text-red-400 mt-1">{errors.msName}</p>}
             </div>
             <div>
-              <input type="date" value={milestoneForm.dueDate} onChange={e => { setMilestoneForm(f => ({ ...f, dueDate: e.target.value })); setErrors(e2 => ({ ...e2, msDue: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white ${errors.msDue ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <input type="date" value={milestoneForm.dueDate} onChange={e => { setMilestoneForm(f => ({ ...f, dueDate: e.target.value })); setErrors(e2 => ({ ...e2, msDue: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white ${errors.msDue ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.msDue && <p className="text-[10px] text-red-400 mt-1">{errors.msDue}</p>}
             </div>
-            <select value={milestoneForm.status} onChange={e => setMilestoneForm(f => ({ ...f, status: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={milestoneForm.status} onChange={e => setMilestoneForm(f => ({ ...f, status: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               <option value="pending">Pending</option><option value="in-progress">In Progress</option><option value="completed">Completed</option>
             </select>
-            <input placeholder="Assigned to" value={milestoneForm.assignedTo} onChange={e => setMilestoneForm(f => ({ ...f, assignedTo: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Assigned to" value={milestoneForm.assignedTo} onChange={e => setMilestoneForm(f => ({ ...f, assignedTo: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowMilestoneModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!milestoneForm.name) e.msName = 'Name is required'; if (!milestoneForm.dueDate) e.msDue = 'Due date is required'; if (Object.keys(e).length) { setErrors(e); return; } addMilestone({ ...milestoneForm, projectId: selectedProjectId }); setMilestoneForm({ name: '', dueDate: '', status: 'pending', assignedTo: '' }); setShowMilestoneModal(false); setErrors({}); addToast('Milestone added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
+              <button onClick={() => setShowMilestoneModal(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!milestoneForm.name) e.msName = 'Name is required'; if (!milestoneForm.dueDate) e.msDue = 'Due date is required'; if (Object.keys(e).length) { setErrors(e); return; } addMilestone({ ...milestoneForm, projectId: selectedProjectId }); setMilestoneForm({ name: '', dueDate: '', status: 'pending', assignedTo: '' }); setShowMilestoneModal(false); setErrors({}); addToast('Milestone added'); }} className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">Add</button>
             </div>
           </div>
         </div>
@@ -754,22 +754,22 @@ export function Governance({ projectId }: { projectId?: string }) {
       {/* ─── LOG RISK MODAL ─── */}
       {showRiskModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Log Risk</h3><button onClick={() => setShowRiskModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Log Risk</h3><button onClick={() => setShowRiskModal(false)} className="text-[#888888] hover:text-white"><X className="w-4 h-4" /></button></div>
             <div>
-              <textarea placeholder="Risk description" value={riskForm.description} onChange={e => { setRiskForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, riskDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] min-h-[80px] ${errors.riskDesc ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+              <textarea placeholder="Risk description" value={riskForm.description} onChange={e => { setRiskForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, riskDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] min-h-[80px] ${errors.riskDesc ? 'border-red-500' : 'border-[#222222]'}`} />
               {errors.riskDesc && <p className="text-[10px] text-red-400 mt-1">{errors.riskDesc}</p>}
             </div>
-            <select value={riskForm.category} onChange={e => setRiskForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={riskForm.category} onChange={e => setRiskForm(f => ({ ...f, category: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               <option>Schedule</option><option>Financial</option><option>Technical</option><option>Regulatory</option><option>Operational</option>
             </select>
-            <select value={riskForm.severity} onChange={e => setRiskForm(f => ({ ...f, severity: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+            <select value={riskForm.severity} onChange={e => setRiskForm(f => ({ ...f, severity: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
               <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
             </select>
-            <input placeholder="Risk owner" value={riskForm.owner} onChange={e => setRiskForm(f => ({ ...f, owner: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Risk owner" value={riskForm.owner} onChange={e => setRiskForm(f => ({ ...f, owner: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowRiskModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { if (!riskForm.description) { setErrors({ riskDesc: 'Description is required' }); return; } addRisk({ ...riskForm, projectId: selectedProjectId, status: 'Open' }); setRiskForm({ description: '', category: 'Schedule', severity: 'Medium', owner: '' }); setShowRiskModal(false); setErrors({}); addToast('Risk logged'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
+              <button onClick={() => setShowRiskModal(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
+              <button onClick={() => { if (!riskForm.description) { setErrors({ riskDesc: 'Description is required' }); return; } addRisk({ ...riskForm, projectId: selectedProjectId, status: 'Open' }); setRiskForm({ description: '', category: 'Schedule', severity: 'Medium', owner: '' }); setShowRiskModal(false); setErrors({}); addToast('Risk logged'); }} className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">Add</button>
             </div>
           </div>
         </div>
@@ -778,20 +778,20 @@ export function Governance({ projectId }: { projectId?: string }) {
       {/* ─── ADD CHANGE ORDER MODAL ─── */}
       {showCOModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Change Order</h3><button onClick={() => setShowCOModal(false)} className="text-[#7A8BA8] hover:text-white"><X className="w-4 h-4" /></button></div>
-            <input placeholder="CO Number (e.g. CO-004)" value={coForm.number} onChange={e => { setCoForm(f => ({ ...f, number: e.target.value })); setErrors(e2 => ({ ...e2, coNum: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.coNum ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+          <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-md p-6 space-y-4">
+            <div className="flex items-center justify-between"><h3 className="text-sm font-semibold text-white">Add Change Order</h3><button onClick={() => setShowCOModal(false)} className="text-[#888888] hover:text-white"><X className="w-4 h-4" /></button></div>
+            <input placeholder="CO Number (e.g. CO-004)" value={coForm.number} onChange={e => { setCoForm(f => ({ ...f, number: e.target.value })); setErrors(e2 => ({ ...e2, coNum: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.coNum ? 'border-red-500' : 'border-[#222222]'}`} />
             {errors.coNum && <p className="text-[10px] text-red-400 mt-1">{errors.coNum}</p>}
-            <input placeholder="Description" value={coForm.description} onChange={e => { setCoForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, coDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88] ${errors.coDesc ? 'border-red-500' : 'border-[#1E2A45]'}`} />
+            <input placeholder="Description" value={coForm.description} onChange={e => { setCoForm(f => ({ ...f, description: e.target.value })); setErrors(e2 => ({ ...e2, coDesc: '' })); }} className={`w-full bg-[#0F1829] border rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666] ${errors.coDesc ? 'border-red-500' : 'border-[#222222]'}`} />
             {errors.coDesc && <p className="text-[10px] text-red-400 mt-1">{errors.coDesc}</p>}
-            <input placeholder="Requested by" value={coForm.requestedBy} onChange={e => setCoForm(f => ({ ...f, requestedBy: e.target.value }))} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+            <input placeholder="Requested by" value={coForm.requestedBy} onChange={e => setCoForm(f => ({ ...f, requestedBy: e.target.value }))} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
             <div className="grid grid-cols-2 gap-3">
-              <input type="number" placeholder="Cost ($)" value={coForm.cost} onChange={e => setCoForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
-              <input type="number" placeholder="Days impact" value={coForm.days} onChange={e => setCoForm(f => ({ ...f, days: e.target.value }))} className="bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white placeholder-[#5A6B88]" />
+              <input type="number" placeholder="Cost ($)" value={coForm.cost} onChange={e => setCoForm(f => ({ ...f, cost: e.target.value }))} className="bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
+              <input type="number" placeholder="Days impact" value={coForm.days} onChange={e => setCoForm(f => ({ ...f, days: e.target.value }))} className="bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white placeholder-[#666666]" />
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <button onClick={() => setShowCOModal(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
-              <button onClick={() => { const e: Record<string, string> = {}; if (!coForm.number) e.coNum = 'CO number is required'; if (!coForm.description) e.coDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addChangeOrder({ ...coForm, cost: Number(coForm.cost) || 0, days: Number(coForm.days) || 0, projectId: selectedProjectId, status: 'Pending' }); setCoForm({ number: '', description: '', requestedBy: '', cost: '', days: '' }); setShowCOModal(false); setErrors({}); addToast('Change order added'); }} className="px-4 py-2 bg-[#C9A84C] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#A68B3A]">Add</button>
+              <button onClick={() => setShowCOModal(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
+              <button onClick={() => { const e: Record<string, string> = {}; if (!coForm.number) e.coNum = 'CO number is required'; if (!coForm.description) e.coDesc = 'Description is required'; if (Object.keys(e).length) { setErrors(e); return; } addChangeOrder({ ...coForm, cost: Number(coForm.cost) || 0, days: Number(coForm.days) || 0, projectId: selectedProjectId, status: 'Pending' }); setCoForm({ number: '', description: '', requestedBy: '', cost: '', days: '' }); setShowCOModal(false); setErrors({}); addToast('Change order added'); }} className="px-4 py-2 bg-[#00ff88] text-[#0A0A0A] text-sm font-medium rounded-lg hover:bg-[#00cc6a]">Add</button>
             </div>
           </div>
         </div>

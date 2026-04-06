@@ -123,15 +123,15 @@ export function Layout() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="flex items-center px-5 pt-4 pb-3 border-b border-[#1E2A45]">
-        <div className="flex items-center gap-3 flex-1">
-          <TenantLogo className="w-10 h-10" />
-          <div className="flex flex-col">
-            <span className="font-semibold text-white tracking-tight leading-tight text-[15px]">Intelligence</span>
+      <div className="flex items-center px-5 pt-4 pb-3 border-b border-border">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <img src="/logo-icon.svg" alt="Vantage" className="w-8 h-8 flex-shrink-0" />
+          <div className="flex flex-col min-w-0">
+            <span className="font-semibold text-white tracking-tight leading-tight text-[13px] truncate">Vantage Infrastructure</span>
             <span
               className={cn(
                 "text-[10px] font-medium uppercase tracking-wider transition-all duration-200",
-                mode !== 'Full' ? "text-secondary opacity-100" : "text-[#7A8BA8] opacity-100"
+                mode !== 'Full' ? "text-primary opacity-100" : "text-text-muted opacity-100"
               )}
             >
               {mode !== 'Full' ? `${mode} Mode` : 'Full Platform'}
@@ -141,7 +141,7 @@ export function Layout() {
         {/* Close button on mobile */}
         <button
           onClick={() => setMobileMenuOpen(false)}
-          className="lg:hidden text-[#5A6B88] hover:text-white transition-colors p-1"
+          className="lg:hidden text-[#666666] hover:text-white transition-colors p-1"
         >
           <X className="w-5 h-5" />
         </button>
@@ -161,14 +161,14 @@ export function Layout() {
                   'nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium relative',
                   isActive
                     ? 'bg-primary/10 text-secondary active'
-                    : 'text-[#7A8BA8] hover:bg-[#121C35] hover:text-white'
+                    : 'text-[#888888] hover:bg-[#1A1A1A] hover:text-white'
                 )
               }
             >
               <item.icon className="w-4 h-4 flex-shrink-0" />
               <span className="flex-1">{item.name}</span>
               {item.badgeKey && badgeCounts[item.badgeKey] != null && (
-                <span className="text-[10px] font-medium text-[#5A6B88] tabular-nums">
+                <span className="text-[10px] font-medium text-[#666666] tabular-nums">
                   {badgeCounts[item.badgeKey]}
                 </span>
               )}
@@ -189,10 +189,10 @@ export function Layout() {
           ))}
         </div>
 
-        <div className="border-t border-[#1E2A45] pt-3 mt-3">
+        <div className="border-t border-[#222222] pt-3 mt-3">
           <button
             onClick={() => { setShowProjectImport(true); setMobileMenuOpen(false); }}
-            className="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#7A8BA8] hover:bg-[#121C35] hover:text-white w-full text-left"
+            className="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[#888888] hover:bg-[#1A1A1A] hover:text-white w-full text-left"
           >
             <Layers className="w-4 h-4 flex-shrink-0" />
             <span>Import Project File</span>
@@ -205,7 +205,7 @@ export function Layout() {
                 'nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium',
                 isActive
                   ? 'bg-primary/10 text-secondary active'
-                  : 'text-[#7A8BA8] hover:bg-[#121C35] hover:text-white'
+                  : 'text-[#888888] hover:bg-[#1A1A1A] hover:text-white'
               )
             }
           >
@@ -216,38 +216,38 @@ export function Layout() {
       </nav>
 
       {/* User */}
-      <div className="p-4 border-t border-[#1E2A45] relative">
+      <div className="p-4 border-t border-[#222222] relative">
         <button
           onClick={() => setShowUserMenu(!showUserMenu)}
-          className="w-full flex items-center gap-3 px-1 hover:bg-[#121C35] rounded-lg py-1 -my-1 transition-colors"
+          className="w-full flex items-center gap-3 px-1 hover:bg-[#1A1A1A] rounded-lg py-1 -my-1 transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center flex-shrink-0">
             <span className="text-xs font-semibold text-secondary">{currentUser?.initials || 'RN'}</span>
           </div>
           <div className="flex flex-col min-w-0 text-left flex-1">
             <span className="text-sm font-medium text-white truncate">{currentUser?.name || 'User'}</span>
-            <span className="text-[11px] text-[#5A6B88] truncate">{currentUser?.defaultRole || 'Admin'} • {modeLabels[mode]}</span>
+            <span className="text-[11px] text-[#666666] truncate">{currentUser?.defaultRole || 'Admin'} • {modeLabels[mode]}</span>
           </div>
-          <ChevronUp className={cn("w-4 h-4 text-[#5A6B88] transition-transform", showUserMenu && "rotate-180")} />
+          <ChevronUp className={cn("w-4 h-4 text-[#666666] transition-transform", showUserMenu && "rotate-180")} />
         </button>
 
         {showUserMenu && (
           <>
             <div className="fixed inset-0 z-30" onClick={() => setShowUserMenu(false)} />
-            <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl z-40 overflow-hidden animate-slide-down">
-              <div className="px-3 py-2.5 flex items-center gap-3 border-b border-[#1E2A45]">
-                <div className="w-7 h-7 rounded-full bg-[#1E2A45] border border-secondary/30 flex items-center justify-center flex-shrink-0">
+            <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl z-40 overflow-hidden animate-slide-down">
+              <div className="px-3 py-2.5 flex items-center gap-3 border-b border-[#222222]">
+                <div className="w-7 h-7 rounded-full bg-[#222222] border border-secondary/30 flex items-center justify-center flex-shrink-0">
                   <span className="text-[10px] font-semibold text-secondary">{currentUser?.initials}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white truncate">{currentUser?.name}</p>
-                  <p className="text-[10px] text-[#5A6B88]">{currentUser?.email}</p>
+                  <p className="text-[10px] text-[#666666]">{currentUser?.email}</p>
                 </div>
               </div>
               <div>
                 <button
                   onClick={() => { logout(); navigate('/login'); setShowUserMenu(false); }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#1E2A45] transition-colors text-left text-red-400"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-[#222222] transition-colors text-left text-red-400"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="text-sm">Log Out</span>
@@ -261,9 +261,9 @@ export function Layout() {
   );
 
   return (
-    <div className="flex h-screen bg-[#0B1120] text-[#CBD2DF]">
+    <div className="flex h-screen bg-[#0A0A0A] text-[#D4D4D4]">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex w-64 flex-shrink-0 border-r border-[#1E2A45] bg-[#080D1A] flex-col">
+      <div className="hidden lg:flex w-64 flex-shrink-0 border-r border-[#222222] bg-[#070707] flex-col">
         {sidebarContent}
       </div>
 
@@ -271,28 +271,28 @@ export function Layout() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileMenuOpen(false)} />
-          <div className="relative w-72 max-w-[85vw] h-full bg-[#080D1A] flex flex-col shadow-2xl">
+          <div className="relative w-72 max-w-[85vw] h-full bg-[#070707] flex flex-col shadow-2xl">
             {sidebarContent}
           </div>
         </div>
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#0B1120]">
+      <div className="flex-1 flex flex-col min-w-0 bg-[#0A0A0A]">
         {/* Top Bar */}
-        <header className="h-14 flex-shrink-0 border-b border-[#1E2A45] bg-[#080D1A] flex items-center justify-between px-3 md:px-8">
+        <header className="h-14 flex-shrink-0 border-b border-[#222222] bg-[#070707] flex items-center justify-between px-3 md:px-8">
           {/* Mobile: hamburger + logo */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-1.5 text-[#7A8BA8] hover:text-white hover:bg-[#121C35] rounded-lg transition-colors"
+              className="lg:hidden p-1.5 text-[#888888] hover:text-white hover:bg-[#1A1A1A] rounded-lg transition-colors"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             {/* Mode pills - scrollable on mobile */}
-            <div className="flex items-center gap-1 bg-[#0B1120] p-1 rounded-xl border border-[#1E2A45] overflow-x-auto">
-              <Layers className="w-3.5 h-3.5 text-[#5A6B88] ml-1 flex-shrink-0 hidden sm:block" />
+            <div className="flex items-center gap-1 bg-[#0A0A0A] p-1 rounded-xl border border-[#222222] overflow-x-auto">
+              <Layers className="w-3.5 h-3.5 text-[#666666] ml-1 flex-shrink-0 hidden sm:block" />
               {(['Full', 'Audit', 'OR', 'Construction'] as ServiceLineMode[]).map((m) => (
                 <button
                   key={m}
@@ -300,8 +300,8 @@ export function Layout() {
                   className={cn(
                     "mode-pill px-2 md:px-3 py-1.5 text-[11px] md:text-xs font-medium rounded-lg whitespace-nowrap flex-shrink-0",
                     mode === m
-                      ? "active bg-[#121C35] text-white shadow-sm"
-                      : "text-[#5A6B88] hover:text-[#CBD2DF] hover:bg-[#121C35]/50"
+                      ? "active bg-[#1A1A1A] text-white shadow-sm"
+                      : "text-[#666666] hover:text-[#D4D4D4] hover:bg-[#1A1A1A]/50"
                   )}
                 >
                   <span className="hidden sm:inline">{modeLabels[m]}</span>
@@ -313,7 +313,7 @@ export function Layout() {
 
           <div className="flex items-center gap-2 md:gap-3">
             <div className="w-2 h-2 rounded-full bg-primary animate-badge-pulse" title="System online" />
-            <span className="text-[10px] md:text-xs text-[#5A6B88] hidden sm:block">{tenantName}</span>
+            <span className="text-[10px] md:text-xs text-[#666666] hidden sm:block">{tenantName}</span>
           </div>
         </header>
 

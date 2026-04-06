@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 
 export const MAX_LOGO_SIZE = 2 * 1024 * 1024; // 2MB
 export const ACCEPTED_LOGO_TYPES = ['image/png', 'image/jpeg', 'image/svg+xml'];
-export const DEFAULT_PRIMARY = '#C9A84C';
+export const DEFAULT_PRIMARY = '#00ff88';
 export const DEFAULT_SECONDARY = '#37BB26';
 
 export interface BrandingUpdates {

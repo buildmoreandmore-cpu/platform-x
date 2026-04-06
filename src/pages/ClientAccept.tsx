@@ -160,7 +160,7 @@ export function ClientAccept() {
           <p className="text-white/60 mb-6">{error}</p>
           <button
             onClick={() => navigate('/login')}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-lg hover:bg-[#B8972F] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-lg hover:bg-[#00ff88] transition-colors"
           >
             Go to Sign In
           </button>
@@ -274,7 +274,7 @@ export function ClientAccept() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-primary text-[#0A0A0A] text-sm font-semibold rounded-xl hover:bg-[#00ff88] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>

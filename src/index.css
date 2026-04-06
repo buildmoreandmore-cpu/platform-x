@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #C9A84C;
-  --color-secondary: #A68B3A;
+  --color-primary: #00ff88;
+  --color-secondary: #00cc6a;
   --color-bg: #0A0A0A;
   --color-card: #111111;
   --color-hover: #1A1A1A;
@@ -12,7 +12,7 @@
   --color-text-main: #D4D4D4;
   --color-text-muted: #888888;
   --color-text-heading: #F5F5F0;
-  --color-accent: #C9A84C;
+  --color-accent: #00ff88;
   --color-green: #4ADE80;
   --color-amber: #F59E0B;
   --color-red: #EF4444;
@@ -322,9 +322,9 @@ body {
 
 /* Hero background gradient */
 .hero-gradient-bg {
-  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(201, 168, 76, 0.05) 0%, transparent 50%),
-              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(201, 168, 76, 0.04) 0%, transparent 40%),
+  background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(0, 255, 136, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+              radial-gradient(ellipse 80% 80% at 50% 100%, rgba(0, 255, 136, 0.04) 0%, transparent 40%),
               #0A0A0A;
 }
 
@@ -342,7 +342,7 @@ body {
   height: 600px;
   top: -15%;
   left: -5%;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.1) 0%, rgba(201, 168, 76, 0.02) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.02) 50%, transparent 70%);
   animation: blobFloat1 18s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -351,7 +351,7 @@ body {
   height: 500px;
   bottom: 5%;
   right: -8%;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, rgba(201, 168, 76, 0.02) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, rgba(0, 255, 136, 0.02) 50%, transparent 70%);
   animation: blobFloat2 22s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -360,7 +360,7 @@ body {
   height: 400px;
   top: 40%;
   left: 35%;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.03) 0%, transparent 60%);
   animation: blobFloat3 15s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
@@ -420,29 +420,29 @@ body {
   0% {
     opacity: 0;
     transform: translateY(12px);
-    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0.8);
+    box-shadow: inset 3px 0 0 0 rgba(0, 255, 136, 0.8);
   }
   60% {
     opacity: 1;
     transform: translateY(0);
-    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0.6);
+    box-shadow: inset 3px 0 0 0 rgba(0, 255, 136, 0.6);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    box-shadow: inset 3px 0 0 0 rgba(201, 168, 76, 0);
+    box-shadow: inset 3px 0 0 0 rgba(0, 255, 136, 0);
   }
 }
 
 /* Drop zone dashed border pulse on drag-over */
 @keyframes dropZonePulse {
   0%, 100% {
-    border-color: rgba(201, 168, 76, 0.4);
-    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+    border-color: rgba(0, 255, 136, 0.4);
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
   }
   50% {
-    border-color: rgba(201, 168, 76, 0.8);
-    box-shadow: 0 0 16px 2px rgba(201, 168, 76, 0.15);
+    border-color: rgba(0, 255, 136, 0.8);
+    box-shadow: 0 0 16px 2px rgba(0, 255, 136, 0.15);
   }
 }
 
@@ -504,7 +504,7 @@ html {
   thead { background: #f3f4f6 !important; }
 
   /* Page breaks */
-  .bg-\\[\\#121C35\\] { page-break-inside: avoid; }
+  .bg-\\[\\#1A1A1A\\] { page-break-inside: avoid; }
 
   /* Disable animations */
   *, *::before, *::after {

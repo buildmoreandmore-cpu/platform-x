@@ -51,11 +51,11 @@ export function Workflows() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+      <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <div>
             <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">Productivity & Workflow</h1>
-            <p className="text-sm text-[#7A8BA8] mt-1">Manage tasks, approvals, and automated reminders.</p>
+            <p className="text-sm text-[#888888] mt-1">Manage tasks, approvals, and automated reminders.</p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <ExportButton
@@ -79,7 +79,7 @@ export function Workflows() {
             </button>
             <button
               onClick={() => setShowNewTask(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] transition-colors"
             >
               <Plus className="w-4 h-4" />
               New Task
@@ -87,14 +87,14 @@ export function Workflows() {
           </div>
         </div>
 
-        <div className="flex space-x-6 border-b border-[#1E2A45]">
+        <div className="flex space-x-6 border-b border-[#222222]">
           <button
             onClick={() => setFilter('my')}
             className={cn(
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'my' 
                 ? "border-primary text-secondary"
-                : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
             <CheckCircle2 className="w-4 h-4" />
@@ -106,7 +106,7 @@ export function Workflows() {
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'all' 
                 ? "border-primary text-secondary"
-                : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
             <Clock className="w-4 h-4" />
@@ -118,7 +118,7 @@ export function Workflows() {
               "pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
               filter === 'overdue' 
                 ? "border-primary text-secondary"
-                : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
             )}
           >
             <AlertCircle className="w-4 h-4" />
@@ -138,11 +138,11 @@ export function Workflows() {
           />
         </div>
 
-        <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-          <div className="p-6 border-b border-[#1E2A45] flex items-center justify-between">
+        <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+          <div className="p-6 border-b border-[#222222] flex items-center justify-between">
             <h3 className="text-sm font-semibold text-white">Task List</h3>
             <div className="flex items-center gap-2">
-              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
+              <button className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#222222] border border-[#2A3A5C] rounded-lg text-xs font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors">
                 <Filter className="w-3.5 h-3.5" />
                 Filter
               </button>
@@ -150,7 +150,7 @@ export function Workflows() {
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#1E2A45]">
+              <thead className="text-xs text-neutral-400 uppercase bg-[#0F1829] border-b border-[#222222]">
                 <tr>
                   <th className="px-6 py-4 font-medium w-12"></th>
                   <th className="px-6 py-4 font-medium">Task</th>
@@ -160,7 +160,7 @@ export function Workflows() {
                   <th className="px-6 py-4 font-medium">Assignee</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1E2A45]">
+              <tbody className="divide-y divide-[#222222]">
                 {filteredTasks.map((task) => {
                   const isOverdue = new Date(task.dueDate) < new Date() && task.status !== 'Completed';
                   
@@ -176,14 +176,14 @@ export function Workflows() {
                             "w-5 h-5 rounded border flex items-center justify-center transition-colors",
                             task.status === 'Completed' 
                               ? "bg-primary border-primary text-white" 
-                              : "border-[#2A3A5C] hover:border-primary group-hover:bg-[#1E2A45]"
+                              : "border-[#2A3A5C] hover:border-primary group-hover:bg-[#222222]"
                           )}
                         >
                           {task.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
                         </button>
                       </td>
                       <td className="px-6 py-4 font-medium text-white">
-                        <span className={task.status === 'Completed' ? "line-through text-[#5A6B88]" : ""}>
+                        <span className={task.status === 'Completed' ? "line-through text-[#666666]" : ""}>
                           <EditableField
                             value={task.title}
                             entityType="task"
@@ -199,7 +199,7 @@ export function Workflows() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-3.5 h-3.5 text-[#7A8BA8]" />
+                          <Calendar className="w-3.5 h-3.5 text-[#888888]" />
                           <span className={cn(
                             "font-mono",
                             isOverdue ? "text-red-500 font-medium" : "text-[#9AA5B8]"
@@ -227,8 +227,8 @@ export function Workflows() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-[#1E2A45] flex items-center justify-center border border-[#2A3A5C]">
-                            <span className="text-[10px] font-medium text-[#7A8BA8]">
+                          <div className="w-6 h-6 rounded-full bg-[#222222] flex items-center justify-center border border-[#2A3A5C]">
+                            <span className="text-[10px] font-medium text-[#888888]">
                               {task.assignedTo.substring(0, 2).toUpperCase()}
                             </span>
                           </div>
@@ -245,7 +245,7 @@ export function Workflows() {
                         <td className="px-2 py-4">
                           <button
                             onClick={async () => { if (await confirmDel('Delete task?', 'This action cannot be undone.')) { deleteItem('tasks', task.id); addToast('Task deleted'); } }}
-                            className="p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                            className="p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                             title="Delete imported row"
                           >
                             <X className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ export function Workflows() {
                 })}
                 {filteredTasks.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-[#7A8BA8]">No tasks found matching the current filter.</td>
+                    <td colSpan={6} className="px-6 py-8 text-center text-[#888888]">No tasks found matching the current filter.</td>
                   </tr>
                 )}
               </tbody>
@@ -283,27 +283,27 @@ export function Workflows() {
       {showNewTask && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowNewTask(false)} />
-          <div className="relative bg-[#121C35] border border-[#1E2A45] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#1E2A45]">
+          <div className="relative bg-[#1A1A1A] border border-[#222222] rounded-xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#222222]">
               <h2 className="text-lg font-bold text-white">New Task</h2>
-              <button onClick={() => setShowNewTask(false)} className="text-[#5A6B88] hover:text-white"><X className="w-5 h-5" /></button>
+              <button onClick={() => setShowNewTask(false)} className="text-[#666666] hover:text-white"><X className="w-5 h-5" /></button>
             </div>
             <div className="px-6 py-5 space-y-4">
               <div>
-                <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Task Title</label>
-                <input type="text" value={newTask.title} onChange={e => setNewTask(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g. Review IGEA draft" className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Task Title</label>
+                <input type="text" value={newTask.title} onChange={e => setNewTask(prev => ({ ...prev, title: e.target.value }))} placeholder="e.g. Review IGEA draft" className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Project</label>
-                  <select value={newTask.projectId} onChange={e => setNewTask(prev => ({ ...prev, projectId: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Project</label>
+                  <select value={newTask.projectId} onChange={e => setNewTask(prev => ({ ...prev, projectId: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">General</option>
                     {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Priority</label>
-                  <select value={newTask.priority} onChange={e => setNewTask(prev => ({ ...prev, priority: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Priority</label>
+                  <select value={newTask.priority} onChange={e => setNewTask(prev => ({ ...prev, priority: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
@@ -312,17 +312,17 @@ export function Workflows() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Assigned To</label>
-                  <input type="text" value={newTask.assignedTo} onChange={e => setNewTask(prev => ({ ...prev, assignedTo: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Assigned To</label>
+                  <input type="text" value={newTask.assignedTo} onChange={e => setNewTask(prev => ({ ...prev, assignedTo: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#7A8BA8] uppercase tracking-wider mb-1.5">Due Date</label>
-                  <input type="date" value={newTask.dueDate} onChange={e => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
+                  <label className="block text-xs font-medium text-[#888888] uppercase tracking-wider mb-1.5">Due Date</label>
+                  <input type="date" value={newTask.dueDate} onChange={e => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))} className="w-full px-3 py-2 bg-[#0F1829] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
             </div>
-            <div className="px-6 py-4 border-t border-[#1E2A45] flex justify-end gap-3">
-              <button onClick={() => setShowNewTask(false)} className="px-4 py-2 text-sm text-[#7A8BA8] hover:text-white">Cancel</button>
+            <div className="px-6 py-4 border-t border-[#222222] flex justify-end gap-3">
+              <button onClick={() => setShowNewTask(false)} className="px-4 py-2 text-sm text-[#888888] hover:text-white">Cancel</button>
               <button
                 disabled={!newTask.title.trim()}
                 onClick={() => {
@@ -331,7 +331,7 @@ export function Workflows() {
                   setNewTask({ title: '', projectId: '', priority: 'Medium', dueDate: '', assignedTo: currentUser?.name || '' });
                   setShowNewTask(false);
                 }}
-                className="px-4 py-2 bg-[#B8972F] rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] disabled:opacity-40"
+                className="px-4 py-2 bg-[#00ff88] rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] disabled:opacity-40"
               >
                 Create Task
               </button>

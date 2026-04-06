@@ -32,13 +32,13 @@ export function ToastContainer() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="pointer-events-auto bg-[#121C35] border border-[#1E2A45] text-white px-5 py-3 rounded-xl shadow-2xl text-sm font-medium flex items-center gap-3 min-w-[280px] max-w-md"
+              className="pointer-events-auto bg-[#1A1A1A] border border-[#222222] text-white px-5 py-3 rounded-xl shadow-2xl text-sm font-medium flex items-center gap-3 min-w-[280px] max-w-md"
             >
               <Icon className={`w-4 h-4 flex-shrink-0 ${colors[toast.type]}`} />
-              <span className="flex-1 text-[#CBD2DF]">{toast.message}</span>
+              <span className="flex-1 text-[#D4D4D4]">{toast.message}</span>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="p-0.5 text-[#5A6B88] hover:text-white transition-colors flex-shrink-0"
+                className="p-0.5 text-[#666666] hover:text-white transition-colors flex-shrink-0"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

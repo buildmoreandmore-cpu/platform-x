@@ -51,19 +51,19 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <button onClick={prev} className="p-1.5 hover:bg-[#1E2A45] rounded-lg transition-colors">
-          <ChevronLeft className="w-4 h-4 text-[#7A8BA8]" />
+        <button onClick={prev} className="p-1.5 hover:bg-[#222222] rounded-lg transition-colors">
+          <ChevronLeft className="w-4 h-4 text-[#888888]" />
         </button>
         <h3 className="text-sm font-semibold text-white">{monthName}</h3>
-        <button onClick={next} className="p-1.5 hover:bg-[#1E2A45] rounded-lg transition-colors">
-          <ChevronRight className="w-4 h-4 text-[#7A8BA8]" />
+        <button onClick={next} className="p-1.5 hover:bg-[#222222] rounded-lg transition-colors">
+          <ChevronRight className="w-4 h-4 text-[#888888]" />
         </button>
       </div>
 
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-          <div key={d} className="text-center text-[10px] font-medium text-[#5A6B88] uppercase py-1">{d}</div>
+          <div key={d} className="text-center text-[10px] font-medium text-[#666666] uppercase py-1">{d}</div>
         ))}
 
         {days.map((day, i) => {
@@ -81,13 +81,13 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
               className={cn(
                 "relative aspect-square flex flex-col items-center justify-center rounded-lg text-xs transition-colors",
                 isSelected ? "bg-primary/20 border border-primary/40" :
-                isToday ? "bg-[#1E2A45] border border-[#2A3A5C]" :
+                isToday ? "bg-[#222222] border border-[#2A3A5C]" :
                 "hover:bg-[#1A2544] border border-transparent"
               )}
             >
               <span className={cn(
                 "font-medium",
-                isToday ? "text-secondary" : "text-[#CBD2DF]"
+                isToday ? "text-secondary" : "text-[#D4D4D4]"
               )}>
                 {day}
               </span>
@@ -114,8 +114,8 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
 
       {/* Selected day details */}
       {selectedDay && selectedMilestones.length > 0 && (
-        <div className="bg-[#0F1829] border border-[#1E2A45] rounded-lg p-4 space-y-2">
-          <p className="text-[10px] font-medium text-[#7A8BA8] uppercase tracking-wider">{new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+        <div className="bg-[#0F1829] border border-[#222222] rounded-lg p-4 space-y-2">
+          <p className="text-[10px] font-medium text-[#888888] uppercase tracking-wider">{new Date(selectedDay + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
           {selectedMilestones.map(m => (
             <div key={m.id} className="flex items-center gap-3 py-1.5">
               <span className={cn(
@@ -127,7 +127,7 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
               )} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-white font-medium truncate">{m.name}</p>
-                <p className="text-[10px] text-[#5A6B88]">{m.assignedTo} &middot; {m.status}</p>
+                <p className="text-[10px] text-[#666666]">{m.assignedTo} &middot; {m.status}</p>
               </div>
             </div>
           ))}
@@ -135,7 +135,7 @@ export function MilestoneCalendar({ milestones }: MilestoneCalendarProps) {
       )}
 
       {/* Legend */}
-      <div className="flex items-center gap-4 text-[10px] text-[#5A6B88]">
+      <div className="flex items-center gap-4 text-[10px] text-[#666666]">
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> On track</span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> In progress</span>
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Overdue</span>

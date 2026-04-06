@@ -65,7 +65,7 @@ export function OnboardingGuide() {
       {/* Header */}
       <div className="text-center py-6">
         <h1 className="text-2xl font-bold text-white tracking-tight">Welcome to {name}</h1>
-        <p className="text-sm text-[#7A8BA8] mt-2 max-w-lg mx-auto">
+        <p className="text-sm text-[#888888] mt-2 max-w-lg mx-auto">
           Your energy engineering command center is ready. Follow these steps to set up your first project.
         </p>
       </div>
@@ -75,7 +75,7 @@ export function OnboardingGuide() {
         {steps.map((step, i) => (
           <div
             key={step.num}
-            className="bg-[#121C35] border border-[#1E2A45] rounded-lg p-5 animate-stat-pop"
+            className="bg-[#1A1A1A] border border-[#222222] rounded-lg p-5 animate-stat-pop"
             style={{ animationDelay: `${i * 0.06}s` }}
           >
             <div className="flex items-start gap-4">
@@ -84,7 +84,7 @@ export function OnboardingGuide() {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-white">{step.title}</h3>
-                <p className="text-xs text-[#5A6B88] mt-1 leading-relaxed">{step.desc}</p>
+                <p className="text-xs text-[#666666] mt-1 leading-relaxed">{step.desc}</p>
                 <button
                   onClick={() => step.route ? navigate(step.route) : setShowProjectImport(true)}
                   className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-secondary hover:text-[#4DD636] transition-colors"
@@ -100,7 +100,7 @@ export function OnboardingGuide() {
 
       {/* Quick Import Banner */}
       <div
-        className="bg-[#121C35] border border-[#1E2A45] rounded-lg p-5 animate-stat-pop"
+        className="bg-[#1A1A1A] border border-[#222222] rounded-lg p-5 animate-stat-pop"
         style={{ animationDelay: '0.28s' }}
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -110,7 +110,7 @@ export function OnboardingGuide() {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-white">Have a project workbook ready?</h3>
-              <p className="text-xs text-[#5A6B88] mt-0.5">Auto-detects sheet types and routes data to the correct modules.</p>
+              <p className="text-xs text-[#666666] mt-0.5">Auto-detects sheet types and routes data to the correct modules.</p>
             </div>
           </div>
           <button
@@ -125,15 +125,15 @@ export function OnboardingGuide() {
 
       {/* Platform Capabilities */}
       <div
-        className="bg-[#121C35] border border-[#1E2A45] rounded-lg p-5 animate-stat-pop"
+        className="bg-[#1A1A1A] border border-[#222222] rounded-lg p-5 animate-stat-pop"
         style={{ animationDelay: '0.34s' }}
       >
-        <h3 className="text-[10px] font-semibold text-[#5A6B88] uppercase tracking-wider mb-3">Platform Capabilities</h3>
+        <h3 className="text-[10px] font-semibold text-[#666666] uppercase tracking-wider mb-3">Platform Capabilities</h3>
         <div className="flex flex-wrap gap-2">
           {capabilities.map(cap => (
             <span
               key={cap.label}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#0B1120] border border-[#1E2A45] rounded-md text-xs text-[#7A8BA8]"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#0A0A0A] border border-[#222222] rounded-md text-xs text-[#888888]"
             >
               <cap.icon className="w-3 h-3" />
               {cap.label}

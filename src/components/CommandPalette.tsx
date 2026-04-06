@@ -113,25 +113,25 @@ export function CommandPalette() {
   return (
     <div className="fixed inset-0 z-[80] flex items-start justify-center pt-[15vh] modal-backdrop" onClick={() => setIsOpen(false)}>
       <div
-        className="modal-panel bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl w-full max-w-lg overflow-hidden"
+        className="modal-panel bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl w-full max-w-lg overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-[#1E2A45]">
-          <Search className="w-4 h-4 text-[#5A6B88] flex-shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-[#222222]">
+          <Search className="w-4 h-4 text-[#666666] flex-shrink-0" />
           <input
             autoFocus
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search projects, ECMs, pages..."
-            className="flex-1 bg-transparent text-sm text-white placeholder-[#5A6B88] outline-none"
+            className="flex-1 bg-transparent text-sm text-white placeholder-[#666666] outline-none"
           />
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#1E2A45] text-[10px] text-[#5A6B88] border border-[#2A3A5C]">ESC</kbd>
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#222222] text-[10px] text-[#666666] border border-[#2A3A5C]">ESC</kbd>
         </div>
 
         <div className="max-h-80 overflow-y-auto py-2">
           {Object.entries(grouped).map(([category, items]) => (
             <div key={category}>
-              <div className="px-4 py-1.5 text-[10px] font-semibold text-[#5A6B88] uppercase tracking-wider">{category}</div>
+              <div className="px-4 py-1.5 text-[10px] font-semibold text-[#666666] uppercase tracking-wider">{category}</div>
               {items.map(item => {
                 const idx = flatIdx++;
                 return (
@@ -142,10 +142,10 @@ export function CommandPalette() {
                       idx === selectedIndex ? 'bg-[#1A2544]' : 'hover:bg-[#1A2544]/50'
                     }`}
                   >
-                    <item.icon className="w-4 h-4 text-[#5A6B88] flex-shrink-0" />
+                    <item.icon className="w-4 h-4 text-[#666666] flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-white truncate">{item.label}</p>
-                      <p className="text-[11px] text-[#5A6B88] truncate">{item.description}</p>
+                      <p className="text-[11px] text-[#666666] truncate">{item.description}</p>
                     </div>
                     {idx === selectedIndex && <ArrowRight className="w-3.5 h-3.5 text-primary flex-shrink-0" />}
                   </button>
@@ -154,14 +154,14 @@ export function CommandPalette() {
             </div>
           ))}
           {results.length === 0 && (
-            <div className="px-4 py-8 text-center text-sm text-[#5A6B88]">No results found for "{query}"</div>
+            <div className="px-4 py-8 text-center text-sm text-[#666666]">No results found for "{query}"</div>
           )}
         </div>
 
-        <div className="border-t border-[#1E2A45] px-4 py-2 flex items-center gap-4 text-[10px] text-[#5A6B88]">
-          <span><kbd className="px-1 py-0.5 bg-[#1E2A45] rounded border border-[#2A3A5C]">↑↓</kbd> navigate</span>
-          <span><kbd className="px-1 py-0.5 bg-[#1E2A45] rounded border border-[#2A3A5C]">↵</kbd> select</span>
-          <span><kbd className="px-1 py-0.5 bg-[#1E2A45] rounded border border-[#2A3A5C]">esc</kbd> close</span>
+        <div className="border-t border-[#222222] px-4 py-2 flex items-center gap-4 text-[10px] text-[#666666]">
+          <span><kbd className="px-1 py-0.5 bg-[#222222] rounded border border-[#2A3A5C]">↑↓</kbd> navigate</span>
+          <span><kbd className="px-1 py-0.5 bg-[#222222] rounded border border-[#2A3A5C]">↵</kbd> select</span>
+          <span><kbd className="px-1 py-0.5 bg-[#222222] rounded border border-[#2A3A5C]">esc</kbd> close</span>
         </div>
       </div>
     </div>

@@ -43,19 +43,19 @@ export function SearchBar({
   return (
     <div className={cn('relative', className)}>
       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <Icon icon={icon} className="w-4 h-4 text-[#5A6B88]" />
+        <Icon icon={icon} className="w-4 h-4 text-[#666666]" />
       </div>
       <input
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="w-full pl-9 pr-9 py-2.5 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white placeholder-[#5A6B88] focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
+        className="w-full pl-9 pr-9 py-2.5 bg-[#1A1A1A] border border-[#222222] rounded-lg text-sm text-white placeholder-[#666666] focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors"
         placeholder={placeholder}
       />
       {inputValue && (
         <button
           onClick={handleClear}
-          className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#5A6B88] hover:text-white transition-colors"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#666666] hover:text-white transition-colors"
         >
           <Icon icon="solar:close-circle-bold" className="w-4 h-4" />
         </button>

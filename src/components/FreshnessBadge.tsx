@@ -32,7 +32,7 @@ export function FreshnessBadge({ projectId, module, showTimestamp = false }: Fre
       {showTimestamp && (
         <span className={cn(
           'text-[10px]',
-          status === 'fresh' ? 'text-[#5A6B88]' :
+          status === 'fresh' ? 'text-[#666666]' :
           status === 'amber' ? 'text-amber-500' :
           'text-red-500'
         )}>

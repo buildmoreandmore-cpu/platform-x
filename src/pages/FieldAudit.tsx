@@ -163,14 +163,14 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
   return (
     <div className="flex flex-col h-full">
       {!projectId && (
-        <div className="flex-shrink-0 border-b border-[#1E2A45] bg-[#121C35] px-3 md:px-8 py-6">
+        <div className="flex-shrink-0 border-b border-[#222222] bg-[#1A1A1A] px-3 md:px-8 py-6">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-lg md:text-2xl font-bold text-white tracking-tight">Field Audit & Asset Intelligence</h1>
                 {projectId && <FreshnessBadge projectId={projectId} module="Assets" showTimestamp />}
               </div>
-              <p className="text-sm text-[#7A8BA8] mt-1">Capture equipment data, transcribe notes, and flag deficiencies.</p>
+              <p className="text-sm text-[#888888] mt-1">Capture equipment data, transcribe notes, and flag deficiencies.</p>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <button
@@ -189,7 +189,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
               </button>
               <button
                 onClick={() => setShowImportModal(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E2A45] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#222222] border border-[#2A3A5C] rounded-lg text-sm font-medium text-[#9AA5B8] hover:bg-[#2A3A5C] transition-colors"
               >
                 <Upload className="w-4 h-4" />
                 Batch Upload
@@ -202,7 +202,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     if (fileInput) fileInput.click();
                   }, 100);
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#B8972F] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#A68B3A] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff88] border border-transparent rounded-lg text-sm font-medium text-white hover:bg-[#00cc6a] transition-colors"
               >
                 <Camera className="w-4 h-4" />
                 New Capture
@@ -210,14 +210,14 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
             </div>
           </div>
 
-          <div className="flex space-x-6 border-b border-[#1E2A45]">
+          <div className="flex space-x-6 border-b border-[#222222]">
             <button
               onClick={() => setActiveTab('assets')}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'assets' 
                   ? "border-primary text-secondary"
-                  : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                  : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
               Asset Database
@@ -228,7 +228,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 "pb-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'capture' 
                   ? "border-primary text-secondary"
-                  : "border-transparent text-[#7A8BA8] hover:text-white hover:border-[#2A3A5C]"
+                  : "border-transparent text-[#888888] hover:text-white hover:border-[#2A3A5C]"
               )}
             >
               AI Extraction Queue
@@ -248,7 +248,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   placeholder="Search assets by type or manufacturer..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-[#121C35] border border-[#1E2A45] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm"
+                  className="w-full pl-10 pr-4 py-2 bg-[#1A1A1A] border border-[#222222] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -270,7 +270,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   }))}
                 />
                 <div className="relative">
-                  <button onClick={() => setShowFilterPanel(!showFilterPanel)} className={cn("inline-flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm", activeFilterCount > 0 ? "bg-primary/10 border-primary/30 text-secondary" : "bg-[#1E2A45] border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]")}>
+                  <button onClick={() => setShowFilterPanel(!showFilterPanel)} className={cn("inline-flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm", activeFilterCount > 0 ? "bg-primary/10 border-primary/30 text-secondary" : "bg-[#222222] border-[#2A3A5C] text-[#9AA5B8] hover:bg-[#2A3A5C]")}>
                     <Filter className="w-4 h-4" />
                     Filter
                     {activeFilterCount > 0 && (
@@ -278,7 +278,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     )}
                   </button>
                   {showFilterPanel && (
-                    <div className="absolute right-0 top-full mt-2 w-72 bg-[#121C35] border border-[#1E2A45] rounded-xl shadow-2xl z-30 p-4 space-y-4">
+                    <div className="absolute right-0 top-full mt-2 w-72 bg-[#1A1A1A] border border-[#222222] rounded-xl shadow-2xl z-30 p-4 space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-white uppercase tracking-wider">Filters</span>
                         {activeFilterCount > 0 && (
@@ -286,25 +286,25 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                         )}
                       </div>
                       <div>
-                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Condition</label>
-                        <select value={conditionFilter} onChange={e => setConditionFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                        <label className="block text-xs text-[#888888] mb-1.5">Condition</label>
+                        <select value={conditionFilter} onChange={e => setConditionFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
                           {conditions.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Asset Type</label>
-                        <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                        <label className="block text-xs text-[#888888] mb-1.5">Asset Type</label>
+                        <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
                           {assetTypes.map(t => <option key={t} value={t}>{t}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Building</label>
-                        <select value={buildingFilter} onChange={e => setBuildingFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#1E2A45] rounded-lg px-3 py-2 text-sm text-white">
+                        <label className="block text-xs text-[#888888] mb-1.5">Building</label>
+                        <select value={buildingFilter} onChange={e => setBuildingFilter(e.target.value)} className="w-full bg-[#0F1829] border border-[#222222] rounded-lg px-3 py-2 text-sm text-white">
                           {buildingOptions.map(b => <option key={b} value={b}>{b}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs text-[#7A8BA8] mb-1.5">Category</label>
+                        <label className="block text-xs text-[#888888] mb-1.5">Category</label>
                         <div className="flex flex-wrap gap-1.5">
                           {['All', ...EQUIPMENT_CATEGORIES].map(cat => (
                             <button
@@ -314,7 +314,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                                 "px-2 py-1 rounded text-[10px] font-medium border transition-colors",
                                 categoryFilter === cat
                                   ? "bg-primary/20 text-secondary border-primary/40"
-                                  : "bg-[#0F1829] text-[#7A8BA8] border-[#1E2A45] hover:text-white"
+                                  : "bg-[#0F1829] text-[#888888] border-[#222222] hover:text-white"
                               )}
                             >
                               {cat}
@@ -322,7 +322,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                           ))}
                         </div>
                       </div>
-                      <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#B8972F] text-[#0A0A0A] text-xs font-medium rounded-lg hover:bg-[#A68B3A] transition-colors">Apply</button>
+                      <button onClick={() => setShowFilterPanel(false)} className="w-full py-2 bg-[#00ff88] text-[#0A0A0A] text-xs font-medium rounded-lg hover:bg-[#00cc6a] transition-colors">Apply</button>
                     </div>
                   )}
                 </div>
@@ -331,14 +331,14 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAssets.map((asset) => (
-                <div key={asset.id} className={cn("bg-[#121C35] border rounded-xl overflow-hidden hover:border-primary/50 transition-colors group cursor-pointer relative", selectedIds.has(asset.id) ? 'border-primary ring-1 ring-primary/30' : 'border-[#1E2A45]')}>
+                <div key={asset.id} className={cn("bg-[#1A1A1A] border rounded-xl overflow-hidden hover:border-primary/50 transition-colors group cursor-pointer relative", selectedIds.has(asset.id) ? 'border-primary ring-1 ring-primary/30' : 'border-[#222222]')}>
                   <label className="absolute top-2 right-2 z-10" onClick={e => e.stopPropagation()}>
                     <input type="checkbox" checked={selectedIds.has(asset.id)} onChange={() => setSelectedIds(prev => { const next = new Set(prev); next.has(asset.id) ? next.delete(asset.id) : next.add(asset.id); return next; })} className="w-4 h-4 rounded border-[#2A3A5C] bg-[#0F1829] text-primary focus:ring-primary" />
                   </label>
                   {asset.importBatchId && (
                     <button
                       onClick={async (e) => { e.stopPropagation(); if (await confirm('Delete asset?', 'This action cannot be undone.')) { deleteItem('assets', asset.id); addToast('Asset deleted'); } }}
-                      className="absolute top-2 left-2 z-10 p-1 text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors bg-[#121C35]/80 backdrop-blur-sm"
+                      className="absolute top-2 left-2 z-10 p-1 text-[#666666] hover:text-red-400 hover:bg-red-500/10 rounded transition-colors bg-[#1A1A1A]/80 backdrop-blur-sm"
                       title="Delete imported row"
                     >
                       <X className="w-3.5 h-3.5" />
@@ -363,9 +363,9 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h3 className="text-lg font-semibold text-white group-hover:text-secondary transition-colors">{asset.type}</h3>
-                        <p className="text-sm text-[#7A8BA8]">{buildings.find(b => b.id === asset.buildingId)?.name}</p>
+                        <p className="text-sm text-[#888888]">{buildings.find(b => b.id === asset.buildingId)?.name}</p>
                         {(asset as any).category && (
-                          <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-[#1E2A45] text-[#7A8BA8] border border-[#2A3A5C]">
+                          <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-[#222222] text-[#888888] border border-[#2A3A5C]">
                             {(asset as any).category}
                           </span>
                         )}
@@ -384,25 +384,25 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
 
                     <div className="mt-4 grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
                       <div>
-                        <span className="block text-[#7A8BA8] text-xs font-medium uppercase tracking-wider mb-1">Manufacturer</span>
+                        <span className="block text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Manufacturer</span>
                         <span className="text-[#9AA5B8] font-medium">
                           <EditableField value={asset.manufacturer} entityType="asset" entityId={asset.id} field="manufacturer" projectId={projectId} />
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[#7A8BA8] text-xs font-medium uppercase tracking-wider mb-1">Year</span>
+                        <span className="block text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Year</span>
                         <span className="text-[#9AA5B8] font-medium">
                           <EditableField value={asset.year} entityType="asset" entityId={asset.id} field="year" projectId={projectId} type="number" />
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[#7A8BA8] text-xs font-medium uppercase tracking-wider mb-1">Model</span>
+                        <span className="block text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Model</span>
                         <span className="text-[#9AA5B8] font-medium">
                           <EditableField value={asset.model} entityType="asset" entityId={asset.id} field="model" projectId={projectId} />
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[#7A8BA8] text-xs font-medium uppercase tracking-wider mb-1">Remaining Life</span>
+                        <span className="block text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Remaining Life</span>
                         <span className="text-[#9AA5B8] font-medium">
                           <EditableField value={asset.remainingLife} entityType="asset" entityId={asset.id} field="remainingLife" projectId={projectId} type="number" formatter={(v) => `${v} yrs`} />
                         </span>
@@ -410,7 +410,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     </div>
 
                     {asset.flags.length > 0 && (
-                      <div className="mt-4 pt-4 border-t border-[#1E2A45]">
+                      <div className="mt-4 pt-4 border-t border-[#222222]">
                         <div className="flex flex-wrap gap-2">
                           {asset.flags.map((flag, idx) => (
                             <span key={idx} className="inline-flex items-center px-2 py-1 rounded bg-red-500/10 text-red-500 text-xs font-medium border border-red-500/20">
@@ -432,16 +432,16 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
           </div>
         ) : (
           <div className="max-w-3xl mx-auto space-y-6">
-            <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-              <div className="p-6 border-b border-[#1E2A45] bg-[#0F1829]">
+            <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+              <div className="p-6 border-b border-[#222222] bg-[#0F1829]">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-medium text-white">AI Extraction Queue</h3>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-[#7A8BA8]">Project:</span>
+                    <span className="text-xs text-[#888888]">Project:</span>
                     <select
                       value={captureProjectId}
                       onChange={e => setCaptureProjectId(e.target.value)}
-                      className="bg-[#121C35] border border-[#1E2A45] text-[#CBD2DF] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary min-w-[200px]"
+                      className="bg-[#1A1A1A] border border-[#222222] text-[#D4D4D4] text-xs rounded-lg px-2 py-1.5 focus:ring-primary focus:border-primary min-w-[200px]"
                     >
                       <option value="">Select a project...</option>
                       {projects.map(p => (
@@ -450,7 +450,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                     </select>
                   </div>
                 </div>
-                <p className="text-sm text-[#7A8BA8]">Upload nameplate photos, wide shots, or inspection documents. Claude Vision will extract structured data and flag deficiencies automatically.</p>
+                <p className="text-sm text-[#888888]">Upload nameplate photos, wide shots, or inspection documents. Claude Vision will extract structured data and flag deficiencies automatically.</p>
               </div>
 
               <div className="p-8">
@@ -466,14 +466,14 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                       : "border-[#2A3A5C] hover:bg-[#1A2544] hover:border-primary/50"
                   )}
                 >
-                  <div className="w-16 h-16 bg-[#1E2A45] text-secondary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-[#222222] text-secondary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Camera className="w-8 h-8" />
                   </div>
                   <h4 className="text-lg font-medium text-white mb-1">
                     {dragOver ? 'Drop photos here' : 'Upload Equipment Photos'}
                   </h4>
-                  <p className="text-sm text-[#7A8BA8] max-w-sm">Drag and drop nameplate photos, wide shots, or inspection documents here.</p>
-                  <p className="text-[10px] text-[#5A6B88] mt-2">JPG, PNG, WEBP — multiple files supported</p>
+                  <p className="text-sm text-[#888888] max-w-sm">Drag and drop nameplate photos, wide shots, or inspection documents here.</p>
+                  <p className="text-[10px] text-[#666666] mt-2">JPG, PNG, WEBP — multiple files supported</p>
                   <input
                     ref={captureInputRef}
                     type="file"
@@ -487,8 +487,8 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
             </div>
 
             {uploadedPhotos.length > 0 && (
-              <div className="bg-[#121C35] border border-[#1E2A45] rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-[#1E2A45] flex items-center justify-between">
+              <div className="bg-[#1A1A1A] border border-[#222222] rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-[#222222] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ImageIcon className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium text-white">{uploadedPhotos.length} photo{uploadedPhotos.length !== 1 ? 's' : ''} queued</span>
@@ -496,7 +496,7 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                   <button
                     onClick={runClaudeExtraction}
                     disabled={extracting}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-[#B8972F] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-[#00ff88] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium rounded-lg transition-colors"
                   >
                     {extracting ? (
                       <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />Extracting...</>
@@ -507,18 +507,18 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
                 </div>
                 <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
                   {uploadedPhotos.map(photo => (
-                    <div key={photo.id} className="relative group rounded-lg overflow-hidden border border-[#1E2A45]">
+                    <div key={photo.id} className="relative group rounded-lg overflow-hidden border border-[#222222]">
                       <img src={photo.preview} alt={photo.name} className="w-full h-40 object-cover" />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
                       <button
                         onClick={() => removePhoto(photo.id)}
-                        className="absolute top-2 right-2 p-1.5 bg-[#121C35]/80 backdrop-blur-sm rounded-lg text-[#5A6B88] hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                        className="absolute top-2 right-2 p-1.5 bg-[#1A1A1A]/80 backdrop-blur-sm rounded-lg text-[#666666] hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                       <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/70 to-transparent">
                         <p className="text-[10px] text-white truncate">{photo.name}</p>
-                        <p className="text-[9px] text-[#7A8BA8] truncate">{projects.find(p => p.id === photo.projectId)?.name || 'No project'}</p>
+                        <p className="text-[9px] text-[#888888] truncate">{projects.find(p => p.id === photo.projectId)?.name || 'No project'}</p>
                       </div>
                     </div>
                   ))}
@@ -527,15 +527,15 @@ export function FieldAudit({ projectId }: { projectId?: string }) {
             )}
 
             {extractionResults.length > 0 && (
-              <div className="bg-[#121C35] border border-primary/30 rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-[#1E2A45] flex items-center gap-2">
+              <div className="bg-[#1A1A1A] border border-primary/30 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-[#222222] flex items-center gap-2">
                   <Camera className="w-4 h-4 text-secondary" />
                   <span className="text-sm font-medium text-white">Extraction Complete — {extractionResults.filter(r => !r.extracted.error).length} assets added</span>
                 </div>
-                <div className="divide-y divide-[#1E2A45]">
+                <div className="divide-y divide-[#222222]">
                   {extractionResults.map((r, i) => (
                     <div key={i} className="px-4 py-3">
-                      <p className="text-xs font-medium text-[#7A8BA8] mb-1 truncate">{r.photoName}</p>
+                      <p className="text-xs font-medium text-[#888888] mb-1 truncate">{r.photoName}</p>
                       {r.extracted.error ? (
                         <p className="text-xs text-red-400">{r.extracted.error}</p>
                       ) : (

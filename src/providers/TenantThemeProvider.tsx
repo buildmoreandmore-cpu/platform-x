@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useStore } from '@/store';
 
-const DEFAULT_PRIMARY = '#C9A84C';
-const DEFAULT_SECONDARY = '#A68B3A';
+const DEFAULT_PRIMARY = '#00ff88';
+const DEFAULT_SECONDARY = '#00cc6a';
 
 export function TenantThemeProvider({ children }: { children: React.ReactNode }) {
   const tenant = useStore(state => state.currentTenant);
