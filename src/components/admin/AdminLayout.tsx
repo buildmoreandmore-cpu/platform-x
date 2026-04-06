@@ -1,13 +1,50 @@
+import React from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
-import { LayoutDashboard, FileText, Upload, Bell, FolderOpen, Users } from 'lucide-react'
+import { LayoutDashboard, FileText, Upload, Bell, FolderOpen, Users, Clock, UserCheck, Shield, MessageSquare, HelpCircle, Database, BarChart3, Scale } from 'lucide-react'
 
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, to: '/admin', end: true },
-  { label: 'Contracts', icon: FileText, to: '/admin/contracts' },
-  { label: 'Upload', icon: Upload, to: '/admin/upload' },
-  { label: 'Alerts', icon: Bell, to: '/admin/alerts' },
-  { label: 'Documents', icon: FolderOpen, to: '/admin/documents' },
-  { label: 'Users', icon: Users, to: '/admin/users' },
+interface NavSection {
+  label?: string
+  items: { label: string; icon: React.ComponentType<{ size?: number }>; to: string; end?: boolean }[]
+}
+
+const navSections: NavSection[] = [
+  {
+    items: [
+      { label: 'Dashboard', icon: LayoutDashboard, to: '/admin', end: true },
+      { label: 'Contracts', icon: FileText, to: '/admin/contracts' },
+      { label: 'Documents', icon: FolderOpen, to: '/admin/documents' },
+      { label: 'Upload', icon: Upload, to: '/admin/upload' },
+    ],
+  },
+  {
+    label: 'Knowledge',
+    items: [
+      { label: 'Timeline', icon: Clock, to: '/admin/timeline' },
+      { label: 'Personnel', icon: UserCheck, to: '/admin/personnel' },
+      { label: 'IGA Assumptions', icon: Shield, to: '/admin/iga-assumptions' },
+    ],
+  },
+  {
+    label: 'Communications',
+    items: [
+      { label: 'Comms Log', icon: MessageSquare, to: '/admin/communications' },
+      { label: 'RFI Tracker', icon: HelpCircle, to: '/admin/rfi' },
+    ],
+  },
+  {
+    label: 'Baselines',
+    items: [
+      { label: 'Baselines', icon: Database, to: '/admin/baselines' },
+      { label: 'Comparisons', icon: BarChart3, to: '/admin/comparisons' },
+      { label: 'Dispute Reports', icon: Scale, to: '/admin/dispute-reports' },
+    ],
+  },
+  {
+    items: [
+      { label: 'Alerts', icon: Bell, to: '/admin/alerts' },
+      { label: 'Users', icon: Users, to: '/admin/users' },
+    ],
+  },
 ]
 
 export function AdminLayout() {
@@ -47,22 +84,37 @@ export function AdminLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 py-4">
-          {navItems.map(({ label, icon: Icon, to, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className="flex items-center gap-3 px-5 py-3 text-xs uppercase tracking-[0.15em] transition-colors"
-              style={({ isActive }) => ({
-                color: isActive ? '#00ff88' : '#4a7a5a',
-                borderLeft: isActive ? '2px solid #00ff88' : '2px solid transparent',
-                backgroundColor: isActive ? 'rgba(0,255,136,0.04)' : 'transparent',
-              })}
-            >
-              <Icon size={16} />
-              {label}
-            </NavLink>
+        <nav className="flex-1 py-4 overflow-y-auto">
+          {navSections.map((section, si) => (
+            <div key={si}>
+              {si > 0 && (
+                <div className="mx-5 my-2" style={{ borderTop: '1px solid #0d2a18' }} />
+              )}
+              {section.label && (
+                <div
+                  className="px-5 pt-2 pb-1 text-[8px] uppercase tracking-[0.25em]"
+                  style={{ color: '#2a4a32' }}
+                >
+                  {section.label}
+                </div>
+              )}
+              {section.items.map(({ label, icon: Icon, to, end }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className="flex items-center gap-3 px-5 py-2.5 text-xs uppercase tracking-[0.15em] transition-colors"
+                  style={({ isActive }) => ({
+                    color: isActive ? '#00ff88' : '#4a7a5a',
+                    borderLeft: isActive ? '2px solid #00ff88' : '2px solid transparent',
+                    backgroundColor: isActive ? 'rgba(0,255,136,0.04)' : 'transparent',
+                  })}
+                >
+                  <Icon size={14} />
+                  {label}
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
 

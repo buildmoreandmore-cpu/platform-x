@@ -26,43 +26,103 @@ const BUILDINGS = [
   { x: 0.92, y: 0.79, w: 0.07, h: 0.58, depth: 0.04, delay: 0.85, tall: true as const },
 ];
 
-/* ─── services data ─── */
+/* ─── services data — six pillars ─── */
 const services = [
   {
     num: '01',
-    title: 'ESPC Lifecycle Management',
+    title: 'ESPC Procurement & Advisory',
+    headline: "Don't sign until we've read it.",
+    subhead: 'Most agencies enter an ESPC already at a disadvantage. We fix that before the ink dries.',
+    body: "The investment-grade audit is written by the ESCO. The savings projections are written by the ESCO. The M&V methodology \u2014 the rulebook for how your savings will be measured for the next fifteen years \u2014 is written by the ESCO. We review all of it before you commit.",
     bullets: [
-      "Full Owner's Rep from feasibility through contract close",
-      'RFP development, ESCO evaluation & selection',
-      'Construction oversight and commissioning QA',
+      'RFP development and ESCO evaluation support',
+      'Investment-grade audit independent review',
+      'Savings guarantee and baseline analysis',
+      'M&V methodology review and negotiation',
+      'Contract red-flag assessment',
+      'Financing structure analysis (DSCR, tax-exempt leases, bonds)',
     ],
+    audience: 'Agencies entering their first ESPC, or renegotiating an existing one.',
   },
   {
     num: '02',
-    title: 'Measurement & Verification',
+    title: "Owner's Representative",
+    headline: 'Someone in your corner during construction.',
+    subhead: 'Retrofits are where promises meet reality. We make sure the ESCO delivers what they sold you.',
+    body: "Once the contract is signed, the ESCO gets to work \u2014 installing equipment, commissioning systems, and declaring completion. Without independent oversight, you have no way to know if the installed equipment matches what was specified.",
     bullets: [
-      'IPMVP-compliant savings verification',
-      'Automated drift detection and performance alerts',
-      'Stakeholder and regulatory reporting',
+      'Construction phase oversight and site representation',
+      'Equipment specification compliance review',
+      'Change order analysis and approval support',
+      'Commissioning and functional performance testing oversight',
+      'Milestone tracking and project governance',
+      'Punch list and substantial completion verification',
     ],
+    audience: 'Agencies with active ESPC construction phases.',
   },
   {
     num: '03',
-    title: 'Financial Modeling & Analysis',
+    title: 'Measurement & Verification',
+    headline: 'Independent savings verification. Every month.',
+    subhead: "The ESCO says you saved $400,000 last year. Do you know if that's true?",
+    body: "M&V is where most ESPC disputes begin. The methodology is technical. The calculations are complex. And the ESCO has every incentive to interpret the data in their favor. Vantage runs independent M&V verification against your guaranteed baselines \u2014 not the ESCO's self-reported figures.",
     bullets: [
-      'Lifecycle cost analysis for ECM bundles',
-      'Utility rate escalation scenario modeling',
-      'ROI forecasting and sensitivity analysis',
+      'Independent monthly savings verification',
+      'IPMVP Options A, B, C, and D compliance',
+      'Automated drift detection and performance alerts',
+      'CMVP-signed M&V reports',
+      'Baseline adjustment review and challenge',
+      'Annual savings reconciliation',
     ],
+    audience: 'Any agency with an active ESPC in its performance period.',
   },
   {
     num: '04',
-    title: 'AI-Powered Project Intelligence',
+    title: 'Financial Modeling & Analysis',
+    headline: 'Know your numbers before the ESCO does.',
+    subhead: "A savings shortfall isn't just an energy problem. It's a budget problem. We model both.",
+    body: "Your ESPC is financed. That means savings have to cover debt service \u2014 and if they don't, your agency is exposed. We model your contract's financial performance in real time.",
     bullets: [
-      'Natural language queries across project data',
-      'Document intelligence and extraction',
-      'Automated reporting with QA workflow',
+      'DSCR monitoring and early warning modeling',
+      'NPV, IRR, and payback analysis',
+      'Utility rate escalation scenario modeling',
+      'ECM-level financial performance attribution',
+      'Portfolio benchmarking across multiple facilities',
+      'Budget impact and cash flow forecasting',
     ],
+    audience: 'Finance directors, CFOs, and budget officers who need to understand ESPC financial risk.',
+  },
+  {
+    num: '05',
+    title: 'Portfolio Intelligence',
+    headline: 'One view. Every contract. Every building.',
+    subhead: 'Most agencies managing multiple ESPCs have no idea how their portfolio is performing as a whole.',
+    body: "You have three contracts across four facilities. Different ESCOs. Different baselines. Different M&V methodologies. No one is looking at all of them together. Vantage gives you a single dashboard across your entire portfolio.",
+    bullets: [
+      'Multi-contract portfolio dashboard',
+      'Cross-facility performance benchmarking',
+      'Aggregate savings verification and shortfall tracking',
+      'Portfolio-level DSCR and financial exposure monitoring',
+      'Natural language queries across all your contract data',
+      'Executive reporting for leadership and council presentations',
+    ],
+    audience: 'Sustainability directors, facilities managers, and CFOs managing multiple performance contracts.',
+  },
+  {
+    num: '06',
+    title: 'Dispute Support',
+    headline: "When the ESCO won't make you whole.",
+    subhead: 'Savings guarantees are only as good as your ability to enforce them. We build that case.',
+    body: "If your M&V reports show a shortfall and the ESCO disputes the findings, you need more than a spreadsheet. You need a forensic analysis produced by a credentialed professional who can defend it.",
+    bullets: [
+      'Forensic M&V analysis and savings recalculation',
+      'Baseline manipulation identification',
+      'Methodology deviation documentation',
+      'Expert support for contract remedy proceedings',
+      'CMVP-signed dispute reports',
+      'Litigation support documentation if required',
+    ],
+    audience: 'Agencies that have discovered savings shortfalls and need an independent analysis to pursue remedy.',
   },
 ];
 
@@ -82,6 +142,30 @@ const tickerItems = [
   { label: 'Active Contracts', value: '12' },
   { label: 'ECMs Monitored', value: '48' },
   { label: 'Alerts Active', value: '3' },
+];
+
+/* ─── how it works steps ─── */
+const steps = [
+  {
+    num: '01',
+    title: 'Upload your contract and utility bills.',
+    body: 'Our document intelligence extracts every guaranteed savings figure, every ECM, every baseline parameter automatically.',
+  },
+  {
+    num: '02',
+    title: 'Your dashboard goes live with real data.',
+    body: 'Verified savings vs guaranteed savings. DSCR. ECM performance by measure. Drift alerts the moment they appear.',
+  },
+  {
+    num: '03',
+    title: 'Your CMVP reviews and signs each M&V cycle.',
+    body: 'Every report is IPMVP-compliant and defensible. Every anomaly is documented from the moment it\u2019s detected.',
+  },
+  {
+    num: '04',
+    title: 'You always know where you stand.',
+    body: 'Ask anything in plain English. Get answers from your actual contract data. No more waiting for the ESCO\u2019s report.',
+  },
 ];
 
 /* ─── CSS-in-JS styles ─── */
@@ -219,7 +303,7 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     lineHeight: 1.8,
     color: 'var(--text-dim)',
-    maxWidth: '480px',
+    maxWidth: '520px',
     marginBottom: '40px',
   },
   heroCtas: {
@@ -307,75 +391,6 @@ const S: Record<string, React.CSSProperties> = {
     color: GREEN,
     fontWeight: 700,
   },
-  servicesSection: {
-    padding: '120px 40px',
-    background: 'var(--dark-2)',
-    position: 'relative',
-  },
-  sectionTag: {
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: '10px',
-    letterSpacing: '4px',
-    color: GREEN,
-    textTransform: 'uppercase' as const,
-    marginBottom: '16px',
-    opacity: 0.6,
-  },
-  sectionTitle: {
-    fontFamily: "'Syne', sans-serif",
-    fontSize: 'clamp(28px, 3.5vw, 44px)',
-    fontWeight: 700,
-    color: '#ffffff',
-    marginBottom: '60px',
-    maxWidth: '600px',
-  },
-  servicesGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '1px',
-    background: 'rgba(0,255,136,0.08)',
-  },
-  serviceCard: {
-    background: 'var(--dark-2)',
-    padding: '40px 32px',
-    transition: 'background 0.3s',
-  },
-  serviceNum: {
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: '11px',
-    color: GREEN,
-    marginBottom: '16px',
-    opacity: 0.5,
-  },
-  serviceTitle: {
-    fontFamily: "'Syne', sans-serif",
-    fontSize: '18px',
-    fontWeight: 600,
-    color: '#ffffff',
-    marginBottom: '20px',
-    lineHeight: 1.3,
-  },
-  serviceBullets: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-  },
-  serviceBullet: {
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: '11px',
-    color: 'var(--text-dim)',
-    padding: '6px 0',
-    borderBottom: '1px solid rgba(0,255,136,0.05)',
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '8px',
-  },
-  bulletDot: {
-    color: GREEN,
-    fontSize: '8px',
-    marginTop: '3px',
-    flexShrink: 0,
-  },
   footerBar: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -397,6 +412,49 @@ const S: Record<string, React.CSSProperties> = {
     marginRight: '8px',
     boxShadow: `0 0 8px ${GREEN}`,
   },
+};
+
+/* shared section styles */
+const sectionBase: React.CSSProperties = {
+  position: 'relative',
+  borderTop: '1px solid #0d2a18',
+  background: '#020c06',
+};
+
+const sectionTag: React.CSSProperties = {
+  fontFamily: "'Share Tech Mono', monospace",
+  fontSize: 10,
+  color: GREEN,
+  letterSpacing: '0.4em',
+  textTransform: 'uppercase',
+  marginBottom: 16,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+};
+
+const sectionHeadline: React.CSSProperties = {
+  fontFamily: "'Syne', sans-serif",
+  fontSize: 'clamp(28px, 3.5vw, 48px)',
+  fontWeight: 800,
+  lineHeight: 1.1,
+  color: '#ffffff',
+  maxWidth: 700,
+};
+
+const sectionBody: React.CSSProperties = {
+  fontFamily: "'Share Tech Mono', monospace",
+  fontSize: 14,
+  color: '#4a7a5a',
+  lineHeight: 1.8,
+  maxWidth: 640,
+};
+
+const monoSmall: React.CSSProperties = {
+  fontFamily: "'Share Tech Mono', monospace",
+  fontSize: 10,
+  letterSpacing: '0.2em',
+  color: '#2a4a32',
 };
 
 /* ─── responsive media-query CSS (injected once) ─── */
@@ -421,9 +479,15 @@ const RESPONSIVE_CSS = `
   .vantage-services-grid {
     grid-template-columns: 1fr 1fr !important;
   }
+  .vantage-steps-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
 }
 @media (max-width: 600px) {
   .vantage-services-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .vantage-steps-grid {
     grid-template-columns: 1fr !important;
   }
   .vantage-nav-links { display: none !important; }
@@ -431,6 +495,8 @@ const RESPONSIVE_CSS = `
   .vantage-intel-panel { display: none !important; }
   .vantage-ticker { flex-wrap: wrap !important; }
   .vantage-ticker-item { flex: 1 1 50% !important; }
+  .vantage-portals-grid { grid-template-columns: 1fr !important; }
+  .vantage-proof-grid { grid-template-columns: 1fr !important; }
 }
 `;
 
@@ -562,7 +628,6 @@ export function Home() {
       c.lineWidth = 0.5;
       c.stroke();
 
-      // moving dot
       const t = (time * 0.0003) % 1;
       const dx = x1 + (x2 - x1) * t;
       const dy = y1 + (y2 - y1) * t;
@@ -641,14 +706,12 @@ export function Home() {
 
       drawGroundGlow(ctx!, W, H);
 
-      // buildings rise in with easeOutCubic
       for (const b of BUILDINGS) {
         const t = Math.max(0, Math.min(1, (elapsed - b.delay) / 1.2));
         const progress = easeOutCubic(t);
         drawBuilding(ctx!, W, H, b, progress);
       }
 
-      // data lines between buildings
       if (elapsed > 1.5) {
         drawDataLine(ctx!, W, H, BUILDINGS[0], BUILDINGS[3], now);
         drawDataLine(ctx!, W, H, BUILDINGS[1], BUILDINGS[5], now);
@@ -679,11 +742,13 @@ export function Home() {
       <nav style={S.nav}>
         <Link to="/" style={S.logo}>VANTAGE // INFRASTRUCTURE</Link>
         <div style={S.navLinks} className="vantage-nav-links">
+          <a href="#problem" style={S.navLink}>The Problem</a>
           <a href="#services" style={S.navLink}>Services</a>
           <a href="#platform" style={S.navLink}>Platform</a>
+          <Link to="/demo" style={S.navLink}>Demo</Link>
           <a href="#portals" style={S.navLink}>Sign In</a>
           <Link to="/contact" style={S.navLink}>Contact</Link>
-          <Link to="/contact" style={S.ctaBtn}>Request Access</Link>
+          <Link to="/demo" style={S.ctaBtn}>See Your Building</Link>
         </div>
       </nav>
 
@@ -695,17 +760,20 @@ export function Home() {
         <div style={S.noiseOverlay} />
 
         <div style={S.heroContent} className="vantage-hero-content">
-          <div style={S.tag}>Energy Performance Advisory</div>
+          <div style={S.tag}>Independent Owner&apos;s Representative</div>
           <h1 style={S.h1}>
             Your interests.<br />
             Always protected.
           </h1>
           <p style={S.subtitle}>
-            Independent Owner&apos;s Rep for Energy Savings Performance Contracts.
-            We protect your investment from feasibility through post-construction M&amp;V.
+            Energy Savings Performance Contracts promise guaranteed savings.
+            We make sure you actually get them.<br /><br />
+            ESCOs design the project, build the project, and measure whether
+            the project worked. That&apos;s a conflict of interest your agency
+            can&apos;t afford to ignore. Vantage sits on your side of the table.
           </p>
           <div style={S.heroCtas}>
-            <Link to="/contact" style={S.primaryBtn}>Request Access</Link>
+            <Link to="/demo" style={S.primaryBtn}>See Your Building &rarr;</Link>
             <a href="#portals" style={S.secondaryBtn}>Sign In</a>
           </div>
         </div>
@@ -732,25 +800,54 @@ export function Home() {
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
-      <section id="services" style={S.servicesSection}>
-        <div style={S.sectionTag}>Capabilities</div>
-        <h2 style={S.sectionTitle}>Full-spectrum ESPC oversight.</h2>
-        <div style={S.servicesGrid} className="vantage-services-grid">
-          {services.map((svc) => (
-            <div key={svc.num} style={S.serviceCard}>
-              <div style={S.serviceNum}>{svc.num}</div>
-              <div style={S.serviceTitle}>{svc.title}</div>
-              <ul style={S.serviceBullets}>
-                {svc.bullets.map((b) => (
-                  <li key={b} style={S.serviceBullet}>
-                    <span style={S.bulletDot}>&#9670;</span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      {/* ─── POSITIONING STATEMENT ─── */}
+      <div style={{
+        padding: '48px 40px',
+        textAlign: 'center',
+        borderTop: '1px solid #0d2a18',
+        background: '#020c06',
+      }}>
+        <p style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 11,
+          letterSpacing: '0.4em',
+          color: 'rgba(0,255,136,0.5)',
+          margin: 0,
+        }}>
+          &ldquo;ESCOs have always had the data. Now so do you.&rdquo;
+        </p>
+      </div>
+
+      {/* ─── THE PROBLEM ─── */}
+      <section id="problem" style={{ ...sectionBase, padding: '120px 48px' }}>
+        <div style={sectionTag}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          The Problem
+        </div>
+        <h2 style={{ ...sectionHeadline, marginBottom: 32 }}>
+          The ESCO controls what you see.
+        </h2>
+        <div style={{ ...sectionBody, marginBottom: 32 }}>
+          <p style={{ margin: '0 0 20px 0' }}>
+            An Energy Savings Performance Contract is one of the most complex
+            financial instruments your agency will ever sign. Millions of dollars.
+            Ten to twenty-five years. Guaranteed savings that are supposed to pay
+            for themselves.
+          </p>
+          <p style={{ margin: '0 0 20px 0' }}>
+            But here&apos;s what most owners don&apos;t realize until it&apos;s too late: the
+            same company that promised you savings is also the one measuring
+            whether they delivered. They write the M&amp;V report. They define the
+            baseline. They decide what counts.
+          </p>
+          <p style={{ margin: '0 0 20px 0' }}>
+            By the time you notice the savings are short, years of shortfall
+            have already accumulated &mdash; and the contract&apos;s remedy provisions have
+            a clock on them.
+          </p>
+          <p style={{ margin: 0, color: GREEN, fontSize: 15 }}>
+            Vantage exists because owners deserve an independent view.
+          </p>
         </div>
       </section>
 
@@ -795,8 +892,7 @@ export function Home() {
           marginBottom: 48,
         }}>
           Real-time energy performance monitoring with AI-powered drift detection,
-          ECM zone mapping, and DSCR tracking — all overlaid on your actual facility.
-          One API key swap from Google's photorealistic 3D tiles.
+          ECM zone mapping, and DSCR tracking &mdash; all overlaid on your actual facility.
         </p>
 
         {/* Demo preview card */}
@@ -836,7 +932,7 @@ export function Home() {
               color: '#4a7a5a',
               letterSpacing: '0.2em',
             }}>
-              ATLANTA CITY HALL — 55 TRINITY AVE SW
+              ATLANTA CITY HALL &mdash; 55 TRINITY AVE SW
             </div>
           </div>
 
@@ -929,9 +1025,318 @@ export function Home() {
               fontSize: 11,
               color: GREEN,
               letterSpacing: '0.2em',
-            }}>LAUNCH DEMO →</span>
+            }}>LAUNCH DEMO &rarr;</span>
           </div>
         </Link>
+      </section>
+
+      {/* ─── SERVICES — SIX PILLARS ─── */}
+      <section id="services" style={{
+        padding: '120px 48px',
+        background: '#050f08',
+        position: 'relative',
+        borderTop: '1px solid #0d2a18',
+      }}>
+        <div style={sectionTag}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          What We Do
+        </div>
+        <h2 style={{ ...sectionHeadline, marginBottom: 64 }}>
+          Six pillars of independent oversight.
+        </h2>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 1,
+          background: 'rgba(0,255,136,0.08)',
+        }} className="vantage-services-grid">
+          {services.map((svc) => (
+            <div key={svc.num} style={{
+              background: '#050f08',
+              padding: '48px 36px',
+              transition: 'background 0.3s',
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+              <div style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 11,
+                color: GREEN,
+                marginBottom: 12,
+                opacity: 0.5,
+              }}>{svc.num}</div>
+              <div style={{
+                fontFamily: "'Syne', sans-serif",
+                fontSize: 13,
+                fontWeight: 600,
+                color: GREEN,
+                marginBottom: 16,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}>{svc.title}</div>
+              <h3 style={{
+                fontFamily: "'Syne', sans-serif",
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#ffffff',
+                marginBottom: 10,
+                lineHeight: 1.2,
+              }}>{svc.headline}</h3>
+              <p style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 11,
+                color: '#c8f0d8',
+                lineHeight: 1.6,
+                marginBottom: 16,
+              }}>{svc.subhead}</p>
+              <p style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 11,
+                color: '#4a7a5a',
+                lineHeight: 1.7,
+                marginBottom: 20,
+              }}>{svc.body}</p>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 0 20px 0',
+              }}>
+                {svc.bullets.map((b) => (
+                  <li key={b} style={{
+                    fontFamily: "'Share Tech Mono', monospace",
+                    fontSize: 10,
+                    color: '#4a7a5a',
+                    padding: '5px 0',
+                    borderBottom: '1px solid rgba(0,255,136,0.05)',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 8,
+                  }}>
+                    <span style={{ color: GREEN, fontSize: 8, marginTop: 3, flexShrink: 0 }}>&#9670;</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+              <p style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 9,
+                color: '#2a4a32',
+                letterSpacing: '0.1em',
+                marginTop: 'auto',
+              }}>{svc.audience}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── WHY VANTAGE ─── */}
+      <section id="why" style={{ ...sectionBase, padding: '120px 48px' }}>
+        <div style={sectionTag}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          Why Vantage
+        </div>
+        <h2 style={{ ...sectionHeadline, marginBottom: 32, maxWidth: 620 }}>
+          What makes us different isn&apos;t the credentials.<br />It&apos;s the platform.
+        </h2>
+        <div style={{ ...sectionBody, marginBottom: 32 }}>
+          <p style={{ margin: '0 0 20px 0' }}>
+            Traditional Owner&apos;s Rep firms send you a PDF once a quarter.
+            By the time you read it, three months of drift have already
+            compounded.
+          </p>
+          <p style={{ margin: '0 0 20px 0' }}>
+            Vantage monitors your contract continuously. Our AI platform
+            reads your utility data, compares it against your guaranteed
+            baselines, and flags anomalies the moment they appear &mdash;
+            not at the next reporting cycle.
+          </p>
+          <p style={{ margin: '0 0 20px 0' }}>
+            When you upload your ESPC contract, our document intelligence
+            extracts every ECM, every guaranteed savings figure, every
+            baseline parameter, and every M&amp;V methodology specified.
+            Those numbers live in your dashboard in real time.
+          </p>
+          <p style={{ margin: '0 0 20px 0' }}>
+            Every M&amp;V report we produce is reviewed and signed by a
+            Certified Measurement &amp; Verification Professional. That&apos;s
+            the credential that makes your findings defensible.
+          </p>
+          <p style={{ margin: 0, color: '#c8f0d8', fontSize: 15 }}>
+            We are not a consulting firm that happens to have software.
+            We are a tech-enabled Owner&apos;s Representative firm where
+            the platform is the product and independent oversight
+            is the delivery mechanism.
+          </p>
+        </div>
+
+        {/* Platform proof points */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 1,
+          background: '#0d2a18',
+          border: '1px solid #0d2a18',
+          maxWidth: 800,
+          marginTop: 48,
+        }}>
+          <div style={{ background: '#020c06', padding: '32px 28px' }}>
+            <h3 style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 16,
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: 12,
+              lineHeight: 1.3,
+            }}>
+              Your staff will change. Your platform won&apos;t.
+            </h3>
+            <p style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: '#4a7a5a',
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              Our institutional knowledge module preserves every
+              decision, every baseline, every communication permanently &mdash;
+              regardless of who is in the role.
+            </p>
+          </div>
+          <div style={{ background: '#020c06', padding: '32px 28px' }}>
+            <h3 style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 16,
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: 12,
+              lineHeight: 1.3,
+            }}>
+              The baseline governs everything.<br />We make sure it was set correctly.
+            </h3>
+            <p style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: '#4a7a5a',
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              IGA assumptions extraction and baseline registry
+              surface the numbers ESCOs rely on for 25 years of
+              M&amp;V calculations &mdash; before you sign.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW IT WORKS ─── */}
+      <section id="how" style={{ ...sectionBase, padding: '120px 48px' }}>
+        <div style={sectionTag}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          How It Works
+        </div>
+        <h2 style={{ ...sectionHeadline, marginBottom: 64 }}>
+          From contract to command in 48 hours.
+        </h2>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 1,
+          background: '#0d2a18',
+          border: '1px solid #0d2a18',
+          maxWidth: 960,
+        }} className="vantage-steps-grid">
+          {steps.map((step) => (
+            <div key={step.num} style={{
+              background: '#020c06',
+              padding: '36px 28px',
+            }}>
+              <div style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 11,
+                color: GREEN,
+                marginBottom: 16,
+                opacity: 0.5,
+              }}>{step.num}</div>
+              <h3 style={{
+                fontFamily: "'Syne', sans-serif",
+                fontSize: 16,
+                fontWeight: 700,
+                color: '#ffffff',
+                marginBottom: 12,
+                lineHeight: 1.3,
+              }}>{step.title}</h3>
+              <p style={{
+                fontFamily: "'Share Tech Mono', monospace",
+                fontSize: 11,
+                color: '#4a7a5a',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>{step.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── CLOSING CTA ─── */}
+      <section style={{
+        ...sectionBase,
+        padding: '120px 48px',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: 'clamp(28px, 3.5vw, 44px)',
+          fontWeight: 800,
+          lineHeight: 1.15,
+          color: '#ffffff',
+          marginBottom: 16,
+          maxWidth: 600,
+        }}>
+          Your ESCO knows exactly how your contract is performing.
+        </h2>
+        <p style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: 'clamp(20px, 2.5vw, 32px)',
+          fontWeight: 700,
+          color: GREEN,
+          marginBottom: 32,
+        }}>
+          Now you can too.
+        </p>
+        <p style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 13,
+          color: '#4a7a5a',
+          lineHeight: 1.8,
+          maxWidth: 520,
+          marginBottom: 48,
+          textAlign: 'center',
+        }}>
+          Schedule a conversation. We&apos;ll load your building into
+          the platform and show you what your contract looks like
+          with independent eyes on it.<br /><br />
+          No obligation. No pitch deck.
+          Just your data, your building, and a clear picture
+          of where you actually stand.
+        </p>
+        <Link to="/contact" style={{
+          ...S.primaryBtn,
+          fontSize: 14,
+          padding: '18px 40px',
+          marginBottom: 32,
+        }}>
+          Request Access &rarr;
+        </Link>
+        <p style={{ ...monoSmall, textAlign: 'center', maxWidth: 480 }}>
+          Georgia-based &middot; DBE Certified (pending) &middot;
+          CMVP-credentialed M&amp;V &middot; Serving public sector
+          agencies throughout Metro Atlanta and Georgia
+        </p>
       </section>
 
       {/* ─── PORTAL ACCESS ─── */}
@@ -1013,7 +1418,7 @@ export function Home() {
               color: GREEN,
               letterSpacing: '0.2em',
               marginTop: 'auto',
-            }}>SIGN IN →</div>
+            }}>SIGN IN &rarr;</div>
           </Link>
 
           {/* Client Portal */}
@@ -1055,7 +1460,7 @@ export function Home() {
               color: GREEN,
               letterSpacing: '0.2em',
               marginTop: 'auto',
-            }}>SIGN IN →</div>
+            }}>SIGN IN &rarr;</div>
           </Link>
 
           {/* CMVP Portal */}
@@ -1082,14 +1487,14 @@ export function Home() {
               fontSize: 18,
               fontWeight: 700,
               color: '#c8f0d8',
-            }}>M&V Professional</div>
+            }}>M&amp;V Professional</div>
             <div style={{
               fontFamily: "'Share Tech Mono', monospace",
               fontSize: 11,
               color: '#4a7a5a',
               lineHeight: 1.6,
             }}>
-              Review assigned M&V tasks, verify savings calculations, flag discrepancies, and digitally sign off on reports.
+              Review assigned M&amp;V tasks, verify savings calculations, flag discrepancies, and digitally sign off on reports.
             </div>
             <div style={{
               fontFamily: "'Share Tech Mono', monospace",
@@ -1097,7 +1502,7 @@ export function Home() {
               color: GREEN,
               letterSpacing: '0.2em',
               marginTop: 'auto',
-            }}>SIGN IN →</div>
+            }}>SIGN IN &rarr;</div>
           </Link>
         </div>
 

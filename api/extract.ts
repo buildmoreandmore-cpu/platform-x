@@ -5,11 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 /* ─────────────────────────────────────────────────────────────────────────────
  * Consolidated extraction endpoint.
  *
- * Route via query param ?type=contract|utility|mv-report
+ * Route via query param ?type=contract|utility|mv-report|iga-assumptions
  *
- *   POST ?type=contract   → extract ESPC contract     (was extract-contract.ts)
- *   POST ?type=utility    → extract utility bill       (was extract-utility.ts)
- *   POST ?type=mv-report  → extract M&V report        (was extract-mv-report.ts)
+ *   POST ?type=contract        → extract ESPC contract     (was extract-contract.ts)
+ *   POST ?type=utility         → extract utility bill       (was extract-utility.ts)
+ *   POST ?type=mv-report       → extract M&V report        (was extract-mv-report.ts)
+ *   POST ?type=iga-assumptions → extract IGA assumptions    (Module 1)
  * ────────────────────────────────────────────────────────────────────────── */
 
 // ── Prompts ─────────────────────────────────────────────────────────────────
@@ -132,7 +133,7 @@ function calculateVerifiedSavings(
 async function handleContract(
   req: VercelRequest,
   res: VercelResponse,
-  supabase: ReturnType<typeof createClient>,
+  supabase: ReturnType<typeof createClient<any>>,
   anthropic: Anthropic,
 ) {
   const { file_base64, file_name, client_name, building_name, building_address } = req.body || {};
@@ -354,7 +355,7 @@ async function handleContract(
 async function handleUtility(
   req: VercelRequest,
   res: VercelResponse,
-  supabase: ReturnType<typeof createClient>,
+  supabase: ReturnType<typeof createClient<any>>,
   anthropic: Anthropic,
 ) {
   const { file_base64, file_name, contract_id } = req.body || {};
@@ -565,7 +566,7 @@ async function handleUtility(
 async function handleMvReport(
   req: VercelRequest,
   res: VercelResponse,
-  supabase: ReturnType<typeof createClient>,
+  supabase: ReturnType<typeof createClient<any>>,
   anthropic: Anthropic,
 ) {
   const { file_base64, file_name, contract_id } = req.body || {};
@@ -787,7 +788,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
   }
 
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const supabase = createClient<any>(supabaseUrl, supabaseKey);
   const anthropic = new Anthropic({ apiKey: anthropicKey });
 
   const type = (req.query.type as string) || '';
@@ -799,7 +801,143 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return handleUtility(req, res, supabase, anthropic);
     case 'mv-report':
       return handleMvReport(req, res, supabase, anthropic);
+    case 'iga-assumptions':
+      return handleIGAAssumptions(req, res, supabase, anthropic);
     default:
-      return res.status(400).json({ error: 'Missing or invalid "type" query param — expected contract, utility, or mv-report' });
+      return res.status(400).json({ error: 'Missing or invalid "type" query param — expected contract, utility, mv-report, or iga-assumptions' });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * IGA Assumptions Extraction (Module 1)
+ * ═════════════════════════════════════════════════════════════════��═════ */
+
+const IGA_ASSUMPTIONS_PROMPT = `You are an expert ESPC forensic analyst for Vantage Infrastructure Group, an independent Owner's Representative firm.
+
+You are reviewing an Investment Grade Audit (IGA) document. Your job is to extract every assumption the ESCO has used in their energy savings calculations. These assumptions govern M&V for the entire contract term — incorrect or favorable assumptions are the primary way ESCOs inflate savings claims.
+
+For each assumption found, assess the risk level:
+- LOW: Standard industry assumption, well-documented
+- NORMAL: Reasonable but should be monitored
+- HIGH: Assumption favors ESCO, limited documentation
+- CRITICAL: Assumption appears inflated or unsupported, warrants immediate challenge before contract execution
+
+Return ONLY valid JSON. No explanation, no markdown, no code blocks. Raw JSON only.
+
+{
+  "assumptions": [
+    {
+      "assumption_type": "occupancy_hours | occupancy_rate | weather_normalization | equipment_degradation | operating_schedule | rate_escalation | baseline_adjustment | demand_factor | other",
+      "description": "plain English description of the assumption",
+      "assumed_value": "the specific value or formula used",
+      "assumed_unit": "hours/year | % | degrees F | kWh | etc",
+      "source": "where the ESCO says this number came from",
+      "risk_level": "low | normal | high | critical",
+      "risk_notes": "why this is flagged at this risk level",
+      "is_flagged": true or false,
+      "flag_reason": "specific reason to challenge this assumption or null"
+    }
+  ],
+  "high_risk_summary": "plain English summary of the most concerning assumptions that should be challenged before contract execution",
+  "confidence_score": 0.0 to 1.0,
+  "extraction_notes": ["array of strings"]
+}`;
+
+async function handleIGAAssumptions(
+  req: VercelRequest,
+  res: VercelResponse,
+  supabase: ReturnType<typeof createClient<any>>,
+  anthropic: Anthropic,
+) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { fileBase64, fileName, contractId } = req.body;
+    if (!fileBase64 || !contractId) {
+      return res.status(400).json({ error: 'fileBase64 and contractId are required' });
+    }
+
+    // Upload to Supabase Storage
+    const filePath = `iga/${Date.now()}-${fileName || 'iga-document.pdf'}`;
+    const buffer = Buffer.from(fileBase64, 'base64');
+    await supabase.storage.from('documents').upload(filePath, buffer, { contentType: 'application/pdf' });
+
+    // Send to Claude for extraction
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250929',
+      max_tokens: 8192,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'document',
+              source: { type: 'base64', media_type: 'application/pdf', data: fileBase64 },
+            },
+            { type: 'text', text: IGA_ASSUMPTIONS_PROMPT },
+          ],
+        },
+      ],
+    });
+
+    const text = response.content[0].type === 'text' ? response.content[0].text : '';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      return res.status(500).json({ error: 'Failed to parse extraction response' });
+    }
+
+    const extracted = JSON.parse(jsonMatch[0]);
+
+    // Store each assumption
+    const assumptions = extracted.assumptions || [];
+    const insertResults = [];
+
+    for (const a of assumptions) {
+      const { data } = await supabase.from('iga_assumptions').insert({
+        contract_id: contractId,
+        assumption_type: a.assumption_type,
+        description: a.description,
+        assumed_value: a.assumed_value,
+        assumed_unit: a.assumed_unit,
+        source: a.source,
+        risk_level: a.risk_level,
+        risk_notes: a.risk_notes,
+        is_flagged: a.is_flagged || false,
+        flag_reason: a.flag_reason,
+      }).select().single();
+      if (data) insertResults.push(data);
+
+      // Auto-create alert for critical assumptions
+      if (a.risk_level === 'critical') {
+        await supabase.from('alerts').insert({
+          contract_id: contractId,
+          severity: 'critical',
+          type: 'iga_assumption',
+          title: `CRITICAL IGA ASSUMPTION: ${a.assumption_type.toUpperCase()}`,
+          description: `${a.description}. Flag reason: ${a.flag_reason || 'Unsupported critical assumption'}`,
+          status: 'active',
+        });
+      }
+    }
+
+    // Add timeline event
+    await supabase.from('contract_timeline').insert({
+      contract_id: contractId,
+      event_type: 'milestone',
+      title: 'IGA Assumptions Extracted',
+      description: `${assumptions.length} assumptions extracted. ${assumptions.filter((a: { risk_level: string }) => a.risk_level === 'critical').length} critical flags.`,
+      event_date: new Date().toISOString().split('T')[0],
+      is_permanent: true,
+    });
+
+    return res.status(200).json({
+      assumptions: insertResults,
+      high_risk_summary: extracted.high_risk_summary,
+      confidence_score: extracted.confidence_score,
+      extraction_notes: extracted.extraction_notes,
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return res.status(500).json({ error: `IGA extraction failed: ${message}` });
   }
 }

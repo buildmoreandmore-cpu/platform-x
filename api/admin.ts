@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Supabase credentials not configured' });
   }
 
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createClient<any>(supabaseUrl, supabaseKey);
 
   const action = (req.query.action as string) || '';
 

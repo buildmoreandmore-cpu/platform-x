@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { Upload, CheckCircle, AlertCircle, FileText } from 'lucide-react'
 
-type UploadMode = 'espc_contract' | 'utility_bill' | 'mv_report'
+type UploadMode = 'espc_contract' | 'utility_bill' | 'mv_report' | 'iga_assumptions' | 'baselines'
 
 interface Contract {
   id: string
@@ -13,12 +13,16 @@ const tabs: { key: UploadMode; label: string }[] = [
   { key: 'espc_contract', label: 'ESPC Contract' },
   { key: 'utility_bill', label: 'Utility Bill' },
   { key: 'mv_report', label: 'M&V Report' },
+  { key: 'iga_assumptions', label: 'IGA Assumptions' },
+  { key: 'baselines', label: 'Baselines' },
 ]
 
 const endpointMap: Record<UploadMode, string> = {
   espc_contract: '/api/extract?type=contract',
   utility_bill: '/api/extract?type=utility',
   mv_report: '/api/extract?type=mv-report',
+  iga_assumptions: '/api/extract?type=iga-assumptions',
+  baselines: '/api/baselines?action=extract',
 }
 
 export function AdminUpload() {

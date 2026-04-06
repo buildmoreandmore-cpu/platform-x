@@ -60,6 +60,20 @@ const AdminAlerts = lazy(() => import('./pages/admin/AdminAlerts').then(m => ({ 
 const AdminDocuments = lazy(() => import('./pages/admin/AdminDocuments').then(m => ({ default: m.AdminDocuments })));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers').then(m => ({ default: m.AdminUsers })));
 
+// Admin portal — Module 1: Institutional Knowledge
+const AdminTimeline = lazy(() => import('./pages/admin/AdminTimeline').then(m => ({ default: m.AdminTimeline })));
+const AdminPersonnel = lazy(() => import('./pages/admin/AdminPersonnel').then(m => ({ default: m.AdminPersonnel })));
+const AdminIGAAssumptions = lazy(() => import('./pages/admin/AdminIGAAssumptions').then(m => ({ default: m.AdminIGAAssumptions })));
+
+// Admin portal — Module 2: Communications
+const AdminCommunications = lazy(() => import('./pages/admin/AdminCommunications').then(m => ({ default: m.AdminCommunications })));
+const AdminRFITracker = lazy(() => import('./pages/admin/AdminRFITracker').then(m => ({ default: m.AdminRFITracker })));
+
+// Admin portal — Module 3: Baselines
+const AdminBaselines = lazy(() => import('./pages/admin/AdminBaselines').then(m => ({ default: m.AdminBaselines })));
+const AdminComparisons = lazy(() => import('./pages/admin/AdminComparisons').then(m => ({ default: m.AdminComparisons })));
+const AdminDisputeReports = lazy(() => import('./pages/admin/AdminDisputeReports').then(m => ({ default: m.AdminDisputeReports })));
+
 // Client portal
 const ClientLogin = lazy(() => import('./pages/client/ClientLogin').then(m => ({ default: m.ClientLogin })));
 
@@ -128,6 +142,17 @@ export default function App() {
           <Route path="alerts" element={<Suspense fallback={<PageSkeleton />}><AdminAlerts /></Suspense>} />
           <Route path="documents" element={<Suspense fallback={<PageSkeleton />}><AdminDocuments /></Suspense>} />
           <Route path="users" element={<Suspense fallback={<PageSkeleton />}><AdminUsers /></Suspense>} />
+          {/* Module 1: Institutional Knowledge */}
+          <Route path="timeline" element={<Suspense fallback={<PageSkeleton />}><AdminTimeline /></Suspense>} />
+          <Route path="personnel" element={<Suspense fallback={<PageSkeleton />}><AdminPersonnel /></Suspense>} />
+          <Route path="iga-assumptions" element={<Suspense fallback={<PageSkeleton />}><AdminIGAAssumptions /></Suspense>} />
+          {/* Module 2: Communications */}
+          <Route path="communications" element={<Suspense fallback={<PageSkeleton />}><AdminCommunications /></Suspense>} />
+          <Route path="rfi" element={<Suspense fallback={<PageSkeleton />}><AdminRFITracker /></Suspense>} />
+          {/* Module 3: Baselines */}
+          <Route path="baselines" element={<Suspense fallback={<PageSkeleton />}><AdminBaselines /></Suspense>} />
+          <Route path="comparisons" element={<Suspense fallback={<PageSkeleton />}><AdminComparisons /></Suspense>} />
+          <Route path="dispute-reports" element={<Suspense fallback={<PageSkeleton />}><AdminDisputeReports /></Suspense>} />
         </Route>
 
         {/* Redirect unknown paths */}

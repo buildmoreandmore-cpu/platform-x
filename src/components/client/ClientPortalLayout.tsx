@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bell, LogOut } from 'lucide-react'
 
-type Tab = 'overview' | 'ecm' | 'reports' | 'ask'
+type Tab = 'overview' | 'ecm' | 'reports' | 'ask' | 'history' | 'communications' | 'baselines'
 
 interface ClientPortalLayoutProps {
   children?: React.ReactNode
@@ -21,6 +21,9 @@ export function ClientPortalLayout({ children }: ClientPortalLayoutProps) {
     { id: 'ecm', label: 'ECM Performance' },
     { id: 'reports', label: 'Reports' },
     { id: 'ask', label: 'Ask Vantage AI' },
+    { id: 'history', label: 'Contract History' },
+    { id: 'communications', label: 'Communications' },
+    { id: 'baselines', label: 'Baseline View' },
   ]
 
   const handleLogout = () => {

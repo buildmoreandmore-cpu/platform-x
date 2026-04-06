@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, FileText, Send, Loader2 } from 'lucide-react'
 
-type Tab = 'overview' | 'ecm' | 'reports' | 'ask'
+type Tab = 'overview' | 'ecm' | 'reports' | 'ask' | 'history' | 'communications' | 'baselines'
 
 interface ECM {
   id: string
@@ -571,6 +571,137 @@ export function ClientDashboard({ activeTab = 'overview' }: { activeTab?: Tab })
       {activeTab === 'ecm' && <ECMTab data={data} />}
       {activeTab === 'reports' && <ReportsTab data={data} />}
       {activeTab === 'ask' && <AskTab data={data} />}
+      {activeTab === 'history' && <ClientHistoryTab />}
+      {activeTab === 'communications' && <ClientCommunicationsTab />}
+      {activeTab === 'baselines' && <ClientBaselinesTab />}
+    </div>
+  )
+}
+
+// ── Read-Only Client Tabs for Modules 1-3 ─────────────────────────────
+
+function ClientHistoryTab() {
+  const [events, setEvents] = useState<Array<{ id: string; title: string; event_type: string; description: string; event_date: string; is_permanent: boolean }>>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/knowledge?action=timeline&contract_id=all')
+      .then(r => r.json())
+      .then(d => { setEvents(Array.isArray(d) ? d : d.events ?? []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const typeColor: Record<string, string> = {
+    milestone: '#00ff88', decision: '#ffaa00', alert_resolved: '#00ff88',
+    dispute_opened: '#ff4444', mv_verified: '#00ff88', personnel_change: '#ffaa00',
+  }
+
+  if (loading) return <div style={{ color: '#4a7a5a', padding: 40 }}>Loading contract history...</div>
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between mb-6">
+        <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700, color: '#c8f0d8' }}>Contract History</h2>
+        <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, color: '#4a7a5a', letterSpacing: '0.15em' }}>COMPLETE RECORD — SURVIVES STAFF CHANGES</span>
+      </div>
+      {events.length === 0 ? (
+        <div style={{ color: '#4a7a5a', padding: 20 }}>No timeline events recorded yet.</div>
+      ) : events.map(e => (
+        <div key={e.id} style={{ background: '#050f08', border: '1px solid #0d2a18', padding: '16px 20px', display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', marginTop: 6, flexShrink: 0, background: typeColor[e.event_type] || '#4a7a5a' }} />
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 12, fontWeight: 600, color: '#c8f0d8' }}>{e.is_permanent && '\uD83D\uDD12 '}{e.title}</span>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, color: '#4a7a5a' }}>{e.event_date}</span>
+            </div>
+            {e.description && <p style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 10, color: '#4a7a5a', lineHeight: 1.6, margin: 0 }}>{e.description}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ClientCommunicationsTab() {
+  const [comms, setComms] = useState<Array<{ id: string; subject: string; comm_type: string; summary: string; decisions_made: string; date_occurred: string }>>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/knowledge?action=communications&contract_id=all')
+      .then(r => r.json())
+      .then(d => { setComms(Array.isArray(d) ? d : d.communications ?? []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div style={{ color: '#4a7a5a', padding: 40 }}>Loading communications...</div>
+
+  return (
+    <div className="space-y-4">
+      <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700, color: '#c8f0d8', marginBottom: 24 }}>Communications Summary</h2>
+      {comms.length === 0 ? (
+        <div style={{ color: '#4a7a5a', padding: 20 }}>No communications logged yet.</div>
+      ) : comms.map(c => (
+        <div key={c.id} style={{ background: '#050f08', border: '1px solid #0d2a18', padding: '16px 20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 12, fontWeight: 600, color: '#c8f0d8' }}>{c.subject}</span>
+            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, color: '#4a7a5a' }}>{new Date(c.date_occurred).toLocaleDateString()}</span>
+          </div>
+          <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: '0.1em', color: '#00ff88', textTransform: 'uppercase' as const }}>{c.comm_type.replace(/_/g, ' ')}</span>
+          <p style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 10, color: '#4a7a5a', lineHeight: 1.6, margin: '8px 0 0' }}>{c.summary}</p>
+          {c.decisions_made && (
+            <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(0,255,136,0.04)', borderLeft: '2px solid #00ff88' }}>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: '#00ff88', letterSpacing: '0.1em' }}>DECISIONS: </span>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 10, color: '#c8f0d8' }}>{c.decisions_made}</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ClientBaselinesTab() {
+  const [baselines, setBaselines] = useState<Array<{ id: string; description: string; baseline_value: number; current_value: number; baseline_unit: string; risk_level: string }>>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/baselines?action=list&contract_id=all')
+      .then(r => r.json())
+      .then(d => { setBaselines(Array.isArray(d) ? d : d.baselines ?? []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const riskColor: Record<string, string> = { low: '#00ff88', normal: '#4a7a5a', high: '#ffaa00', critical: '#ff4444' }
+
+  if (loading) return <div style={{ color: '#4a7a5a', padding: 40 }}>Loading baselines...</div>
+
+  return (
+    <div className="space-y-4">
+      <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700, color: '#c8f0d8', marginBottom: 24 }}>Baseline View</h2>
+      {baselines.length === 0 ? (
+        <div style={{ color: '#4a7a5a', padding: 20 }}>No baselines established yet.</div>
+      ) : baselines.map(b => {
+        const variance = b.current_value && b.baseline_value ? (((b.current_value - b.baseline_value) / b.baseline_value) * 100).toFixed(1) : null
+        return (
+          <div key={b.id} style={{ background: '#050f08', border: '1px solid #0d2a18', padding: '16px 20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 12, fontWeight: 600, color: '#c8f0d8' }}>{b.description}</span>
+              <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, color: riskColor[b.risk_level] || '#4a7a5a', letterSpacing: '0.1em', textTransform: 'uppercase' as const }}>{b.risk_level} RISK</span>
+            </div>
+            <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 13, color: '#c8f0d8' }}>
+              Baseline: <span style={{ color: '#00ff88' }}>{b.baseline_value} {b.baseline_unit}</span>
+              {b.current_value != null && b.current_value !== b.baseline_value && (
+                <> &rarr; Current: <span style={{ color: '#ffaa00' }}>{b.current_value} {b.baseline_unit}</span></>
+              )}
+            </div>
+            {variance && parseFloat(variance) !== 0 && (
+              <p style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 11, color: '#4a7a5a', margin: '8px 0 0' }}>
+                You should be using {b.baseline_value} {b.baseline_unit}. Current: {b.current_value} {b.baseline_unit}. That's a {variance}% variance.
+              </p>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
