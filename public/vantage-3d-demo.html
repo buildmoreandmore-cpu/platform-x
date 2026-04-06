@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VANTAGE // Energy Command — Atlanta City Hall</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.15.0/mapbox-gl.css" rel="stylesheet"/>
+<script src="https://unpkg.com/deck.gl@8.9.35/dist.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020c06;overflow:hidden;font-family:'Share Tech Mono',monospace;color:#c8f0d8}
+#map{position:absolute;inset:0;width:100%;height:100%}
+
+/* ── Pulse keyframes ── */
+@keyframes pulse-green{0%,100%{box-shadow:0 0 4px #00ff88}50%{box-shadow:0 0 12px #00ff88,0 0 24px rgba(0,255,136,.3)}}
+@keyframes pulse-amber{0%,100%{box-shadow:0 0 4px #ffaa00}50%{box-shadow:0 0 12px #ffaa00,0 0 20px rgba(255,170,0,.3)}}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 4px #ff3333}50%{box-shadow:0 0 12px #ff3333,0 0 20px rgba(255,51,51,.3)}}
+@keyframes sensor-pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.8);opacity:.4}100%{transform:scale(1);opacity:1}}
+@keyframes fade-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scan{0%{top:-2px}100%{top:100%}}
+@keyframes drift-flash{0%{opacity:1}100%{opacity:0}}
+
+/* ── Top Nav ── */
+#topnav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(2,12,6,.94);border-bottom:1px solid #0d2a18;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100;backdrop-filter:blur(8px)}
+#topnav .brand{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:.15em;color:#00ff88;text-transform:uppercase}
+#topnav .meta{font-size:9px;letter-spacing:.12em;color:#4a7a5a;text-align:center}
+#topnav .meta span{color:#c8f0d8}
+#topnav .live{display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.15em;color:#00ff88;text-transform:uppercase}
+#topnav .live-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:pulse-green 2s infinite}
+
+/* ── Left Panel ── */
+#left-panel{position:fixed;top:62px;left:10px;width:268px;background:rgba(2,12,6,.94);border:1px solid #0d2a18;z-index:90;animation:fade-in .6s ease;backdrop-filter:blur(8px)}
+.panel-header{padding:12px 16px;border-bottom:1px solid #0d2a18;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#00ff88;display:flex;align-items:center;justify-content:space-between}
+.ecm-row{padding:10px 16px;border-bottom:1px solid rgba(13,42,24,.5);cursor:pointer;transition:background .2s}
+.ecm-row:hover,.ecm-row.active{background:rgba(0,255,136,.04)}
+.ecm-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#4a7a5a;margin-bottom:6px;display:flex;justify-content:space-between}
+.ecm-label .val{color:#c8f0d8}
+.ecm-bar{height:3px;background:#0d2a18;position:relative;overflow:hidden}
+.ecm-bar-fill{height:100%;transition:width .6s ease}
+.ecm-status{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px}
+
+/* ── Right Panel ── */
+#right-panel{position:fixed;top:62px;right:10px;width:248px;background:rgba(2,12,6,.94);border:1px solid #0d2a18;z-index:90;animation:fade-in .6s ease .1s both;backdrop-filter:blur(8px)}
+.metric-cell{padding:14px 16px;border-bottom:1px solid #0d2a18}
+.metric-label{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a5a;margin-bottom:4px}
+.metric-value{font-size:18px;font-weight:400;color:#00ff88}
+.metric-value.amber{color:#ffaa00}
+.metric-value.red{color:#ff3333}
+.metric-sub{font-size:8px;color:#4a7a5a;margin-top:2px}
+
+/* ── Alerts ── */
+.alert-feed{max-height:220px;overflow-y:auto}
+.alert-row{padding:10px 16px;border-bottom:1px solid rgba(13,42,24,.3);font-size:10px;line-height:1.5}
+.alert-row .time{font-size:8px;color:#4a7a5a;letter-spacing:.1em}
+.alert-row.critical{border-left:2px solid #ff3333}
+.alert-row.warning{border-left:2px solid #ffaa00}
+.alert-row.info{border-left:2px solid #00ff88}
+
+/* ── Layer Controls ── */
+#layer-controls{position:fixed;bottom:80px;right:10px;z-index:90;display:flex;flex-direction:column;gap:4px;animation:fade-in .6s ease .2s both}
+.layer-btn{background:rgba(2,12,6,.94);border:1px solid #0d2a18;color:#4a7a5a;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 14px;cursor:pointer;transition:all .2s;text-align:left;backdrop-filter:blur(8px)}
+.layer-btn.on{color:#00ff88;border-color:#00ff88;background:rgba(0,255,136,.06)}
+.layer-btn .icon{margin-right:6px}
+
+/* ── Bottom Timeline ── */
+#timeline{position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(2,12,6,.94);border-top:1px solid #0d2a18;z-index:100;display:flex;align-items:center;padding:0 20px;gap:16px;backdrop-filter:blur(8px)}
+#timeline .play-btn{width:32px;height:32px;border:1px solid #0d2a18;background:transparent;color:#00ff88;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+#timeline .play-btn:hover{border-color:#00ff88;background:rgba(0,255,136,.06)}
+#timeline .track{flex:1;height:24px;position:relative;cursor:pointer}
+#timeline .track-line{position:absolute;top:50%;left:0;right:0;height:1px;background:#0d2a18;transform:translateY(-50%)}
+#timeline .tick{position:absolute;top:50%;width:1px;height:8px;background:#0d2a18;transform:translateY(-50%)}
+#timeline .tick-label{position:absolute;top:calc(50% + 10px);font-size:7px;color:#4a7a5a;letter-spacing:.1em;transform:translateX(-50%)}
+#timeline .thumb{position:absolute;top:50%;width:10px;height:20px;background:#00ff88;transform:translate(-50%,-50%);cursor:grab;transition:left .3s ease}
+#timeline .period{font-size:9px;letter-spacing:.15em;color:#00ff88;text-transform:uppercase;white-space:nowrap}
+
+/* ── Building Annotation ── */
+#building-label{position:fixed;z-index:80;pointer-events:none;text-align:center;animation:fade-in 1s ease 1.5s both}
+.bldg-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#00ff88;text-transform:uppercase;text-shadow:0 0 20px rgba(0,255,136,.4)}
+.bldg-sub{font-size:8px;letter-spacing:.15em;color:#4a7a5a;margin-top:4px}
+.bldg-pin{width:1px;height:40px;background:linear-gradient(to bottom,#00ff88,transparent);margin:6px auto 0}
+
+/* ── Setup Overlay ── */
+#setup-overlay{position:fixed;inset:0;background:rgba(2,12,6,.97);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+.setup-box{width:440px;background:#050f08;border:1px solid #0d2a18;padding:40px}
+.setup-box h1{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:.2em;color:#00ff88;text-transform:uppercase;margin-bottom:24px}
+.setup-box p{font-size:10px;color:#4a7a5a;line-height:1.8;margin-bottom:24px;letter-spacing:.05em}
+.setup-box label{display:block;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a5a;margin-bottom:6px;margin-top:16px}
+.setup-box input{width:100%;padding:10px 14px;background:#020c06;border:1px solid #0d2a18;color:#c8f0d8;font-family:'Share Tech Mono',monospace;font-size:11px;outline:none;transition:border-color .2s}
+.setup-box input:focus{border-color:#00ff88}
+.setup-box .hint{font-size:8px;color:#4a7a5a;margin-top:4px}
+.setup-box button{margin-top:28px;width:100%;padding:12px;background:#00ff88;color:#020c06;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;transition:opacity .2s}
+.setup-box button:hover{opacity:.85}
+.setup-box .storage-note{font-size:8px;color:#4a7a5a;text-align:center;margin-top:16px}
+
+/* ── Error Banner ── */
+#error-banner{position:fixed;top:52px;left:0;right:0;padding:10px 20px;background:rgba(255,170,0,.12);border-bottom:1px solid #ffaa00;color:#ffaa00;font-size:10px;letter-spacing:.1em;text-align:center;z-index:95;display:none}
+
+/* ── Tooltip ── */
+#tooltip{position:fixed;z-index:110;background:rgba(2,12,6,.96);border:1px solid #00ff88;padding:12px 16px;pointer-events:none;display:none;min-width:180px;backdrop-filter:blur(8px)}
+#tooltip .tt-title{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;color:#00ff88;text-transform:uppercase;margin-bottom:6px}
+#tooltip .tt-row{font-size:9px;color:#c8f0d8;margin:3px 0;display:flex;justify-content:space-between;gap:16px}
+#tooltip .tt-row .tt-label{color:#4a7a5a}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#020c06}
+::-webkit-scrollbar-thumb{background:#0d2a18}
+</style>
+</head>
+<body>
+
+<!-- ── Setup Overlay ── -->
+<div id="setup-overlay" style="display:none">
+<div class="setup-box">
+  <h1>Vantage // Demo Configuration</h1>
+  <p>Two API keys are required to render photorealistic 3D tiles of the target building.</p>
+  <label>Mapbox Token</label>
+  <input id="inp-mapbox" type="text" placeholder="pk.eyJ1Ijo..." spellcheck="false"/>
+  <div class="hint">Get a free token at <a href="https://mapbox.com" target="_blank" style="color:#00ff88">mapbox.com</a></div>
+  <label>Google Maps Key</label>
+  <input id="inp-google" type="text" placeholder="AIza..." spellcheck="false"/>
+  <div class="hint">Enable Map Tiles API at <a href="https://console.cloud.google.com" target="_blank" style="color:#00ff88">console.cloud.google.com</a></div>
+  <button id="btn-launch">Launch Demo &rarr;</button>
+  <div class="storage-note">Keys are stored in localStorage for this browser session only.</div>
+</div>
+</div>
+
+<!-- ── Error Banner ── -->
+<div id="error-banner"></div>
+
+<!-- ── Map ── -->
+<div id="map"></div>
+
+<!-- ── Top Nav ── -->
+<nav id="topnav">
+  <div class="brand">Vantage // Energy Command</div>
+  <div class="meta">
+    <span id="nav-contract"></span> &nbsp;·&nbsp; <span id="nav-building"></span> &nbsp;·&nbsp;
+    <span id="nav-coords"></span>
+  </div>
+  <div class="live"><div class="live-dot"></div> Live M&V Feed</div>
+</nav>
+
+<!-- ── Left Panel: ECM List ── -->
+<div id="left-panel">
+  <div class="panel-header">ECM Performance <span id="ecm-count"></span></div>
+  <div id="ecm-list"></div>
+</div>
+
+<!-- ── Right Panel: Metrics + Alerts ── -->
+<div id="right-panel">
+  <div class="metric-cell"><div class="metric-label">Verified Savings</div><div class="metric-value">$221,400</div><div class="metric-sub">YTD through Apr 2026</div></div>
+  <div class="metric-cell"><div class="metric-label">Shortfall Risk</div><div class="metric-value amber">$90,600</div><div class="metric-sub">HVAC + Envelope drift</div></div>
+  <div class="metric-cell"><div class="metric-label">ECMs On Track</div><div class="metric-value">4 / 6</div><div class="metric-sub">2 requiring intervention</div></div>
+  <div class="metric-cell"><div class="metric-label">DSCR</div><div class="metric-value">1.18x</div><div class="metric-sub">Debt service coverage ratio</div></div>
+  <div class="panel-header">Alert Feed</div>
+  <div class="alert-feed">
+    <div class="alert-row critical"><div class="time">14:32 EST · TODAY</div>RTU-01 discharge temp 142°F — exceeds 130°F threshold. HVAC drift accelerating.</div>
+    <div class="alert-row warning"><div class="time">11:15 EST · TODAY</div>Building envelope R-value degradation detected. Thermal imaging recommends inspection.</div>
+    <div class="alert-row info"><div class="time">09:00 EST · TODAY</div>LED lighting ECM verified at 97% of guaranteed savings. No action required.</div>
+    <div class="alert-row warning"><div class="time">16:45 EST · YESTERDAY</div>Weather correlation: 3-day heat wave forecast may stress HVAC beyond baseline adjustment capacity.</div>
+  </div>
+</div>
+
+<!-- ── Layer Controls ── -->
+<div id="layer-controls">
+  <button class="layer-btn on" data-layer="zones"><span class="icon">&#9632;</span>Energy Zones</button>
+  <button class="layer-btn on" data-layer="sensors"><span class="icon">&#8226;</span>Sensor Points</button>
+  <button class="layer-btn" data-layer="flow"><span class="icon">&#8593;</span>Energy Flow</button>
+  <button class="layer-btn" data-layer="god"><span class="icon">&#8853;</span>God Mode</button>
+</div>
+
+<!-- ── Bottom Timeline ── -->
+<div id="timeline">
+  <button class="play-btn" id="play-btn">&#9654;</button>
+  <div class="track" id="track">
+    <div class="track-line"></div>
+  </div>
+  <div class="period" id="period-label">APR 2026</div>
+</div>
+
+<!-- ── Building Label ── -->
+<div id="building-label"></div>
+
+<!-- ── Tooltip ── -->
+<div id="tooltip">
+  <div class="tt-title" id="tt-title"></div>
+  <div id="tt-body"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONFIGURATION — Edit these values
+   ═══════════════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  MAPBOX_TOKEN: 'YOUR_MAPBOX_TOKEN_HERE',
+  GOOGLE_MAPS_KEY: 'YOUR_GOOGLE_MAPS_KEY_HERE',
+
+  // Atlanta City Hall
+  center: [-84.39027, 33.74841],
+  zoom: 18,
+  pitch: 60,
+  bearing: -30,
+
+  // Demo building
+  buildingName: 'Atlanta City Hall',
+  buildingAddress: '55 Trinity Ave SW, Atlanta, GA 30303',
+  contractRef: 'Contract #ATL-2024-007'
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEMO DATA
+   ═══════════════════════════════════════════════════════════════════════════ */
+const MONTHS = ['MAY 25','JUN 25','JUL 25','AUG 25','SEP 25','OCT 25','NOV 25','DEC 25','JAN 26','FEB 26','MAR 26','APR 26'];
+let currentMonth = 11; // April 2026
+let playing = false;
+let playInterval = null;
+
+const ECM_DATA = [
+  { id:'hvac', name:'HVAC Retrofit', perf:71, guaranteed:84000, status:'amber', trend:'-3.2%/mo' },
+  { id:'envelope', name:'Building Envelope', perf:52, guaranteed:62000, status:'red', trend:'-5.1%/mo' },
+  { id:'lighting', name:'LED Lighting', perf:97, guaranteed:38000, status:'green', trend:'+0.2%/mo' },
+  { id:'controls', name:'BAS Controls', perf:89, guaranteed:44000, status:'green', trend:'+1.1%/mo' },
+  { id:'vfd', name:'VFD Upgrades', perf:93, guaranteed:28000, status:'green', trend:'+0.4%/mo' },
+  { id:'solar', name:'Solar Thermal', perf:78, guaranteed:56000, status:'amber', trend:'-1.8%/mo' }
+];
+
+const ECM_ZONES = [
+  { id:'hvac', name:'HVAC Retrofit', status:'amber', performance:71,
+    polygon:[[-84.39050,33.74858],[-84.39022,33.74858],[-84.39022,33.74843],[-84.39050,33.74843]],
+    color:[255,170,0,60] },
+  { id:'envelope', name:'Building Envelope', status:'red', performance:52,
+    polygon:[[-84.39055,33.74852],[-84.39005,33.74852],[-84.39005,33.74828],[-84.39055,33.74828]],
+    color:[255,51,51,50] },
+  { id:'lighting', name:'LED Lighting', status:'green', performance:97,
+    polygon:[[-84.39042,33.74836],[-84.39018,33.74836],[-84.39018,33.74822],[-84.39042,33.74822]],
+    color:[0,255,136,45] },
+  { id:'controls', name:'BAS Controls', status:'green', performance:89,
+    polygon:[[-84.39048,33.74845],[-84.39030,33.74845],[-84.39030,33.74835],[-84.39048,33.74835]],
+    color:[0,255,136,35] },
+  { id:'vfd', name:'VFD Upgrades', status:'green', performance:93,
+    polygon:[[-84.39028,33.74848],[-84.39010,33.74848],[-84.39010,33.74838],[-84.39028,33.74838]],
+    color:[0,255,136,40] },
+  { id:'solar', name:'Solar Thermal', status:'amber', performance:78,
+    polygon:[[-84.39044,33.74860],[-84.39016,33.74860],[-84.39016,33.74853],[-84.39044,33.74853]],
+    color:[255,170,0,45] }
+];
+
+const SENSORS = [
+  { id:'RTU-01', coordinates:[-84.39035,33.74848], value:'142\u00b0F', type:'Rooftop Unit', status:'warning' },
+  { id:'CHW-03', coordinates:[-84.39020,33.74845], value:'44\u00b0F', type:'Chilled Water', status:'normal' },
+  { id:'AHU-07', coordinates:[-84.39015,33.74838], value:'68\u00b0F', type:'Air Handler', status:'normal' },
+  { id:'LUX-02', coordinates:[-84.39038,33.74832], value:'480 lx', type:'Lighting Sensor', status:'normal' },
+  { id:'BTU-01', coordinates:[-84.39025,33.74840], value:'1,240 BTU', type:'Thermal Meter', status:'normal' },
+  { id:'RTU-02', coordinates:[-84.39042,33.74852], value:'128\u00b0F', type:'Rooftop Unit', status:'normal' },
+  { id:'FLOW-01', coordinates:[-84.39012,33.74830], value:'34 GPM', type:'Flow Meter', status:'normal' },
+  { id:'PWR-01', coordinates:[-84.39030,33.74855], value:'847 kW', type:'Power Meter', status:'warning' }
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYER STATE
+   ═══════════════════════════════════════════════════════════════════════════ */
+const layerState = { zones: true, sensors: true, flow: false, god: false };
+let map, deckOverlay;
+let particles = [];
+let orbitActive = false;
+let orbitPaused = false;
+let orbitTimeout = null;
+let animFrame = null;
+let selectedEcm = null;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function init() {
+  // Check localStorage for saved keys
+  const savedMapbox = localStorage.getItem('vantage_mapbox');
+  const savedGoogle = localStorage.getItem('vantage_google');
+  if (savedMapbox) CONFIG.MAPBOX_TOKEN = savedMapbox;
+  if (savedGoogle) CONFIG.GOOGLE_MAPS_KEY = savedGoogle;
+
+  // Check if we need setup
+  if (CONFIG.MAPBOX_TOKEN === 'YOUR_MAPBOX_TOKEN_HERE' || CONFIG.GOOGLE_MAPS_KEY === 'YOUR_GOOGLE_MAPS_KEY_HERE') {
+    showSetup();
+  } else {
+    launchMap();
+  }
+})();
+
+function showSetup() {
+  document.getElementById('setup-overlay').style.display = 'flex';
+  const inpM = document.getElementById('inp-mapbox');
+  const inpG = document.getElementById('inp-google');
+  if (CONFIG.MAPBOX_TOKEN !== 'YOUR_MAPBOX_TOKEN_HERE') inpM.value = CONFIG.MAPBOX_TOKEN;
+  if (CONFIG.GOOGLE_MAPS_KEY !== 'YOUR_GOOGLE_MAPS_KEY_HERE') inpG.value = CONFIG.GOOGLE_MAPS_KEY;
+
+  document.getElementById('btn-launch').addEventListener('click', function() {
+    const mt = inpM.value.trim();
+    const gk = inpG.value.trim();
+    if (!mt) { inpM.style.borderColor = '#ff3333'; return; }
+    if (!gk) { inpG.style.borderColor = '#ff3333'; return; }
+    CONFIG.MAPBOX_TOKEN = mt;
+    CONFIG.GOOGLE_MAPS_KEY = gk;
+    localStorage.setItem('vantage_mapbox', mt);
+    localStorage.setItem('vantage_google', gk);
+    document.getElementById('setup-overlay').style.display = 'none';
+    launchMap();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAP
+   ═══════════════════════════════════════════════════════════════════════════ */
+function launchMap() {
+  // Populate nav
+  document.getElementById('nav-contract').textContent = CONFIG.contractRef;
+  document.getElementById('nav-building').textContent = CONFIG.buildingName;
+  document.getElementById('nav-coords').textContent = CONFIG.center[1].toFixed(5) + ', ' + CONFIG.center[0].toFixed(5);
+
+  mapboxgl.accessToken = CONFIG.MAPBOX_TOKEN;
+
+  map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: CONFIG.center,
+    zoom: 15,
+    pitch: 40,
+    bearing: 0,
+    antialias: true
+  });
+
+  map.on('load', function() {
+    // Try to add 3D buildings as fallback
+    addBuilding3D();
+
+    // Try Google 3D tiles
+    try {
+      map.addSource('google-3d-tiles', {
+        type: 'raster',
+        tiles: [
+          'https://tile.googleapis.com/v1/3dtiles/root.json?key=' + CONFIG.GOOGLE_MAPS_KEY
+        ],
+        tileSize: 512
+      });
+    } catch(e) {
+      console.warn('Google 3D tiles not available, using Mapbox 3D buildings');
+    }
+
+    // Cinematic intro
+    cinematicIntro();
+
+    // Init deck overlay
+    initDeck();
+
+    // Build UI
+    buildEcmList();
+    buildTimeline();
+    initLayerControls();
+    updateBuildingLabel();
+  });
+
+  map.on('error', function(e) {
+    if (e.error && e.error.message && e.error.message.includes('access token')) {
+      showError('MAPBOX TOKEN INVALID \u2014 Check your access token at mapbox.com');
+    }
+  });
+
+  // Orbit interaction pause
+  map.on('mousedown', pauseOrbit);
+  map.on('touchstart', pauseOrbit);
+  map.on('wheel', pauseOrbit);
+
+  // Page visibility
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) { orbitPaused = true; }
+    else { resumeOrbitAfterDelay(); }
+  });
+}
+
+function addBuilding3D() {
+  const layers = map.getStyle().layers;
+  let labelLayerId;
+  for (let i = 0; i < layers.length; i++) {
+    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+      labelLayerId = layers[i].id;
+      break;
+    }
+  }
+
+  map.addLayer({
+    id: '3d-buildings',
+    source: 'composite',
+    'source-layer': 'building',
+    filter: ['==', 'extrude', 'true'],
+    type: 'fill-extrusion',
+    minzoom: 14,
+    paint: {
+      'fill-extrusion-color': '#0a1e12',
+      'fill-extrusion-height': ['get', 'height'],
+      'fill-extrusion-base': ['get', 'min_height'],
+      'fill-extrusion-opacity': 0.7
+    }
+  }, labelLayerId);
+}
+
+function cinematicIntro() {
+  setTimeout(function() {
+    map.flyTo({
+      center: CONFIG.center,
+      zoom: CONFIG.zoom + 0.5,
+      pitch: CONFIG.pitch + 5,
+      bearing: CONFIG.bearing,
+      duration: 4000,
+      easing: function(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+    });
+
+    setTimeout(function() {
+      orbitActive = true;
+      startOrbit();
+    }, 4500);
+  }, 500);
+}
+
+function startOrbit() {
+  function rotate() {
+    if (!orbitActive) return;
+    if (!orbitPaused) {
+      const bearing = map.getBearing() + 0.015;
+      map.setBearing(bearing);
+    }
+    animFrame = requestAnimationFrame(rotate);
+  }
+  rotate();
+}
+
+function pauseOrbit() {
+  orbitPaused = true;
+  clearTimeout(orbitTimeout);
+  orbitTimeout = setTimeout(function() { orbitPaused = false; }, 3000);
+}
+
+function resumeOrbitAfterDelay() {
+  clearTimeout(orbitTimeout);
+  orbitTimeout = setTimeout(function() { orbitPaused = false; }, 1500);
+}
+
+function showError(msg) {
+  const banner = document.getElementById('error-banner');
+  banner.textContent = msg;
+  banner.style.display = 'block';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DECK.GL OVERLAY
+   ═══════════════════════════════════════════════════════════════════════════ */
+function initDeck() {
+  initParticles();
+  updateDeck();
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < 20; i++) {
+    particles.push({
+      lng: CONFIG.center[0] + (Math.random() - 0.5) * 0.0004,
+      lat: CONFIG.center[1] + (Math.random() - 0.5) * 0.0003,
+      alt: Math.random() * 60,
+      speed: 0.3 + Math.random() * 0.5
+    });
+  }
+}
+
+function updateDeck() {
+  const layers = [];
+
+  // Zone polygons
+  if (layerState.zones) {
+    layers.push(new deck.PolygonLayer({
+      id: 'ecm-zones',
+      data: ECM_ZONES,
+      getPolygon: function(d) { return d.polygon; },
+      getFillColor: function(d) {
+        if (selectedEcm && d.id === selectedEcm) {
+          return [d.color[0], d.color[1], d.color[2], 120];
+        }
+        return d.color;
+      },
+      getLineColor: function(d) {
+        if (d.status === 'red') return [255,51,51,200];
+        if (d.status === 'amber') return [255,170,0,200];
+        return [0,255,136,150];
+      },
+      getLineWidth: 2,
+      lineWidthMinPixels: 1,
+      extruded: true,
+      getElevation: function(d) {
+        return selectedEcm === d.id ? 8 : 3;
+      },
+      wireframe: true,
+      pickable: true,
+      onClick: function(info) {
+        if (info.object) showZoneTooltip(info.object, info.x, info.y);
+      },
+      onHover: function(info) {
+        if (info.object) {
+          document.getElementById('map').style.cursor = 'pointer';
+        } else {
+          document.getElementById('map').style.cursor = '';
+          hideTooltip();
+        }
+      },
+      updateTriggers: {
+        getFillColor: [selectedEcm],
+        getElevation: [selectedEcm]
+      }
+    }));
+  }
+
+  // Sensor points
+  if (layerState.sensors) {
+    layers.push(new deck.ScatterplotLayer({
+      id: 'sensors',
+      data: SENSORS,
+      getPosition: function(d) { return d.coordinates; },
+      getRadius: 6,
+      radiusMinPixels: 4,
+      radiusMaxPixels: 10,
+      getFillColor: function(d) {
+        if (d.status === 'warning') return [255,170,0,220];
+        if (d.status === 'critical') return [255,51,51,220];
+        return [0,255,136,200];
+      },
+      getLineColor: [0,0,0,100],
+      lineWidthMinPixels: 1,
+      stroked: true,
+      pickable: true,
+      onClick: function(info) {
+        if (info.object) showSensorTooltip(info.object, info.x, info.y);
+      },
+      onHover: function(info) {
+        if (info.object) {
+          document.getElementById('map').style.cursor = 'pointer';
+        } else {
+          document.getElementById('map').style.cursor = '';
+        }
+      }
+    }));
+  }
+
+  // Energy flow particles
+  if (layerState.flow) {
+    layers.push(new deck.ScatterplotLayer({
+      id: 'particles',
+      data: particles,
+      getPosition: function(d) { return [d.lng, d.lat]; },
+      getRadius: 3,
+      radiusMinPixels: 2,
+      radiusMaxPixels: 4,
+      getFillColor: [255,170,0,150],
+      opacity: 0.6
+    }));
+  }
+
+  if (deckOverlay) {
+    deckOverlay.setProps({ layers: layers });
+  } else {
+    deckOverlay = new deck.MapboxOverlay({ layers: layers });
+    map.addControl(deckOverlay);
+  }
+}
+
+// Particle animation
+let particleAnim = null;
+function animateParticles() {
+  if (!layerState.flow) { particleAnim = null; return; }
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].lat += 0.0000015 * particles[i].speed;
+    if (particles[i].lat > CONFIG.center[1] + 0.0002) {
+      particles[i].lat = CONFIG.center[1] + (Math.random() - 0.5) * 0.0002;
+      particles[i].lng = CONFIG.center[0] + (Math.random() - 0.5) * 0.0004;
+    }
+  }
+  updateDeck();
+  particleAnim = requestAnimationFrame(animateParticles);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOOLTIPS
+   ═══════════════════════════════════════════════════════════════════════════ */
+function showZoneTooltip(zone, x, y) {
+  const tt = document.getElementById('tooltip');
+  const title = document.getElementById('tt-title');
+  const body = document.getElementById('tt-body');
+  title.textContent = zone.name;
+  const statusColors = { green:'#00ff88', amber:'#ffaa00', red:'#ff3333' };
+  body.innerHTML =
+    '<div class="tt-row"><span class="tt-label">Performance</span><span style="color:' + (statusColors[zone.status] || '#c8f0d8') + '">' + zone.performance + '%</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Status</span><span style="color:' + (statusColors[zone.status] || '#c8f0d8') + '">' + zone.status.toUpperCase() + '</span></div>';
+  tt.style.left = Math.min(x + 12, window.innerWidth - 220) + 'px';
+  tt.style.top = (y - 20) + 'px';
+  tt.style.display = 'block';
+}
+
+function showSensorTooltip(sensor, x, y) {
+  const tt = document.getElementById('tooltip');
+  const title = document.getElementById('tt-title');
+  const body = document.getElementById('tt-body');
+  title.textContent = sensor.id;
+  const statusColors = { normal:'#00ff88', warning:'#ffaa00', critical:'#ff3333' };
+  body.innerHTML =
+    '<div class="tt-row"><span class="tt-label">Type</span><span>' + sensor.type + '</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Reading</span><span>' + sensor.value + '</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Status</span><span style="color:' + (statusColors[sensor.status] || '#c8f0d8') + '">' + sensor.status.toUpperCase() + '</span></div>';
+  tt.style.left = Math.min(x + 12, window.innerWidth - 220) + 'px';
+  tt.style.top = (y - 20) + 'px';
+  tt.style.display = 'block';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#tooltip') && !e.target.closest('.mapboxgl-canvas')) {
+    hideTooltip();
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ECM LIST
+   ═══════════════════════════════════════════════════════════════════════════ */
+function buildEcmList() {
+  document.getElementById('ecm-count').textContent = ECM_DATA.length;
+  const container = document.getElementById('ecm-list');
+  container.innerHTML = '';
+  ECM_DATA.forEach(function(ecm) {
+    const row = document.createElement('div');
+    row.className = 'ecm-row' + (selectedEcm === ecm.id ? ' active' : '');
+    const statusColor = ecm.status === 'green' ? '#00ff88' : ecm.status === 'amber' ? '#ffaa00' : '#ff3333';
+    const barColor = statusColor;
+    row.innerHTML =
+      '<div class="ecm-label">' +
+        '<span><span class="ecm-status" style="background:' + statusColor + '"></span>' + ecm.name + '</span>' +
+        '<span class="val">' + ecm.perf + '%</span>' +
+      '</div>' +
+      '<div class="ecm-bar"><div class="ecm-bar-fill" style="width:' + ecm.perf + '%;background:' + barColor + '"></div></div>';
+    row.addEventListener('click', function() {
+      selectedEcm = selectedEcm === ecm.id ? null : ecm.id;
+      buildEcmList();
+      updateDeck();
+    });
+    container.appendChild(row);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════════════════════════════════════════ */
+function buildTimeline() {
+  const track = document.getElementById('track');
+  // Remove old ticks
+  track.querySelectorAll('.tick,.tick-label,.thumb').forEach(function(el) { el.remove(); });
+
+  for (let i = 0; i < MONTHS.length; i++) {
+    const pct = (i / (MONTHS.length - 1)) * 100;
+    const tick = document.createElement('div');
+    tick.className = 'tick';
+    tick.style.left = pct + '%';
+    track.appendChild(tick);
+
+    if (i % 2 === 0 || i === MONTHS.length - 1) {
+      const label = document.createElement('div');
+      label.className = 'tick-label';
+      label.style.left = pct + '%';
+      label.textContent = MONTHS[i];
+      track.appendChild(label);
+    }
+  }
+
+  const thumb = document.createElement('div');
+  thumb.className = 'thumb';
+  thumb.style.left = (currentMonth / (MONTHS.length - 1)) * 100 + '%';
+  track.appendChild(thumb);
+
+  updatePeriodLabel();
+
+  // Click on track to scrub
+  track.addEventListener('click', function(e) {
+    const rect = track.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    currentMonth = Math.round(pct * (MONTHS.length - 1));
+    currentMonth = Math.max(0, Math.min(MONTHS.length - 1, currentMonth));
+    thumb.style.left = (currentMonth / (MONTHS.length - 1)) * 100 + '%';
+    updatePeriodLabel();
+  });
+
+  // Play button
+  document.getElementById('play-btn').addEventListener('click', togglePlay);
+}
+
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('play-btn').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  if (playing) {
+    playInterval = setInterval(function() {
+      currentMonth = (currentMonth + 1) % MONTHS.length;
+      const thumb = document.querySelector('#track .thumb');
+      if (thumb) thumb.style.left = (currentMonth / (MONTHS.length - 1)) * 100 + '%';
+      updatePeriodLabel();
+    }, 1200);
+  } else {
+    clearInterval(playInterval);
+  }
+}
+
+function updatePeriodLabel() {
+  document.getElementById('period-label').textContent = MONTHS[currentMonth];
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYER CONTROLS
+   ═══════════════════════════════════════════════════════════════════════════ */
+function initLayerControls() {
+  document.querySelectorAll('.layer-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const layer = btn.getAttribute('data-layer');
+
+      if (layer === 'god') {
+        layerState.god = !layerState.god;
+        if (layerState.god) {
+          layerState.zones = true;
+          layerState.sensors = true;
+          layerState.flow = true;
+          document.querySelectorAll('.layer-btn').forEach(function(b) { b.classList.add('on'); });
+        } else {
+          layerState.flow = false;
+          btn.classList.remove('on');
+          document.querySelector('[data-layer="flow"]').classList.remove('on');
+        }
+      } else {
+        layerState[layer] = !layerState[layer];
+        btn.classList.toggle('on');
+        // Uncheck god if any layer turned off
+        if (!layerState[layer] && layerState.god) {
+          layerState.god = false;
+          document.querySelector('[data-layer="god"]').classList.remove('on');
+        }
+      }
+
+      // Manage particle animation
+      if (layerState.flow && !particleAnim) {
+        animateParticles();
+      } else if (!layerState.flow && particleAnim) {
+        cancelAnimationFrame(particleAnim);
+        particleAnim = null;
+      }
+
+      updateDeck();
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUILDING LABEL
+   ═══════════════════════════════════════════════════════════════════════════ */
+function updateBuildingLabel() {
+  const el = document.getElementById('building-label');
+
+  function reposition() {
+    if (!map) return;
+    const point = map.project(CONFIG.center);
+    el.style.left = (point.x - 120) + 'px';
+    el.style.top = (point.y - 100) + 'px';
+    el.style.width = '240px';
+  }
+
+  el.innerHTML =
+    '<div class="bldg-name">' + CONFIG.buildingName + '</div>' +
+    '<div class="bldg-sub">' + CONFIG.buildingAddress + ' \u00b7 CONTRACT ACTIVE \u00b7 DRIFT DETECTED</div>' +
+    '<div class="bldg-pin"></div>';
+
+  reposition();
+  map.on('move', reposition);
+  map.on('zoom', reposition);
+}
+</script>
+</body>
+</html>
