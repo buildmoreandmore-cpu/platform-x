@@ -104,7 +104,7 @@ export function AdminContractDetail() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/admin-data')
+    fetch('/api/admin?action=data')
       .then(r => r.json())
       .then((d: AdminData) => {
         const c = d.contracts?.find(c => c.id === id) ?? null

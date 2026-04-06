@@ -16,9 +16,9 @@ const tabs: { key: UploadMode; label: string }[] = [
 ]
 
 const endpointMap: Record<UploadMode, string> = {
-  espc_contract: '/api/extract-contract',
-  utility_bill: '/api/extract-utility',
-  mv_report: '/api/extract-mv-report',
+  espc_contract: '/api/extract?type=contract',
+  utility_bill: '/api/extract?type=utility',
+  mv_report: '/api/extract?type=mv-report',
 }
 
 export function AdminUpload() {
@@ -38,7 +38,7 @@ export function AdminUpload() {
   const [dragOver, setDragOver] = useState(false)
 
   useEffect(() => {
-    fetch('/api/admin-data')
+    fetch('/api/admin?action=data')
       .then(r => r.json())
       .then(d => {
         if (d.contracts) setContracts(d.contracts)

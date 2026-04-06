@@ -49,7 +49,7 @@ export function CMVPTasks() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/cmvp-tasks')
+    fetch('/api/cmvp?action=tasks')
       .then(r => r.json())
       .then(d => { setTasks(d.tasks ?? []); setLoading(false) })
       .catch(() => setLoading(false))

@@ -52,7 +52,7 @@ export function CMVPContracts() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/cmvp-data')
+    fetch('/api/cmvp?action=data')
       .then(r => r.json())
       .then(d => { setContracts(d.contracts ?? []); setLoading(false) })
       .catch(() => setLoading(false))

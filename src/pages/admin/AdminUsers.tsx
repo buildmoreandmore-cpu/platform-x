@@ -64,8 +64,8 @@ export function AdminUsers() {
 
   function fetchData() {
     Promise.all([
-      fetch('/api/admin-users').then(r => r.json()),
-      fetch('/api/admin-data').then(r => r.json()),
+      fetch('/api/admin?action=users').then(r => r.json()),
+      fetch('/api/admin?action=data').then(r => r.json()),
     ])
       .then(([usersData, adminData]) => {
         setUsers(usersData.users ?? [])
@@ -93,7 +93,7 @@ export function AdminUsers() {
     setFeedback(null)
 
     try {
-      const res = await fetch('/api/admin-users', {
+      const res = await fetch('/api/admin?action=users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -123,7 +123,7 @@ export function AdminUsers() {
   }
 
   async function handleToggleActive(userId: string) {
-    const res = await fetch('/api/admin-users', {
+    const res = await fetch('/api/admin?action=users', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, action: 'toggle_active' }),
@@ -132,7 +132,7 @@ export function AdminUsers() {
   }
 
   async function handleGrantAccess(userId: string, contractId: string) {
-    const res = await fetch('/api/admin-users', {
+    const res = await fetch('/api/admin?action=users', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, action: 'grant_access', contract_id: contractId }),
@@ -144,7 +144,7 @@ export function AdminUsers() {
   }
 
   async function handleRevokeAccess(userId: string, contractId: string) {
-    const res = await fetch('/api/admin-users', {
+    const res = await fetch('/api/admin?action=users', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, action: 'revoke_access', contract_id: contractId }),

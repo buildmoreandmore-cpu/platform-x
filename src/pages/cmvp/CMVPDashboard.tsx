@@ -62,7 +62,7 @@ export function CMVPDashboard() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/cmvp-data')
+    fetch('/api/cmvp?action=data')
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false) })
       .catch(() => setLoading(false))

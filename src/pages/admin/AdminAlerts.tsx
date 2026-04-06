@@ -30,7 +30,7 @@ export function AdminAlerts() {
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
   const fetchAlerts = () => {
-    fetch('/api/admin-alerts')
+    fetch('/api/admin?action=alerts')
       .then(r => r.json())
       .then(d => { setAlerts(Array.isArray(d) ? d : d.alerts ?? []); setLoading(false) })
       .catch(() => setLoading(false))
@@ -41,7 +41,7 @@ export function AdminAlerts() {
   const handleAction = async (id: string, action: 'acknowledge' | 'resolve') => {
     setActionLoading(id)
     try {
-      const res = await fetch('/api/admin-alerts', {
+      const res = await fetch('/api/admin?action=alerts', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, action }),

@@ -30,7 +30,7 @@ export function AdminDocuments() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/admin-data')
+    fetch('/api/admin?action=data')
       .then(r => r.json())
       .then(d => { setDocuments(d.documents ?? []); setLoading(false) })
       .catch(() => setLoading(false))

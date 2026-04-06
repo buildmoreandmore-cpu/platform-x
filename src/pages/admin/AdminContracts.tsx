@@ -24,7 +24,7 @@ export function AdminContracts() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/admin-data')
+    fetch('/api/admin?action=data')
       .then(r => r.json())
       .then(d => { setContracts(d.contracts ?? []); setLoading(false) })
       .catch(() => setLoading(false))

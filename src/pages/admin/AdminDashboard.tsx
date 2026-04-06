@@ -78,7 +78,7 @@ export function AdminDashboard() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/admin-data')
+    fetch('/api/admin?action=data')
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false) })
       .catch(() => setLoading(false))

@@ -65,7 +65,7 @@ export function CMVPTaskReview() {
 
   useEffect(() => {
     if (!id) return
-    fetch(`/api/cmvp-tasks?id=${id}`)
+    fetch(`/api/cmvp?action=tasks&id=${id}`)
       .then(r => r.json())
       .then(d => {
         const t = d.task
@@ -124,7 +124,7 @@ export function CMVPTaskReview() {
     setSubmitting(true)
 
     try {
-      const res = await fetch('/api/cmvp-sign-off', {
+      const res = await fetch('/api/cmvp?action=sign-off', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
