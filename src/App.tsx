@@ -58,6 +58,7 @@ const AdminContracts = lazy(() => import('./pages/admin/AdminContracts').then(m 
 const AdminContractDetail = lazy(() => import('./pages/admin/AdminContractDetail').then(m => ({ default: m.AdminContractDetail })));
 const AdminAlerts = lazy(() => import('./pages/admin/AdminAlerts').then(m => ({ default: m.AdminAlerts })));
 const AdminDocuments = lazy(() => import('./pages/admin/AdminDocuments').then(m => ({ default: m.AdminDocuments })));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers').then(m => ({ default: m.AdminUsers })));
 
 // Client portal
 const ClientLogin = lazy(() => import('./pages/client/ClientLogin').then(m => ({ default: m.ClientLogin })));
@@ -144,6 +145,7 @@ export default function App() {
           <Route path="contracts/:id" element={<Suspense fallback={<PageSkeleton />}><AdminContractDetail /></Suspense>} />
           <Route path="alerts" element={<Suspense fallback={<PageSkeleton />}><AdminAlerts /></Suspense>} />
           <Route path="documents" element={<Suspense fallback={<PageSkeleton />}><AdminDocuments /></Suspense>} />
+          <Route path="users" element={<Suspense fallback={<PageSkeleton />}><AdminUsers /></Suspense>} />
         </Route>
 
         {/* Redirect unknown paths */}

@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { LayoutDashboard, FileText, Upload, Bell, FolderOpen } from 'lucide-react'
+import { LayoutDashboard, FileText, Upload, Bell, FolderOpen, Users } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/admin', end: true },
@@ -7,6 +7,7 @@ const navItems = [
   { label: 'Upload', icon: Upload, to: '/admin/upload' },
   { label: 'Alerts', icon: Bell, to: '/admin/alerts' },
   { label: 'Documents', icon: FolderOpen, to: '/admin/documents' },
+  { label: 'Users', icon: Users, to: '/admin/users' },
 ]
 
 export function AdminLayout() {
