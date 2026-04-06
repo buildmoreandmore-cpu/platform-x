@@ -754,6 +754,186 @@ export function Home() {
         </div>
       </section>
 
+      {/* ─── PLATFORM DEMO ─── */}
+      <section id="platform" style={{
+        position: 'relative' as const,
+        padding: '120px 48px',
+        borderTop: '1px solid #0d2a18',
+        background: '#020c06',
+      }}>
+        <div style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 10,
+          color: GREEN,
+          letterSpacing: '0.4em',
+          textTransform: 'uppercase' as const,
+          marginBottom: 16,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          Platform Intelligence
+        </div>
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: 'clamp(32px, 4vw, 52px)',
+          fontWeight: 800,
+          lineHeight: 1.1,
+          marginBottom: 24,
+          maxWidth: 600,
+          color: '#c8f0d8',
+        }}>
+          See your building.<br />Know your contract.
+        </h2>
+        <p style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 14,
+          color: '#4a7a5a',
+          lineHeight: 1.7,
+          maxWidth: 520,
+          marginBottom: 48,
+        }}>
+          Real-time energy performance monitoring with AI-powered drift detection,
+          ECM zone mapping, and DSCR tracking — all overlaid on your actual facility.
+          One API key swap from Google's photorealistic 3D tiles.
+        </p>
+
+        {/* Demo preview card */}
+        <Link to="/demo" style={{
+          display: 'block',
+          border: '1px solid #0d2a18',
+          background: '#050f08',
+          position: 'relative' as const,
+          overflow: 'hidden',
+          textDecoration: 'none',
+          cursor: 'pointer',
+          maxWidth: 960,
+          transition: 'border-color 0.3s',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = GREEN)}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#0d2a18')}
+        >
+          {/* Simulated dashboard preview */}
+          <div style={{
+            padding: '20px 24px',
+            borderBottom: '1px solid #0d2a18',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 10,
+              color: GREEN,
+              letterSpacing: '0.3em',
+            }}>
+              VANTAGE<span style={{ color: '#4a7a5a' }}> // ESPC PERFORMANCE MONITOR</span>
+            </div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 9,
+              color: '#4a7a5a',
+              letterSpacing: '0.2em',
+            }}>
+              ATLANTA CITY HALL — 55 TRINITY AVE SW
+            </div>
+          </div>
+
+          {/* Mock dashboard grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr 1fr',
+            gap: 1,
+            background: '#0d2a18',
+            borderBottom: '1px solid #0d2a18',
+          }}>
+            {[
+              { label: 'VERIFIED SAVINGS', value: '$221K', sub: 'of $312K target', color: '#ffaa00' },
+              { label: 'SHORTFALL', value: '$90.6K', sub: 'YTD exposure', color: '#ff4444' },
+              { label: 'ECMs ON TRACK', value: '4/6', sub: 'performing', color: GREEN },
+              { label: 'DSCR', value: '1.04', sub: 'min 1.0 required', color: '#ffaa00' },
+            ].map((m) => (
+              <div key={m.label} style={{ background: '#050f08', padding: '16px 20px' }}>
+                <div style={{
+                  fontFamily: "'Share Tech Mono', monospace",
+                  fontSize: 8,
+                  color: '#4a7a5a',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase' as const,
+                  marginBottom: 4,
+                }}>{m.label}</div>
+                <div style={{
+                  fontFamily: "'Share Tech Mono', monospace",
+                  fontSize: 24,
+                  color: m.color,
+                  lineHeight: 1,
+                  marginBottom: 2,
+                }}>{m.value}</div>
+                <div style={{
+                  fontFamily: "'Share Tech Mono', monospace",
+                  fontSize: 8,
+                  color: '#4a7a5a',
+                }}>{m.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* ECM status bars */}
+          <div style={{ padding: '16px 24px' }}>
+            {[
+              { name: 'HVAC Retrofit', pct: 71, color: '#ffaa00' },
+              { name: 'LED Lighting', pct: 97, color: GREEN },
+              { name: 'BMS Controls', pct: 103, color: GREEN },
+              { name: 'Building Envelope', pct: 52, color: '#ff4444' },
+            ].map((ecm) => (
+              <div key={ecm.name} style={{ marginBottom: 10 }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontFamily: "'Share Tech Mono', monospace",
+                  fontSize: 9,
+                  marginBottom: 4,
+                }}>
+                  <span style={{ color: '#c8f0d8' }}>{ecm.name}</span>
+                  <span style={{ color: ecm.color }}>{ecm.pct}%</span>
+                </div>
+                <div style={{ background: '#0d2a18', height: 3 }}>
+                  <div style={{
+                    width: `${Math.min(100, ecm.pct)}%`,
+                    height: '100%',
+                    background: ecm.color,
+                    transition: 'width 1s ease',
+                  }} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA overlay */}
+          <div style={{
+            padding: '20px 24px',
+            borderTop: '1px solid #0d2a18',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <span style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 9,
+              color: '#4a7a5a',
+              letterSpacing: '0.3em',
+            }}>CLICK TO EXPLORE FULL INTERACTIVE DEMO</span>
+            <span style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: GREEN,
+              letterSpacing: '0.2em',
+            }}>LAUNCH DEMO →</span>
+          </div>
+        </Link>
+      </section>
+
       {/* ─── FOOTER BAR ─── */}
       <footer style={S.footerBar}>
         <span>&copy; 2026 VANTAGE INFRASTRUCTURE GROUP // ATLANTA, GA</span>
