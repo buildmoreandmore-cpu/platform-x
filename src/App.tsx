@@ -87,32 +87,14 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
         </Route>
 
-        {/* Portal gateway — dashboard entry */}
-        <Route path="/portal" element={<Landing />} />
+        {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/demo" element={<Suspense fallback={<PageSkeleton />}><Demo /></Suspense>} />
 
-        {/* Internal team platform (protected) */}
-        <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route index element={<Suspense fallback={<PageSkeleton />}><Dashboard /></Suspense>} />
-          <Route path="projects" element={<Suspense fallback={<PageSkeleton />}><Projects /></Suspense>} />
-          <Route path="projects/:id" element={<Suspense fallback={<PageSkeleton />}><ProjectDetail /></Suspense>} />
-          <Route path="assets" element={<Suspense fallback={<PageSkeleton />}><FieldAudit /></Suspense>} />
-          <Route path="benchmarking" element={<Suspense fallback={<PageSkeleton />}><Benchmarking /></Suspense>} />
-          <Route path="financial" element={<Suspense fallback={<PageSkeleton />}><FinancialModeling /></Suspense>} />
-          <Route path="governance" element={<Suspense fallback={<PageSkeleton />}><Governance /></Suspense>} />
-          <Route path="construction" element={<Suspense fallback={<PageSkeleton />}><Construction /></Suspense>} />
-          <Route path="mv" element={<Suspense fallback={<PageSkeleton />}><MV /></Suspense>} />
-          <Route path="reporting" element={<Suspense fallback={<PageSkeleton />}><Reporting /></Suspense>} />
-          <Route path="knowledge" element={<Suspense fallback={<PageSkeleton />}><KnowledgeBase /></Suspense>} />
-          <Route path="timeline" element={<Suspense fallback={<PageSkeleton />}><Timeline /></Suspense>} />
-          <Route path="workflows" element={<Suspense fallback={<PageSkeleton />}><Workflows /></Suspense>} />
-          <Route path="drawings" element={<Suspense fallback={<PageSkeleton />}><Drawings /></Suspense>} />
-          <Route path="settings" element={<Suspense fallback={<PageSkeleton />}><Settings /></Suspense>} />
-          <Route path="*" element={<div className="p-8 text-gray-500">Module under construction</div>} />
-        </Route>
+        {/* Internal team platform (hidden — access via /admin instead) */}
+        {/* <Route path="/app" element={<ProtectedRoute><Layout /></ProtectedRoute>}> ... </Route> */}
 
         {/* Super admin panel (key-protected, no tenant auth) */}
         <Route path="/super-admin" element={<Suspense fallback={<PageSkeleton />}><SuperAdmin /></Suspense>} />

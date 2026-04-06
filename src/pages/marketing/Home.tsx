@@ -680,8 +680,8 @@ export function Home() {
         <Link to="/" style={S.logo}>VANTAGE // INFRASTRUCTURE</Link>
         <div style={S.navLinks} className="vantage-nav-links">
           <a href="#services" style={S.navLink}>Services</a>
-          <Link to="/portal" style={S.navLink}>Platform</Link>
-          <Link to="/contact" style={S.navLink}>About</Link>
+          <a href="#platform" style={S.navLink}>Platform</a>
+          <a href="#portals" style={S.navLink}>Sign In</a>
           <Link to="/contact" style={S.navLink}>Contact</Link>
           <Link to="/contact" style={S.ctaBtn}>Request Access</Link>
         </div>
@@ -706,7 +706,7 @@ export function Home() {
           </p>
           <div style={S.heroCtas}>
             <Link to="/contact" style={S.primaryBtn}>Request Access</Link>
-            <Link to="/portal" style={S.secondaryBtn}>Enter Platform</Link>
+            <a href="#portals" style={S.secondaryBtn}>Sign In</a>
           </div>
         </div>
 
@@ -932,6 +932,184 @@ export function Home() {
             }}>LAUNCH DEMO →</span>
           </div>
         </Link>
+      </section>
+
+      {/* ─── PORTAL ACCESS ─── */}
+      <section id="portals" style={{
+        position: 'relative' as const,
+        padding: '100px 48px',
+        borderTop: '1px solid #0d2a18',
+        background: '#020c06',
+      }}>
+        <div style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 10,
+          color: GREEN,
+          letterSpacing: '0.4em',
+          textTransform: 'uppercase' as const,
+          marginBottom: 16,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+          <span style={{ width: 24, height: 1, background: GREEN, display: 'inline-block' }} />
+          Secure Access
+        </div>
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif",
+          fontSize: 'clamp(28px, 3.5vw, 44px)',
+          fontWeight: 800,
+          lineHeight: 1.1,
+          marginBottom: 48,
+          color: '#c8f0d8',
+        }}>
+          Sign in to your portal.
+        </h2>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 1,
+          background: '#0d2a18',
+          border: '1px solid #0d2a18',
+          maxWidth: 900,
+        }} className="vantage-portals-grid">
+          {/* Admin Portal */}
+          <Link to="/admin" style={{
+            background: '#050f08',
+            padding: '40px 32px',
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            gap: 16,
+            transition: 'background 0.3s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#0a1a10')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#050f08')}
+          >
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 9,
+              color: '#4a7a5a',
+              letterSpacing: '0.3em',
+            }}>01 //</div>
+            <div style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#c8f0d8',
+            }}>Admin Portal</div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: '#4a7a5a',
+              lineHeight: 1.6,
+            }}>
+              Document intelligence, contract management, user provisioning, and platform administration.
+            </div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 10,
+              color: GREEN,
+              letterSpacing: '0.2em',
+              marginTop: 'auto',
+            }}>SIGN IN →</div>
+          </Link>
+
+          {/* Client Portal */}
+          <Link to="/client/login" style={{
+            background: '#050f08',
+            padding: '40px 32px',
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            gap: 16,
+            transition: 'background 0.3s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#0a1a10')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#050f08')}
+          >
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 9,
+              color: '#4a7a5a',
+              letterSpacing: '0.3em',
+            }}>02 //</div>
+            <div style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#c8f0d8',
+            }}>Client Portal</div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: '#4a7a5a',
+              lineHeight: 1.6,
+            }}>
+              View your contract performance, verified savings, ECM status, and ask Vantage AI questions in plain English.
+            </div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 10,
+              color: GREEN,
+              letterSpacing: '0.2em',
+              marginTop: 'auto',
+            }}>SIGN IN →</div>
+          </Link>
+
+          {/* CMVP Portal */}
+          <Link to="/cmvp" style={{
+            background: '#050f08',
+            padding: '40px 32px',
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            gap: 16,
+            transition: 'background 0.3s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#0a1a10')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#050f08')}
+          >
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 9,
+              color: '#4a7a5a',
+              letterSpacing: '0.3em',
+            }}>03 //</div>
+            <div style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#c8f0d8',
+            }}>M&V Professional</div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 11,
+              color: '#4a7a5a',
+              lineHeight: 1.6,
+            }}>
+              Review assigned M&V tasks, verify savings calculations, flag discrepancies, and digitally sign off on reports.
+            </div>
+            <div style={{
+              fontFamily: "'Share Tech Mono', monospace",
+              fontSize: 10,
+              color: GREEN,
+              letterSpacing: '0.2em',
+              marginTop: 'auto',
+            }}>SIGN IN →</div>
+          </Link>
+        </div>
+
+        <p style={{
+          fontFamily: "'Share Tech Mono', monospace",
+          fontSize: 10,
+          color: '#2a4a32',
+          marginTop: 24,
+          letterSpacing: '0.2em',
+        }}>
+          Access provisioned by Vantage Infrastructure Group. Contact your project manager for credentials.
+        </p>
       </section>
 
       {/* ─── FOOTER BAR ─── */}
