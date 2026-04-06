@@ -11,6 +11,9 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { PageSkeleton } from './components/Skeleton';
 import { TenantThemeProvider } from './providers/TenantThemeProvider';
 import { MarketingLayout } from './components/marketing/MarketingLayout';
+import { AdminLayout } from './components/admin/AdminLayout';
+import { ClientPortalLayout } from './components/client/ClientPortalLayout';
+import { CMVPLayout } from './components/cmvp/CMVPLayout';
 
 // Marketing pages (eager — small, SEO-critical)
 import { Home } from './pages/marketing/Home';
@@ -47,6 +50,23 @@ const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.S
 const ClientPortal = lazy(() => import('./pages/ClientPortal').then(m => ({ default: m.ClientPortal })));
 const SuperAdmin = lazy(() => import('./pages/SuperAdmin').then(m => ({ default: m.SuperAdmin })));
 const Demo = lazy(() => import('./pages/Demo').then(m => ({ default: m.Demo })));
+
+// Admin portal pages
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const AdminUpload = lazy(() => import('./pages/admin/AdminUpload').then(m => ({ default: m.AdminUpload })));
+const AdminContracts = lazy(() => import('./pages/admin/AdminContracts').then(m => ({ default: m.AdminContracts })));
+const AdminContractDetail = lazy(() => import('./pages/admin/AdminContractDetail').then(m => ({ default: m.AdminContractDetail })));
+const AdminAlerts = lazy(() => import('./pages/admin/AdminAlerts').then(m => ({ default: m.AdminAlerts })));
+const AdminDocuments = lazy(() => import('./pages/admin/AdminDocuments').then(m => ({ default: m.AdminDocuments })));
+
+// Client portal
+const ClientLogin = lazy(() => import('./pages/client/ClientLogin').then(m => ({ default: m.ClientLogin })));
+
+// CMVP portal
+const CMVPDashboard = lazy(() => import('./pages/cmvp/CMVPDashboard').then(m => ({ default: m.CMVPDashboard })));
+const CMVPTasks = lazy(() => import('./pages/cmvp/CMVPTasks').then(m => ({ default: m.CMVPTasks })));
+const CMVPTaskReview = lazy(() => import('./pages/cmvp/CMVPTaskReview').then(m => ({ default: m.CMVPTaskReview })));
+const CMVPContracts = lazy(() => import('./pages/cmvp/CMVPContracts').then(m => ({ default: m.CMVPContracts })));
 
 export default function App() {
   useEffect(() => {
@@ -102,9 +122,28 @@ export default function App() {
         {/* Client invite acceptance (public) */}
         <Route path="/client/accept" element={<ClientAccept />} />
 
-        {/* Client-facing portal (protected) */}
-        <Route path="/client" element={<ProtectedRoute><ClientLayout /></ProtectedRoute>}>
-          <Route index element={<Suspense fallback={<PageSkeleton />}><ClientPortal /></Suspense>} />
+        {/* Client Login */}
+        <Route path="/client/login" element={<Suspense fallback={<PageSkeleton />}><ClientLogin /></Suspense>} />
+
+        {/* Client Portal (tab-based, no child routes) */}
+        <Route path="/client" element={<ClientPortalLayout />} />
+
+        {/* M&V Professional Portal */}
+        <Route path="/cmvp" element={<CMVPLayout />}>
+          <Route index element={<Suspense fallback={<PageSkeleton />}><CMVPDashboard /></Suspense>} />
+          <Route path="tasks" element={<Suspense fallback={<PageSkeleton />}><CMVPTasks /></Suspense>} />
+          <Route path="tasks/:id" element={<Suspense fallback={<PageSkeleton />}><CMVPTaskReview /></Suspense>} />
+          <Route path="contracts" element={<Suspense fallback={<PageSkeleton />}><CMVPContracts /></Suspense>} />
+        </Route>
+
+        {/* Admin Portal */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Suspense fallback={<PageSkeleton />}><AdminDashboard /></Suspense>} />
+          <Route path="upload" element={<Suspense fallback={<PageSkeleton />}><AdminUpload /></Suspense>} />
+          <Route path="contracts" element={<Suspense fallback={<PageSkeleton />}><AdminContracts /></Suspense>} />
+          <Route path="contracts/:id" element={<Suspense fallback={<PageSkeleton />}><AdminContractDetail /></Suspense>} />
+          <Route path="alerts" element={<Suspense fallback={<PageSkeleton />}><AdminAlerts /></Suspense>} />
+          <Route path="documents" element={<Suspense fallback={<PageSkeleton />}><AdminDocuments /></Suspense>} />
         </Route>
 
         {/* Redirect unknown paths */}

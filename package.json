@@ -12,6 +12,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.82.0",
     "@hookform/resolvers": "^5.2.2",
     "@iconify/react": "^6.0.2",
     "@supabase/supabase-js": "^2.99.1",
