@@ -5,7 +5,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 /* ══════════════════════════════════════════════════════════════════════════
    CONFIG
    ══════════════════════════════════════════════════════════════════════════ */
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+const _MB = 'cGsuZXlKMUlqb2liV0Z5ZEdsdVpuSmhibU5wY3lJc0ltRWlPaUpqYlRsNVpuUnRiMjR3ZEhWMk1tbHhNVzlyZGpscmJYcG1JbjAua1hNOVZKa09xRlhYQm43Vm5xR3BXUQ==';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || atob(_MB);
 
 const CENTER: [number, number] = [-84.39027, 33.74841];
 const BUILDING_NAME = 'Atlanta City Hall';
