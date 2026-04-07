@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/vantage-3d-demo.html", "destination": "/vantage-3d-demo.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
