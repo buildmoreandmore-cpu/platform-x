@@ -108,6 +108,7 @@ export function Demo() {
   const [selectedEcm, setSelectedEcm] = useState<string | null>(null);
   const [layers, setLayers] = useState({ zones: true, sensors: true, flow: false, god: false });
   const [tooltip, setTooltip] = useState<{ x: number; y: number; title: string; rows: [string,string][] } | null>(null);
+  const [mapError, setMapError] = useState('');
 
   const playRef = useRef(playing);
   playRef.current = playing;
@@ -123,16 +124,32 @@ export function Demo() {
     if (!mapContainer.current) return;
     mapboxgl.accessToken = MAPBOX_TOKEN;
 
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
-      center: CENTER,
-      zoom: 15,
-      pitch: 40,
-      bearing: 0,
-      antialias: true,
-    });
+    if (!MAPBOX_TOKEN) {
+      setMapError('MAPBOX_TOKEN is empty — check VITE_MAPBOX_TOKEN env var');
+      return;
+    }
+
+    let map: mapboxgl.Map;
+    try {
+      map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: CENTER,
+        zoom: 15,
+        pitch: 40,
+        bearing: 0,
+        antialias: true,
+      });
+    } catch (err) {
+      setMapError('Map init failed: ' + (err instanceof Error ? err.message : String(err)));
+      return;
+    }
     mapRef.current = map;
+
+    map.on('error', (e) => {
+      console.error('Mapbox error:', e);
+      setMapError('Map error: ' + (e.error?.message || 'unknown'));
+    });
 
     map.on('load', () => {
       // 3D buildings
@@ -357,7 +374,14 @@ export function Demo() {
       `}</style>
 
       {/* Map */}
-      <div ref={mapContainer} style={{ position: 'absolute', inset: 0 }} />
+      <div ref={mapContainer} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+
+      {/* Map error display */}
+      {mapError && (
+        <div style={{ position: 'fixed', top: 60, left: '50%', transform: 'translateX(-50%)', zIndex: 100, background: 'rgba(255,68,68,0.15)', border: '1px solid #ff4444', color: '#ff4444', padding: '12px 24px', fontSize: 11, fontFamily: font.mono, maxWidth: 500 }}>
+          {mapError}
+        </div>
+      )}
 
       {/* ── Top Nav ── */}
       <nav style={{
